@@ -4,8 +4,9 @@ import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { AiOutlineMenu } from 'react-icons/ai';
-import { FaUserCircle } from 'react-icons/fa';
+import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { style } from '../../styles/style';
 
 export function UserMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -16,19 +17,10 @@ export function UserMenu() {
     setOpen((prev) => !prev);
   };
   return (
-    <Button
-      sx={{
-        borderRadius: 10,
-        border: '1px solid #ddd',
-        '&:hover': {
-          boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.4)',
-        },
-      }}
-      onClick={handleClick}
-    >
-      <Stack sx={{ display: 'flex', alignItems: 'center', px: 1 }}>
-        <AiOutlineMenu size={18} />
-        <FaUserCircle size={28} />
+    <Button sx={style.userMenu} onClick={handleClick}>
+      <Stack sx={style.userMenuContent}>
+        <MenuIcon fontSize="small" />
+        <AccountCircleIcon fontSize="medium" />
       </Stack>
       <Menu
         id="basic-menu"

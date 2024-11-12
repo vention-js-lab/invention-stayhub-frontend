@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
-import { UserMenu } from './UserMenu';
-import { Languages } from './Languages';
+import { UserMenu } from './user-menu';
+import { Languages } from './languages';
 
 export function ProfileOptions() {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <Box>
       <Stack>
         <Languages />
         <UserMenu />
