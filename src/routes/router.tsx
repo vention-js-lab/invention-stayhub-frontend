@@ -1,7 +1,7 @@
 import { privateRoutes } from '#/routes/private.route';
 import { publicRoutes } from '#/routes/public.route';
 import { createBrowserRouter } from 'react-router-dom';
-import { Layout } from '#/modules/layout/components/Layout';
+import { Layout } from '#/modules/layout/components/layout';
 
 export const router = createBrowserRouter([
   {
