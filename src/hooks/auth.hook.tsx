@@ -2,7 +2,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUser, clearUser, setError, setStatus } from '#/store/slices/auth-slice';
 import { type StoreState } from '#/store/store';
 import { type LoginResponse } from '../modules/auth/login/types/login-response.type';
-import { envConfig } from '../configs/env.config';
 
 export function useAuth() {
   const dispatch = useDispatch();
@@ -11,12 +10,12 @@ export function useAuth() {
   const error = useSelector((state: StoreState) => state.auth.error);
 
   async function login(credentials: { email: string; password: string }) {
-    const { apiBaseUrl } = envConfig;
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
 
     dispatch(setStatus('pending'));
 
     try {
-      const response = await fetch(`${apiBaseUrl}/auth/login`, {
+      const response = await fetch(`${baseURL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
