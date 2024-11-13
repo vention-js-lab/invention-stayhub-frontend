@@ -34,7 +34,7 @@ export function RegisterForm() {
   });
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    navigate('/');
+    // navigate('/');
     mutation.mutate(data);
   };
 
@@ -108,7 +108,14 @@ export function RegisterForm() {
         Sign Up
       </Button>
 
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)} message={errorMessage} />
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        message={errorMessage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={style.snackBar}
+      />
     </form>
   );
 }

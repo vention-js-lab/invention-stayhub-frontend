@@ -27,4 +27,15 @@ export const style = {
     py: 2,
     mt: 2,
   },
+  snackBar: {
+    '& .MuiSnackbarContent-root': {
+      backgroundColor: 'red',
+      opacity: 2,
+      fontSize: '1rem',
+      textAlign: 'center',
+      padding: '2px 24px',
+      width: '100%',
+      boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
+    },
+  },
 };
