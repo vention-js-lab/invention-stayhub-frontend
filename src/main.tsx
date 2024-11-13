@@ -10,6 +10,8 @@ import { QueryClientConfig } from '#/configs/query-client.config';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider } from 'react-router-dom';
 import { router } from '#/routes';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -21,13 +23,15 @@ const queryClient = new QueryClient(QueryClientConfig);
 createRoot(rootElement).render(
   <StrictMode>
     <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={appTheme}>
-          <RouterProvider router={router} />
-          <CssBaseline />
-        </ThemeProvider>
-        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
-      </QueryClientProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={appTheme}>
+            <RouterProvider router={router} />
+            <CssBaseline />
+          </ThemeProvider>
+          <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+        </QueryClientProvider>
+      </Provider>
     </HelmetProvider>
   </StrictMode>
 );

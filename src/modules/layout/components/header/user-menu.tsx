@@ -37,7 +37,7 @@ export function UserMenu() {
         sx={{ mt: 1 }}
       >
         <MenuItem>
-          <Link href="#" sx={{ width: 150 }}>
+          <Link href="/login" sx={{ width: 150 }}>
             Log in
           </Link>
         </MenuItem>
