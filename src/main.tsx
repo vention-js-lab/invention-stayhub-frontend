@@ -25,19 +25,12 @@ const queryClient = new QueryClient(QueryClientConfig);
 createRoot(rootElement).render(
   <StrictMode>
     <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={appTheme}>
-          <SnackbarProvider maxSnack={3}>
-            <RouterProvider router={router} />
-          </SnackbarProvider>
-          <CssBaseline />
-        </ThemeProvider>
-        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
-      </QueryClientProvider>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={appTheme}>
-            <RouterProvider router={router} />
+            <SnackbarProvider maxSnack={3}>
+              <RouterProvider router={router} />
+            </SnackbarProvider>
             <CssBaseline />
           </ThemeProvider>
           <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />

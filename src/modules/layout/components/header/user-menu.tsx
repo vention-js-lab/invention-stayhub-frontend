@@ -6,7 +6,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { style } from '../../styles/style';
 import { useNavigate } from 'react-router-dom';
 import { style } from '#/modules/layout/styles/style';
 
@@ -51,8 +50,6 @@ export function UserMenu() {
           </Link>
         </MenuItem>
         <MenuItem onClick={handleSignUpClick}>
-          <Link href="#" sx={{ width: 150 }}>
-        <MenuItem>
           <Link href="/auth/register" sx={{ width: 150 }}>
             Sign up
           </Link>
