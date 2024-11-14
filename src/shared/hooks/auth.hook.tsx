@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setAuthStatus, setCurrentUser, clearCurrentUser } from '#/store/slices/auth-slice';
 import { useEffect } from 'react';
 import { getLocalUser } from '#/modules/auth/utils/get-local-user.util';
-import { setCookie } from '../utils/cookie-helper.util';
+import { deleteCookie, setCookie } from '../utils/cookie-helper.util';
 import { jwtDecode } from 'jwt-decode';
 import { type StoreState } from '#/store/store';
 import { type CurrentUser } from '#/modules/auth/schemas/current-user.schema';
@@ -37,7 +37,8 @@ export function useAuth() {
   }
 
   function logout() {
-    localStorage.removeItem('user');
+    deleteCookie('accessToken');
+    deleteCookie('refreshToken');
     dispatch(clearCurrentUser());
     dispatch(setAuthStatus('guest'));
   }
