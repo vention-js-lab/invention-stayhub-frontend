@@ -3,6 +3,5 @@ import { getLocalUser } from '#/modules/auth/utils/get-local-user.util';
 
 export const initialAuthState: Auth = {
   currentUser: getLocalUser(),
-  status: 'idle',
-  error: null,
+  authStatus: 'pending',
 };

@@ -7,24 +7,19 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: initialAuthState,
   reducers: {
-    setStatus(state, action: PayloadAction<AuthStatus>) {
-      state.status = action.payload;
+    setAuthStatus(state, action: PayloadAction<AuthStatus>) {
+      state.authStatus = action.payload;
     },
     setCurrentUser(state, action: PayloadAction<CurrentUser>) {
       state.currentUser = action.payload;
-      state.status = 'success';
+      state.authStatus = 'authenticated';
     },
-    setError(state, action: PayloadAction<string | null>) {
-      state.error = action.payload;
-      state.status = 'error';
-    },
-    clearUser(state) {
+    clearCurrentUser(state) {
       state.currentUser = null;
-      state.error = null;
-      state.status = 'idle';
+      state.authStatus = 'guest';
     },
   },
 });
 
-export const { setCurrentUser, clearUser, setStatus, setError } = authSlice.actions;
+export const { setAuthStatus, setCurrentUser, clearCurrentUser } = authSlice.actions;
 export const authReducer = authSlice.reducer;

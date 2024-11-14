@@ -1,14 +1,16 @@
+import { getCookie } from '#/shared/utils/cookie-helper.util';
 import { currentUserSchema } from '../schemas/current-user.schema';
 
 export function getLocalUser() {
-  const localUser = localStorage.getItem('user');
+  const accessToken = getCookie('accessToken');
+  const refreshToken = getCookie('refreshToken');
 
-  if (!localUser) {
+  if (!accessToken || !refreshToken) {
     return null;
   }
 
-  const parsedLocalUser = JSON.parse(localUser);
-  const validationResult = currentUserSchema.safeParse(parsedLocalUser);
+  const localUser = { accessToken, refreshToken };
+  const validationResult = currentUserSchema.safeParse(localUser);
 
   if (!validationResult.success) {
     return null;

@@ -1,63 +1,46 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentUser, clearUser, setError, setStatus } from '#/store/slices/auth-slice';
-import { useLoginMutation } from '#/modules/auth/api/login.api';
-import { parseLoginError } from '#/modules/auth/utils/login-error-parser.util';
-import { type StoreState } from '#/store/store';
-import { type LoginFormData } from '#/modules/auth/schemas/login-form.schema';
+import { setAuthStatus, setCurrentUser, clearCurrentUser } from '#/store/slices/auth-slice';
 import { useEffect } from 'react';
 import { getLocalUser } from '#/modules/auth/utils/get-local-user.util';
-import { useNavigate } from 'react-router-dom';
+import { setCookie } from '../utils/cookie-helper.util';
+import { jwtDecode } from 'jwt-decode';
+import { type StoreState } from '#/store/store';
+import { type CurrentUser } from '#/modules/auth/schemas/current-user.schema';
+import { type DecodedToken } from '#/modules/auth/types/decoded-access-token.type';
 
 export function useAuth() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state: StoreState) => state.auth.currentUser);
-  const status = useSelector((state: StoreState) => state.auth.status);
-  const error = useSelector((state: StoreState) => state.auth.error);
-  const { loginMutation } = useLoginMutation();
-  const navigate = useNavigate();
+  const authStatus = useSelector((state: StoreState) => state.auth.authStatus);
 
   useEffect(() => {
+    dispatch(setAuthStatus('pending'));
+
     const localUser = getLocalUser();
 
     if (localUser) {
       dispatch(setCurrentUser(localUser));
-      dispatch(setStatus('success'));
+      dispatch(setAuthStatus('authenticated'));
     } else {
-      dispatch(setStatus('idle'));
+      dispatch(setAuthStatus('guest'));
     }
   }, [dispatch]);
 
-  function login(credentials: LoginFormData) {
-    dispatch(setError(null));
-    dispatch(setStatus('pending'));
+  function login(user: CurrentUser) {
+    const decodedAccessToken = jwtDecode<DecodedToken>(user.accessToken);
+    const accessTokenExpirationDate = new Date(decodedAccessToken.exp * 1000);
+    setCookie('accessToken', user.accessToken, { expires: accessTokenExpirationDate });
 
-    loginMutation.mutate(credentials, {
-      onSuccess: (data) => {
-        const user = {
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken,
-        };
-
-        localStorage.setItem('user', JSON.stringify(user));
-        dispatch(setCurrentUser(user));
-        dispatch(setStatus('success'));
-
-        navigate('/');
-      },
-      onError: (err) => {
-        const errorMessage = parseLoginError(err);
-        dispatch(setError(errorMessage));
-        dispatch(setStatus('error'));
-      },
-    });
+    const decodedRefreshToken = jwtDecode<DecodedToken>(user.refreshToken);
+    const refreshTokenExpirationDate = new Date(decodedRefreshToken.exp * 1000);
+    setCookie('refreshToken', user.accessToken, { expires: refreshTokenExpirationDate });
   }
 
   function logout() {
     localStorage.removeItem('user');
-    dispatch(clearUser());
-    dispatch(setError(null));
-    dispatch(setStatus('idle'));
+    dispatch(clearCurrentUser());
+    dispatch(setAuthStatus('guest'));
   }
 
-  return { currentUser, status, error, login, logout };
+  return { currentUser, authStatus, login, logout };
 }

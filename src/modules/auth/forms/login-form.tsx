@@ -10,6 +10,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type LoginFormData, loginFormDataSchema } from '../schemas/login-form.schema';
 import { LoginButton } from '../components/login-button';
 import { LoadingButton } from '../components/login-loading-button';
+import { useLoginMutation } from '../api/login.api';
+import { setCurrentUser, setAuthStatus } from '#/store/slices/auth-slice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { parseLoginError } from '../utils/login-error-parser.util';
 
 const styles = {
   passwordContainer: {
@@ -20,7 +25,10 @@ const styles = {
 };
 
 export function LoginForm() {
-  const { login, status, error } = useAuth();
+  const { loginMutation } = useLoginMutation();
+  const { login } = useAuth();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -31,14 +39,27 @@ export function LoginForm() {
   });
 
   function onSubmit(loginFormData: LoginFormData) {
-    login({ email: loginFormData.email, password: loginFormData.password });
+    loginMutation.mutate(loginFormData, {
+      onSuccess: (data) => {
+        const user = {
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+        };
+
+        login(user);
+        dispatch(setCurrentUser(user));
+        dispatch(setAuthStatus('authenticated'));
+
+        navigate('/');
+      },
+    });
   }
 
   return (
     <Stack direction="column" spacing={2}>
-      {status === 'error' ? (
+      {loginMutation.isError ? (
         <Typography color="error" align="center" mt={1}>
-          {error}
+          {parseLoginError(loginMutation.error)}
         </Typography>
       ) : (
         <Typography align="center" mt={1}>
@@ -77,7 +98,7 @@ export function LoginForm() {
             Forgot your password?
           </Link>
         </Box>
-        {status === 'pending' ? <LoadingButton /> : <LoginButton />}
+        {loginMutation.isPending ? <LoadingButton /> : <LoginButton />}
       </form>
       <RegisterLink />
     </Stack>

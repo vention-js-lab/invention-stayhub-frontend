@@ -1,1 +1,1 @@
-export type AuthStatus = 'idle' | 'pending' | 'success' | 'error';
+export type AuthStatus = 'guest' | 'pending' | 'authenticated';

@@ -4,6 +4,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { appTheme } from '#/styles/theme';
+import '@fontsource/roboto';
 import '#/styles/root.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { QueryClientConfig } from '#/configs/query-client.config';
