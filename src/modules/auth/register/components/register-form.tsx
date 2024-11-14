@@ -1,41 +1,41 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Snackbar from '@mui/material/Snackbar';
-import { useMutation } from '@tanstack/react-query';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { style } from '../styles/style';
-import { type FormData } from '../types/form-data.type';
-import { axiosClient } from '#/configs/axios.config';
+import { registerFormDataSchema, type RegisterFormData } from '../schemas/register-form.schema';
+import { useRegisterMutation } from '../../api/register.api';
+import { useSnackbar } from 'notistack';
 
 export function RegisterForm() {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-
+  const { mutation } = useRegisterMutation();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FormData>();
-  const navigate = useNavigate();
-
-  const mutation = useMutation<void, Error, FormData>({
-    mutationFn: (data: FormData) => axiosClient.post('auth/register', data),
-    onSuccess: () => {
-      navigate('/');
-    },
-    onError: (error: Error) => {
-      setErrorMessage(error.message);
-      setOpenSnackbar(true);
-    },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerFormDataSchema),
   });
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    // navigate('/');
-    mutation.mutate(data);
+  const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
+    mutation.mutate(data, {
+      onSuccess: () => {
+        navigate('/');
+      },
+      onError: (error: Error) => {
+        enqueueSnackbar(error.message, {
+          variant: 'error',
+          hideIconVariant: true,
+          autoHideDuration: 3000,
+          anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        });
+      },
+    });
   };
 
   return (
@@ -107,15 +107,6 @@ export function RegisterForm() {
       <Button type="submit" variant="contained" sx={style.button} fullWidth={true}>
         Sign Up
       </Button>
-
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={() => setOpenSnackbar(false)}
-        message={errorMessage}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        sx={style.snackBar}
-      />
     </form>
   );
 }
