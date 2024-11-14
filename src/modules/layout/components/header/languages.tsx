@@ -1,6 +1,6 @@
 import Button from '@mui/material/Button';
 import LanguageIcon from '@mui/icons-material/Language';
-import { style } from '../../styles/style';
+import { style } from '#/modules/layout/styles/style';
 import { pink } from '@mui/material/colors';
 
 export function Languages() {

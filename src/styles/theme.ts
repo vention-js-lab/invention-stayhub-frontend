@@ -4,7 +4,7 @@ import { createTheme } from '@mui/material/styles';
 const appTheme = createTheme({
   typography: {
     allVariants: {
-      fontFamily: 'Raleway',
+      fontFamily: 'Roboto',
       fontSize: 15,
       textTransform: 'none',
     },
@@ -23,7 +23,6 @@ const appTheme = createTheme({
         sx: {
           px: 1,
         },
-        variant: 'subtitle2',
       },
     },
     MuiStack: {

@@ -1,5 +1,5 @@
-import { type Auth } from '#/modules/auth/login/types/auth.type';
-import { getLocalUser } from '#/modules/auth/login/utils/get-local-user.util';
+import { type Auth } from '#/shared/types/auth.type';
+import { getLocalUser } from '#/modules/auth/utils/get-local-user.util';
 
 export const initialAuthState: Auth = {
   currentUser: getLocalUser(),

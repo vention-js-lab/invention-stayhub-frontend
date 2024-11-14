@@ -1,21 +1,26 @@
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import { styles } from '../styles/styles';
 import { RegisterLink } from '../components/register-link';
-import { useAuth } from '#/hooks/auth.hook';
+import { useAuth } from '#/shared/hooks/auth.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type LoginFormData, loginFormDataSchema } from '../schemas/login-form.schema';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { LoginButton } from '../components/login-button';
+import { LoadingButton } from '../components/login-loading-button';
+
+const styles = {
+  passwordContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'right',
+  },
+};
 
 export function LoginForm() {
   const { login, status, error } = useAuth();
-  const navigate = useNavigate();
 
   const {
     register,
@@ -25,30 +30,23 @@ export function LoginForm() {
     resolver: zodResolver(loginFormDataSchema),
   });
 
-  async function onSubmit(loginFormData: LoginFormData) {
-    await login({ email: loginFormData.email, password: loginFormData.password });
+  function onSubmit(loginFormData: LoginFormData) {
+    login({ email: loginFormData.email, password: loginFormData.password });
   }
-
-  useEffect(() => {
-    if (status === 'success') {
-      navigate('/');
-    }
-  }, [status, navigate]);
 
   return (
     <Stack direction="column" spacing={2}>
-      <Typography textAlign="center" sx={styles.welcomeText}>
-        Welcome back
-      </Typography>
-
-      {status === 'failed' && (
+      {status === 'error' ? (
         <Typography color="error" align="center" mt={1}>
-          {error || 'Login failed. Please try again.'}
+          {error}
+        </Typography>
+      ) : (
+        <Typography align="center" mt={1}>
+          Please enter your email and password to log in
         </Typography>
       )}
 
       <form
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={handleSubmit(onSubmit)}
         style={{
           display: 'flex',
@@ -79,17 +77,7 @@ export function LoginForm() {
             Forgot your password?
           </Link>
         </Box>
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          color="info"
-          fullWidth={true}
-          disabled={status === 'pending'}
-          sx={styles.loginButton}
-        >
-          {status === 'pending' ? 'Logging in...' : 'Log in'}
-        </Button>
+        {status === 'pending' ? <LoadingButton /> : <LoginButton />}
       </form>
       <RegisterLink />
     </Stack>
