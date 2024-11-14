@@ -67,6 +67,7 @@ export default tseslint.config(
       'no-labels': 'error',
       'no-lone-blocks': 'error',
       'no-lonely-if': 'error',
+      '@typescript-eslint/no-misused-promises': 'off',
       'no-new': 'error',
       'no-new-func': 'error',
       'no-new-wrappers': 'error',

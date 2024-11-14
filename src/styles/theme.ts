@@ -4,6 +4,7 @@ import { createTheme } from '@mui/material/styles';
 const appTheme = createTheme({
   typography: {
     allVariants: {
+      fontFamily: 'Roboto',
       fontSize: 15,
       textTransform: 'none',
     },

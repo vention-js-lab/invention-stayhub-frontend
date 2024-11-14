@@ -5,6 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { RegisterForm } from '../components/register-form';
 import { style } from '../styles/style';
 import { useNavigate } from 'react-router-dom';
+import { LoginLink } from '../components/login-link';
 
 export function RegisterRoute() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export function RegisterRoute() {
         </Typography>
         <CloseIcon fontSize="small" sx={style.closeIcon} onClick={() => navigate('/')} />
         <RegisterForm />
+        <LoginLink />
       </Box>
     </Box>
   );
