@@ -10,6 +10,7 @@ import { QueryClientConfig } from '#/configs/query-client.config';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider } from 'react-router-dom';
 import { router } from '#/routes';
+import { SnackbarProvider } from 'notistack';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -23,7 +24,9 @@ createRoot(rootElement).render(
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={appTheme}>
-          <RouterProvider router={router} />
+          <SnackbarProvider maxSnack={3}>
+            <RouterProvider router={router} />
+          </SnackbarProvider>
           <CssBaseline />
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />

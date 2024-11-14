@@ -7,15 +7,23 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { style } from '../../styles/style';
+import { useNavigate } from 'react-router-dom';
 
 export function UserMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     setOpen((prev) => !prev);
   };
+
+  const handleSignUpClick = () => {
+    setOpen((prev) => !prev);
+    navigate('/auth/register');
+  };
+
   return (
     <Button sx={style.userMenu} onClick={handleClick}>
       <Stack sx={style.userMenuContent}>
@@ -41,7 +49,7 @@ export function UserMenu() {
             Log in
           </Link>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={handleSignUpClick}>
           <Link href="#" sx={{ width: 150 }}>
             Sign up
           </Link>
