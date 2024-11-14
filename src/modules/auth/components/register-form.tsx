@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { style } from '../styles/style';
 import { registerFormDataSchema, type RegisterFormData } from '../schemas/register-form.schema';
-import { useRegisterMutation } from '../../api/register.api';
+import { useRegisterMutation } from '../api/register.api';
 import { useSnackbar } from 'notistack';
 
 export function RegisterForm() {
@@ -39,12 +39,7 @@ export function RegisterForm() {
   };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(onSubmit)(e);
-      }}
-    >
+    <form onSubmit={handleSubmit(onSubmit)}>
       <TextField
         label="First Name"
         variant="outlined"

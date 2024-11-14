@@ -1,5 +1,5 @@
-import { RegisterRoutes } from '#/modules/auth/register';
+import { AuthRoutes } from '#/modules/auth';
 import { HomeRoutes } from '#/modules/home';
 import { composeModuleRoutes } from '#/utils/router.util';
 
-export const publicRoutes = composeModuleRoutes(HomeRoutes, RegisterRoutes);
+export const publicRoutes = composeModuleRoutes(HomeRoutes, AuthRoutes);

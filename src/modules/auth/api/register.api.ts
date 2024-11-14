@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { apiClient } from '#/libs/api-client.lib';
-import { type RegisterFormData } from '../register/schemas/register-form.schema';
+import { type RegisterFormData } from '../schemas/register-form.schema';
 
 export function useRegisterMutation() {
   const mutation = useMutation<void, Error, RegisterFormData>({
