@@ -96,6 +96,7 @@ export default tseslint.config(
       yoda: 'error',
 
       // ==== TypeScript rules ==== //
+      '@typescript-eslint/no-misused-promises': 'off',
       '@typescript-eslint/consistent-type-exports': 'error',
       'consistent-return': 'off',
       '@typescript-eslint/consistent-return': 'error',
