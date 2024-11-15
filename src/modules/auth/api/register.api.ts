@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { apiClient } from '#/libs/api-client.lib';
+import { apiClient } from '#/shared/libs/api-client.lib';
 import { type RegisterFormData } from '../schemas/register-form.schema';
 
 export function useRegisterMutation() {
