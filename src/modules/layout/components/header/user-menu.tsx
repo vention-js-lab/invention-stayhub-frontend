@@ -34,6 +34,7 @@ export function UserMenu() {
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
+        onClose={() => setOpen(false)}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -44,16 +45,13 @@ export function UserMenu() {
         }}
         sx={{ mt: 1 }}
       >
-        <MenuItem>
-          <Link href="/auth/login" sx={{ width: 150 }}>
-            Log in
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleSignUpClick}>
-          <Link href="/auth/register" sx={{ width: 150 }}>
-            Sign up
-          </Link>
-        </MenuItem>
+        {menuItems.map((item, index) => (
+          <MenuItem key={index} onClick={item.action}>
+            <Link href="" sx={{ width: 150 }}>
+              {item.label}
+            </Link>
+          </MenuItem>
+        ))}
       </Menu>
     </Button>
   );
