@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { pink } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
-import { style } from '../../styles/style';
+import { style } from '#/modules/layout/styles/style';
 import LoyaltyIcon from '@mui/icons-material/Loyalty';
 
 export function Logo() {

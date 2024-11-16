@@ -67,6 +67,7 @@ export default tseslint.config(
       'no-labels': 'error',
       'no-lone-blocks': 'error',
       'no-lonely-if': 'error',
+      '@typescript-eslint/no-misused-promises': 'off',
       'no-new': 'error',
       'no-new-func': 'error',
       'no-new-wrappers': 'error',
@@ -95,6 +96,7 @@ export default tseslint.config(
       yoda: 'error',
 
       // ==== TypeScript rules ==== //
+      '@typescript-eslint/no-misused-promises': 'off',
       '@typescript-eslint/consistent-type-exports': 'error',
       'consistent-return': 'off',
       '@typescript-eslint/consistent-return': 'error',
