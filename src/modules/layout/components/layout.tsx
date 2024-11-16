@@ -13,7 +13,7 @@ export function Layout() {
       }}
     >
       <Header />
-      <Box sx={{ padding: 3, flex: 1 }}>
+      <Box sx={{ padding: '25px 50px', flex: 1 }}>
         <Outlet />
       </Box>
       <Footer />
