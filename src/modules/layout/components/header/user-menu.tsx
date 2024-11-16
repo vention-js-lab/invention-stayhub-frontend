@@ -7,21 +7,24 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '#/shared/hooks/auth.hook';
 import { style } from '#/modules/layout/styles/style';
 
 export function UserMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { authStatus, logout } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     setOpen((prev) => !prev);
   };
 
-  const handleSignUpClick = () => {
-    setOpen((prev) => !prev);
-    navigate('/auth/register');
+  const handleLogout = () => {
+    logout();
+    setOpen(false);
+    navigate('/auth/login');
   };
 
   return (
@@ -31,9 +34,10 @@ export function UserMenu() {
         <AccountCircleIcon fontSize="medium" />
       </Stack>
       <Menu
-        id="basic-menu"
+        id="user-menu"
         anchorEl={anchorEl}
         open={open}
+        onClose={() => setOpen(false)}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -44,16 +48,32 @@ export function UserMenu() {
         }}
         sx={{ mt: 1 }}
       >
-        <MenuItem>
-          <Link href="/auth/login" sx={{ width: 150 }}>
-            Log in
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleSignUpClick}>
-          <Link href="/auth/register" sx={{ width: 150 }}>
-            Sign up
-          </Link>
-        </MenuItem>
+        {authStatus === 'authenticated' ? (
+          <>
+            <MenuItem onClick={() => navigate('/account')}>My Account</MenuItem>
+            <MenuItem onClick={() => navigate('/wishlist')}>My Wishlist</MenuItem>
+            <MenuItem onClick={() => navigate('/accommodations')}>My Accommodations</MenuItem>
+            <MenuItem onClick={() => navigate('/bookings')}>My Bookings</MenuItem>
+            <MenuItem onClick={handleLogout}>
+              <Button fullWidth={true} color="error">
+                Logout
+              </Button>
+            </MenuItem>
+          </>
+        ) : (
+          <>
+            <MenuItem>
+              <Link href="/auth/login" sx={{ width: 150, textDecoration: 'none' }}>
+                Log in
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link href="/auth/register" sx={{ width: 150, textDecoration: 'none' }}>
+                Sign up
+              </Link>
+            </MenuItem>
+          </>
+        )}
       </Menu>
     </Button>
   );
