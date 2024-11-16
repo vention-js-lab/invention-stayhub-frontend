@@ -1,6 +1,7 @@
-import { AccommodationCard } from '#/modules/home/components/accommodation-card/accommodation-card';
+import { AccommodationCard } from '#/modules/home/components/accommodation-card';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import CardImage from '#/assets/images/card-temp-image.jpg';
 
 export function HomeRoute() {
   return (
@@ -11,13 +12,23 @@ export function HomeRoute() {
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
-          justifyContent: 'space-between',
+          gap: '72px',
         }}
       >
-        <AccommodationCard />
-        <AccommodationCard />
-        <AccommodationCard />
-        <AccommodationCard />
+        <AccommodationCard
+          image={CardImage}
+          name={'Apartment name'}
+          address={'Beautiful apartment in the city center address'}
+          pricePerNight={50}
+          rating={4.8}
+        />
+        <AccommodationCard
+          image={CardImage}
+          name={'Apartment name'}
+          address={'Beautiful apartment in the city center address'}
+          pricePerNight={50}
+          rating={4.8}
+        />
       </Box>
     </Box>
   );
