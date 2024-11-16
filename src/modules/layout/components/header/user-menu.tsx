@@ -27,30 +27,6 @@ export function UserMenu() {
     navigate('/auth/login');
   };
 
-  const handleSignUpClick = () => {
-    setOpen((prev) => !prev);
-    navigate('/auth/register');
-  };
-
-  const handleLoginClick = () => {
-    setOpen(false);
-    navigate('/auth/login');
-  };
-
-  const menuItems =
-    authStatus === 'authenticated'
-      ? [
-          { label: 'My Account', action: () => navigate('/account') },
-          { label: 'My Wishlist', action: () => navigate('/wishlist') },
-          { label: 'My Accommodations', action: () => navigate('/accommodations') },
-          { label: 'My Bookings', action: () => navigate('/bookings') },
-          { label: 'Logout', action: handleLogout },
-        ]
-      : [
-          { label: 'Log in', action: handleLoginClick },
-          { label: 'Sign up', action: handleSignUpClick },
-        ];
-
   return (
     <Button sx={style.userMenu} onClick={handleClick}>
       <Stack sx={style.userMenuContent}>
@@ -72,13 +48,32 @@ export function UserMenu() {
         }}
         sx={{ mt: 1 }}
       >
-        {menuItems.map((item, index) => (
-          <MenuItem key={index} onClick={item.action}>
-            <Link href="" sx={{ width: 150 }}>
-              {item.label}
-            </Link>
-          </MenuItem>
-        ))}
+        {authStatus === 'authenticated' ? (
+          <>
+            <MenuItem onClick={() => navigate('/account')}>My Account</MenuItem>
+            <MenuItem onClick={() => navigate('/wishlist')}>My Wishlist</MenuItem>
+            <MenuItem onClick={() => navigate('/accommodations')}>My Accommodations</MenuItem>
+            <MenuItem onClick={() => navigate('/bookings')}>My Bookings</MenuItem>
+            <MenuItem onClick={handleLogout}>
+              <Button fullWidth={true} color="error">
+                Logout
+              </Button>
+            </MenuItem>
+          </>
+        ) : (
+          <>
+            <MenuItem>
+              <Link href="/auth/login" sx={{ width: 150, textDecoration: 'none' }}>
+                Log in
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link href="/auth/register" sx={{ width: 150, textDecoration: 'none' }}>
+                Sign up
+              </Link>
+            </MenuItem>
+          </>
+        )}
       </Menu>
     </Button>
   );
