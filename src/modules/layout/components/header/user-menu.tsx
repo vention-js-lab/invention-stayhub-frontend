@@ -19,7 +19,7 @@ export function UserMenu() {
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-    setOpen((prev) => !prev);
+    setOpen(() => !open);
   };
 
   const handleLogout = () => {

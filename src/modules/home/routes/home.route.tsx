@@ -35,7 +35,7 @@ export function HomeRoute() {
   }, []);
 
   return (
-    <Box mt={`${headerHeight + filterAreaHeight}px`} mb={`${footerHeight}px`}>
+    <Box mt={`${filterAreaHeight}px`} mb={`${footerHeight}px`}>
       <Box sx={styles.filterArea(showShadow)} />
       <AccommodationList />
     </Box>

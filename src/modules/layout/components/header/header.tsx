@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import { ProfileOptions } from './profile-options';
 import { Logo } from './logo';
+import Link from '@mui/material/Link';
 
 export const headerHeight = 80;
 const styles = {
@@ -26,7 +27,9 @@ export function Header() {
   return (
     <Box sx={styles.header}>
       <Box sx={styles.headerContent}>
-        <Logo />
+        <Link href="/">
+          <Logo />
+        </Link>
         <ProfileOptions />
       </Box>
     </Box>
