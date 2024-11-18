@@ -9,6 +9,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '#/shared/hooks/auth.hook';
 import { style } from '#/modules/layout/styles/style';
+import Box from '@mui/material/Box';
 
 export function UserMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -49,19 +50,19 @@ export function UserMenu() {
         sx={{ mt: 1 }}
       >
         {authStatus === 'authenticated' ? (
-          <>
+          <Box>
             <MenuItem onClick={() => navigate('/account')}>My Account</MenuItem>
             <MenuItem onClick={() => navigate('/wishlist')}>My Wishlist</MenuItem>
             <MenuItem onClick={() => navigate('/accommodations')}>My Accommodations</MenuItem>
             <MenuItem onClick={() => navigate('/bookings')}>My Bookings</MenuItem>
             <MenuItem onClick={handleLogout}>
               <Button fullWidth={true} color="error">
-                Logout
+                Log out
               </Button>
             </MenuItem>
-          </>
+          </Box>
         ) : (
-          <>
+          <Box>
             <MenuItem>
               <Link href="/auth/login" sx={{ width: 150, textDecoration: 'none' }}>
                 Log in
@@ -72,7 +73,7 @@ export function UserMenu() {
                 Sign up
               </Link>
             </MenuItem>
-          </>
+          </Box>
         )}
       </Menu>
     </Button>
