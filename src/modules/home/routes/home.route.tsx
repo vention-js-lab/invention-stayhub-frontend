@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import { headerHeight } from '#/modules/layout/components/header/header';
-import { footerHeight } from '#/modules/layout/components/footer/footer';
 import { useEffect, useState } from 'react';
 import { AccommodationList } from '../components/accommodation-list';
 
@@ -35,7 +34,7 @@ export function HomeRoute() {
   }, []);
 
   return (
-    <Box mt={`${filterAreaHeight}px`} mb={`${footerHeight}px`}>
+    <Box mt={`${filterAreaHeight}px`}>
       <Box sx={styles.filterArea(showShadow)} />
       <AccommodationList />
     </Box>
