@@ -20,9 +20,8 @@ interface AccommodationCardProps {
 
 const styles = {
   card: {
-    textAlign: 'start',
-    maxWidth: '300px',
     position: 'relative',
+    cursor: 'pointer',
   },
   iconButton: {
     position: 'absolute',
@@ -37,7 +36,7 @@ const styles = {
     right: '5px',
     color: 'pink[500]',
   },
-  cardMedia: { height: '250px', borderRadius: '10px 10px 0 0', marginBottom: '5px' },
+  cardMedia: { width: '100%', aspectRatio: 1, borderRadius: 3 },
   cardContent: { padding: '5px 0 0 0' },
   cardContentBox: { display: 'flex', justifyContent: 'space-between' },
   cardContentText: {
