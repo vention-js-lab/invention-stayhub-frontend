@@ -7,6 +7,7 @@ import { SkeletonList } from './skeleton-list';
 import { debounce } from '#/shared/utils/debouncer.util';
 import { CardSkeleton } from './card-skeleton';
 import { type Accommodation } from '../types/accommodation.type';
+import { calculateInitialLimit } from '../helpers/calculate-initial-limit.helper';
 
 export function AccommodationList() {
   const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
@@ -19,21 +20,9 @@ export function AccommodationList() {
   const { error, data: fetchedData } = useListAccommodationsQuery(page, limit);
 
   useEffect(() => {
-    const calculateInitialLimit = () => {
-      if (cardRef.current) {
-        const cardHeight = cardRef.current.clientHeight;
-        const cardWidth = cardRef.current.clientWidth;
+    const initialNumberOfCards = calculateInitialLimit(cardRef.current, limit);
 
-        const itemsPerRow = Math.floor(window.innerWidth / cardWidth);
-        const rowsRequired = Math.ceil(window.innerHeight / cardHeight);
-
-        return itemsPerRow * rowsRequired * 2;
-      }
-
-      return limit;
-    };
-
-    setLimit(calculateInitialLimit());
+    setLimit(initialNumberOfCards);
   }, [limit]);
 
   useEffect(() => {
