@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '#/shared/libs/api-client.lib';
 import { useSearchParams } from 'react-router-dom';
-import { type AccommodationListQueryParams } from '#/shared/types/accommodation-list-query-params.type';
+import { type AccommodationListQueryParams } from '#/modules/home/types/accommodation-list-query-params.type';
 import { type AccommodationListResponse } from '../types/accommodation-list.res.type';
 
 export function useListAccommodationsQuery(page: number, limit: number) {

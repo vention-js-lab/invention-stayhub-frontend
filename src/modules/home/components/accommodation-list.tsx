@@ -5,8 +5,8 @@ import { useListAccommodationsQuery } from '../api/list-accommodations.api';
 import { useEffect, useRef, useState } from 'react';
 import { SkeletonList } from './skeleton-list';
 import { debounce } from '#/shared/utils/debouncer.util';
-import { type Accommodation } from '../types/accommodation.type';
 import { CardSkeleton } from './card-skeleton';
+import { type Accommodation } from '../types/accommodation.type';
 
 export function AccommodationList() {
   const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
