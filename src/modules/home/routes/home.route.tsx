@@ -11,7 +11,7 @@ const styles = {
     top: `${headerHeight}px`,
     left: 0,
     right: 0,
-    zIndex: 2,
+    zIndex: 10,
     textAlign: 'center',
     backgroundColor: '#fff',
     borderTop: '1px solid #ddd',

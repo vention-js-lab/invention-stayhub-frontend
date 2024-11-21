@@ -11,7 +11,7 @@ const styles = {
     left: 0,
     right: 0,
     backgroundColor: '#fff',
-    zIndex: 2,
+    zIndex: 10,
   },
   headerContent: {
     display: 'flex',

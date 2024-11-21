@@ -10,6 +10,7 @@ const styles = {
   footer: {
     backgroundColor: '#f7f7f7',
     position: 'fixed',
+    zIndex: 10,
     bottom: 0,
     left: 0,
     right: 0,

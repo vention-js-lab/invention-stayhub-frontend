@@ -27,5 +27,5 @@ function getStatusErrorMessage(statusCode: number) {
 }
 
 function getNetworkErrorMessage() {
-  return 'Failed to connect to backend. Server might be offline or configured incorrectly';
+  return 'Our servers are offline at the moment. Please try again later';
 }
