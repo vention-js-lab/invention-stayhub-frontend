@@ -6,6 +6,8 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
+import { getTodayDate } from '../../../shared/utils/date-utils';
+import { calculateTotal, calculateNights, validateDates } from '../../../shared/utils/reservatoin-card.util';
 
 interface ReservationCardProps {
   pricePerNight: number;
@@ -60,48 +62,9 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
   const [guests, setGuests] = useState<number>(1);
   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
 
-  const getTodayDate = (): string => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
-
-  const calculateTotal = (): number => {
-    if (checkIn && checkOut) {
-      const start = new Date(checkIn);
-      const end = new Date(checkOut);
-      const nights = Math.max(0, (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-      return nights * pricePerNight + cleaningFee + serviceFee;
-    }
-    return 0;
-  };
-
-  const calculateNights = (): number => {
-    if (checkIn && checkOut) {
-      const start = new Date(checkIn);
-      const end = new Date(checkOut);
-      return Math.max(0, (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-    }
-    return 0;
-  };
-
-  const validateDates = (): boolean => {
-    if (checkIn && checkOut) {
-      const start = new Date(checkIn);
-      const end = new Date(checkOut);
-      const availableStart = new Date(availableFrom);
-      const availableEnd = new Date(availableTo);
-
-      return start >= availableStart && end <= availableEnd && start < end;
-    }
-    return false;
-  };
-
   useEffect(() => {
-    setIsButtonEnabled(validateDates());
-  }, [checkIn, checkOut]);
+    setIsButtonEnabled(validateDates(checkIn, checkOut, availableFrom, availableTo));
+  }, [checkIn, checkOut, availableFrom, availableTo]);
 
   const todayDate = getTodayDate();
 
@@ -110,24 +73,14 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
       <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '16px' }}>
         ${pricePerNight} <span style={{ fontWeight: 'normal' }}>night</span>
       </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '16px',
-        }}
-      >
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <TextField
           label="Check-In"
           type="date"
           InputLabelProps={{ shrink: true }}
           value={checkIn}
           onChange={(e) => setCheckIn(e.target.value)}
-          inputProps={{
-            min: todayDate,
-            max: availableTo,
-          }}
+          inputProps={{ min: todayDate, max: availableTo }}
           sx={{ ...styles.textField, marginRight: '8px' }}
         />
         <TextField
@@ -136,10 +89,7 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
           InputLabelProps={{ shrink: true }}
           value={checkOut}
           onChange={(e) => setCheckOut(e.target.value)}
-          inputProps={{
-            min: checkIn || todayDate,
-            max: availableTo,
-          }}
+          inputProps={{ min: checkIn || todayDate, max: availableTo }}
           sx={styles.textField}
         />
       </Box>
@@ -172,9 +122,9 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
       <Divider sx={{ marginBottom: '16px' }} />
       <Box sx={styles.section}>
         <Typography variant="body1">
-          ${pricePerNight} x {calculateNights()} nights
+          ${pricePerNight} x {calculateNights(checkIn, checkOut)} nights
         </Typography>
-        <Typography variant="body1">${pricePerNight * calculateNights()}</Typography>
+        <Typography variant="body1">${pricePerNight * calculateNights(checkIn, checkOut)}</Typography>
       </Box>
       <Box sx={styles.section}>
         <Typography variant="body1">Cleaning fee</Typography>
@@ -190,7 +140,7 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
           Total before taxes
         </Typography>
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-          ${calculateTotal()}
+          ${calculateTotal(checkIn, checkOut, pricePerNight, cleaningFee, serviceFee)}
         </Typography>
       </Box>
     </Box>
