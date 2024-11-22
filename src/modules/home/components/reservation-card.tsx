@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
+import { useTheme } from '@mui/material/styles';
 
 interface ReservationCardProps {
   pricePerNight: number;
@@ -15,6 +16,35 @@ interface ReservationCardProps {
   availableTo: string;
 }
 
+const styles = {
+  cardContainer: (theme: any) => ({
+    border: '1px solid',
+    borderColor: theme.palette.primary.main,
+    borderRadius: '8px',
+    padding: '16px',
+    maxWidth: '400px',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+  }),
+  button: (theme: any, isEnabled: boolean) => ({
+    backgroundColor: isEnabled ? theme.palette.secondary.main : theme.palette.action.disabled,
+    color: 'white',
+    fontWeight: 'bold',
+    marginBottom: '16px',
+    height: '56px',
+    '&:hover': {
+      backgroundColor: isEnabled ? theme.palette.secondary.dark : theme.palette.action.disabled,
+    },
+  }),
+  textField: {
+    flex: 1,
+  },
+  section: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '8px',
+  },
+};
+
 export const ReservationCard: React.FC<ReservationCardProps> = ({
   pricePerNight,
   cleaningFee,
@@ -23,6 +53,8 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
   availableFrom,
   availableTo,
 }) => {
+  const theme = useTheme();
+
   const [checkIn, setCheckIn] = useState<string>('');
   const [checkOut, setCheckOut] = useState<string>('');
   const [guests, setGuests] = useState<number>(1);
@@ -74,15 +106,7 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
   const todayDate = getTodayDate();
 
   return (
-    <Box
-      sx={{
-        border: '1px solid #ddd',
-        borderRadius: '8px',
-        padding: '16px',
-        maxWidth: '400px',
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-      }}
-    >
+    <Box sx={styles.cardContainer(theme)}>
       <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '16px' }}>
         ${pricePerNight} <span style={{ fontWeight: 'normal' }}>night</span>
       </Typography>
@@ -104,7 +128,7 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
             min: todayDate,
             max: availableTo,
           }}
-          sx={{ flex: 1, marginRight: '8px' }}
+          sx={{ ...styles.textField, marginRight: '8px' }}
         />
         <TextField
           label="Check-Out"
@@ -116,7 +140,7 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
             min: checkIn || todayDate,
             max: availableTo,
           }}
-          sx={{ flex: 1 }}
+          sx={styles.textField}
         />
       </Box>
       <TextField
@@ -137,40 +161,31 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
         variant="contained"
         fullWidth
         disabled={!isButtonEnabled}
-        sx={{
-          backgroundColor: isButtonEnabled ? '#FF385C' : '#ddd',
-          color: 'white',
-          fontWeight: 'bold',
-          marginBottom: '16px',
-          height: '56px',
-          '&:hover': {
-            backgroundColor: isButtonEnabled ? '#FF5A6F' : '#ddd',
-          },
-        }}
+        sx={styles.button(theme, isButtonEnabled)}
         onClick={() => alert('Reservation confirmed!')}
       >
         Reserve
       </Button>
-      <Typography variant="body2" sx={{ textAlign: 'center', color: '#666', marginBottom: '16px' }}>
+      <Typography variant="body2" sx={{ textAlign: 'center', color: theme.palette.grey[600], marginBottom: '16px' }}>
         You won’t be charged yet
       </Typography>
       <Divider sx={{ marginBottom: '16px' }} />
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+      <Box sx={styles.section}>
         <Typography variant="body1">
           ${pricePerNight} x {calculateNights()} nights
         </Typography>
         <Typography variant="body1">${pricePerNight * calculateNights()}</Typography>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+      <Box sx={styles.section}>
         <Typography variant="body1">Cleaning fee</Typography>
         <Typography variant="body1">${cleaningFee}</Typography>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+      <Box sx={styles.section}>
         <Typography variant="body1">Service fee</Typography>
         <Typography variant="body1">${serviceFee}</Typography>
       </Box>
       <Divider sx={{ marginBottom: '16px' }} />
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={styles.section}>
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
           Total before taxes
         </Typography>
