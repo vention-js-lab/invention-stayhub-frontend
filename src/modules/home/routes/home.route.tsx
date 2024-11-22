@@ -2,6 +2,7 @@ import { AccommodationCard } from '#/modules/home/components/accommodation-card'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CardImage from '#/assets/images/card-temp-image.jpg';
+import { ReservationCard } from '../components/reservation-card';
 
 export function HomeRoute() {
   return (

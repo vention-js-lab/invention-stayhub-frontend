@@ -28,11 +28,10 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
   const [guests, setGuests] = useState<number>(1);
   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
 
-  // Get today's date in YYYY-MM-DD format
   const getTodayDate = (): string => {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
@@ -72,7 +71,7 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
     setIsButtonEnabled(validateDates());
   }, [checkIn, checkOut]);
 
-  const todayDate = getTodayDate(); // Today's date in proper format
+  const todayDate = getTodayDate();
 
   return (
     <Box
@@ -102,8 +101,8 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
           value={checkIn}
           onChange={(e) => setCheckIn(e.target.value)}
           inputProps={{
-            min: todayDate, // Prevent earlier dates than today
-            max: availableTo, // Ensure within availableTo range
+            min: todayDate,
+            max: availableTo,
           }}
           sx={{ flex: 1, marginRight: '8px' }}
         />
@@ -114,8 +113,8 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
           value={checkOut}
           onChange={(e) => setCheckOut(e.target.value)}
           inputProps={{
-            min: checkIn || todayDate, // Check-out must be after or equal to check-in
-            max: availableTo, // Ensure within availableTo range
+            min: checkIn || todayDate,
+            max: availableTo,
           }}
           sx={{ flex: 1 }}
         />
