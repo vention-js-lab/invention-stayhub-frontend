@@ -6,8 +6,8 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
-import { getTodayDate } from '../../../shared/utils/date-utils';
-import { calculateTotal, calculateNights, validateDates } from '../../../shared/utils/reservatoin-card.util';
+import { getTodayDate } from '#/shared/utils/date-utils';
+import { calculateTotal, calculateNights, validateDates } from '#/shared/utils/reservatoin-card.util';
 
 interface ReservationCardProps {
   pricePerNight: number;
@@ -18,33 +18,56 @@ interface ReservationCardProps {
   availableTo: string;
 }
 
-const styles = {
-  cardContainer: (theme: any) => ({
-    border: '1px solid',
-    borderColor: theme.palette.primary.main,
-    borderRadius: '8px',
-    padding: '16px',
-    maxWidth: '400px',
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-  }),
-  button: (theme: any, isEnabled: boolean) => ({
-    backgroundColor: isEnabled ? theme.palette.secondary.main : theme.palette.action.disabled,
-    color: 'white',
-    fontWeight: 'bold',
-    marginBottom: '16px',
-    height: '56px',
-    '&:hover': {
-      backgroundColor: isEnabled ? theme.palette.secondary.dark : theme.palette.action.disabled,
-    },
-  }),
-  textField: {
-    flex: 1,
+const cardContainerStyle = (theme: any) => ({
+  border: '1px solid',
+  borderColor: theme.palette.primary.main,
+  borderRadius: '8px',
+  padding: '16px',
+  maxWidth: '400px',
+  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+});
+
+const buttonStyle = (theme: any, isEnabled: boolean) => ({
+  backgroundColor: isEnabled ? theme.palette.secondary.main : theme.palette.action.disabled,
+  color: 'white',
+  fontWeight: 'bold',
+  marginBottom: '16px',
+  height: '56px',
+  '&:hover': {
+    backgroundColor: isEnabled ? theme.palette.secondary.dark : theme.palette.action.disabled,
   },
-  section: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '8px',
-  },
+});
+
+const textFieldStyle = {
+  flex: 1,
+};
+
+const sectionStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  marginBottom: '8px',
+};
+
+const notChargedTextStyle = (theme: any) => ({
+  textAlign: 'center',
+  color: theme.palette.grey[600],
+  marginBottom: '16px',
+});
+
+const headingPriceStyle = {
+  fontWeight: 'bold',
+  marginBottom: '16px',
+};
+
+const dividerStyle = {
+  marginBottom: '16px',
+};
+
+const flexBoxStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: '16px',
 };
 
 export const ReservationCard: React.FC<ReservationCardProps> = ({
@@ -69,11 +92,11 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
   const todayDate = getTodayDate();
 
   return (
-    <Box sx={styles.cardContainer(theme)}>
-      <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '16px' }}>
+    <Box sx={cardContainerStyle(theme)}>
+      <Typography variant="h6" sx={headingPriceStyle}>
         ${pricePerNight} <span style={{ fontWeight: 'normal' }}>night</span>
       </Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+      <Box sx={flexBoxStyle}>
         <TextField
           label="Check-In"
           type="date"
@@ -81,7 +104,7 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
           value={checkIn}
           onChange={(e) => setCheckIn(e.target.value)}
           inputProps={{ min: todayDate, max: availableTo }}
-          sx={{ ...styles.textField, marginRight: '8px' }}
+          sx={{ ...textFieldStyle, marginRight: '8px' }}
         />
         <TextField
           label="Check-Out"
@@ -90,7 +113,7 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
           value={checkOut}
           onChange={(e) => setCheckOut(e.target.value)}
           inputProps={{ min: checkIn || todayDate, max: availableTo }}
-          sx={styles.textField}
+          sx={textFieldStyle}
         />
       </Box>
       <TextField
@@ -111,31 +134,31 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
         variant="contained"
         fullWidth
         disabled={!isButtonEnabled}
-        sx={styles.button(theme, isButtonEnabled)}
+        sx={buttonStyle(theme, isButtonEnabled)}
         onClick={() => alert('Reservation confirmed!')}
       >
         Reserve
       </Button>
-      <Typography variant="body2" sx={{ textAlign: 'center', color: theme.palette.grey[600], marginBottom: '16px' }}>
+      <Typography variant="body2" sx={notChargedTextStyle(theme)}>
         You won’t be charged yet
       </Typography>
-      <Divider sx={{ marginBottom: '16px' }} />
-      <Box sx={styles.section}>
+      <Divider sx={dividerStyle} />
+      <Box sx={sectionStyle}>
         <Typography variant="body1">
           ${pricePerNight} x {calculateNights(checkIn, checkOut)} nights
         </Typography>
         <Typography variant="body1">${pricePerNight * calculateNights(checkIn, checkOut)}</Typography>
       </Box>
-      <Box sx={styles.section}>
+      <Box sx={sectionStyle}>
         <Typography variant="body1">Cleaning fee</Typography>
         <Typography variant="body1">${cleaningFee}</Typography>
       </Box>
-      <Box sx={styles.section}>
+      <Box sx={sectionStyle}>
         <Typography variant="body1">Service fee</Typography>
         <Typography variant="body1">${serviceFee}</Typography>
       </Box>
-      <Divider sx={{ marginBottom: '16px' }} />
-      <Box sx={styles.section}>
+      <Divider sx={dividerStyle} />
+      <Box sx={sectionStyle}>
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
           Total before taxes
         </Typography>
