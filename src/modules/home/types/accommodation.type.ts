@@ -6,18 +6,19 @@ export interface Accommodation {
   id: string;
   name: string;
   description: string;
-  coverImage: string;
+  coverImage: string | null;
   price: number;
   available: boolean;
-  availableFrom: string;
-  availableTo: string;
-  squareMeters: number;
-  numberOfRooms: number;
-  allowedNumberOfPeople: number;
+  availableFrom: string | null;
+  availableTo: string | null;
+  squareMeters: number | null;
+  numberOfRooms: number | null;
+  allowedNumberOfPeople: number | null;
   createdAt: string;
   updatedAt: string;
   ownerId: string;
-  address: AccommodationAddress;
-  amenity: AccommodationAmenity;
-  images: AccommodationImage[];
+  address: AccommodationAddress | null;
+  amenity: AccommodationAmenity | null;
+  images: AccommodationImage[] | null;
+  deletedAt: string | null;
 }

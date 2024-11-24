@@ -1,29 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '#/shared/libs/api-client.lib';
-import { useSearchParams } from 'react-router-dom';
-import { type AccommodationListQueryParams } from '#/modules/home/types/accommodation-list-query-params.type';
-import { type AccommodationListResponse } from '../types/accommodation-list.res.type';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getAccommodations } from '../utils/get-accommodations.util';
+import { getNextPageNumber } from '../utils/get-next-page-number.util';
+import { type ListAccommodationQueryParams } from '../schemas/list-accommodation-query-params.schema';
 
-export function useListAccommodationsQuery(page: number, limit: number) {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  function setQueryParams(queryParams: AccommodationListQueryParams) {
-    setSearchParams({ ...Object.fromEntries(Object.entries(queryParams)) });
-  }
-
-  const listAccommodationsQuery = useQuery({
-    queryKey: ['list-accommodations', page, limit, searchParams],
-    queryFn: async () => {
-      try {
-        const response = await apiClient.get<AccommodationListResponse>(
-          `/accommodations?page=${page}&limit=${limit}&${searchParams}`
-        );
-        return response.data.data;
-      } catch {
-        return undefined;
-      }
-    },
+export function useListAccommodationsQuery(limit: number, params: ListAccommodationQueryParams) {
+  const listAccommodationsQuery = useInfiniteQuery({
+    queryKey: ['accommodations', params, limit],
+    queryFn: ({ pageParam }) => getAccommodations(pageParam, limit, params),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => getNextPageNumber(lastPage.metadata),
   });
 
-  return { ...listAccommodationsQuery, setQueryParams };
+  return listAccommodationsQuery;
 }
