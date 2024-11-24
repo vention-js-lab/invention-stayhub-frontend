@@ -3,7 +3,6 @@ import { ProfileOptions } from './profile-options';
 import { Logo } from './logo';
 import Link from '@mui/material/Link';
 
-export const headerHeight = 80;
 const styles = {
   header: {
     position: 'fixed',
@@ -17,7 +16,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    minHeight: headerHeight,
+    minHeight: 'var(--header-height)',
     width: '100%',
     px: 5,
   },

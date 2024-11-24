@@ -1,14 +1,12 @@
 import Box from '@mui/material/Box';
-import { headerHeight } from '#/modules/layout/components/header/header';
 import { useEffect, useState } from 'react';
 import { AccommodationList } from '../components/accommodation-list';
 
-const filterAreaHeight = 60;
 const styles = {
   filterArea: (showShadow: boolean) => ({
-    minHeight: filterAreaHeight,
+    minHeight: 'var(--filter-area-height)',
     position: 'fixed',
-    top: `${headerHeight}px`,
+    top: `var(--header-height)`,
     left: 0,
     right: 0,
     zIndex: 10,
@@ -34,7 +32,7 @@ export function HomeRoute() {
   }, []);
 
   return (
-    <Box mt={`${filterAreaHeight}px`}>
+    <Box mt="var(--filter-area-height)">
       <Box sx={styles.filterArea(showShadow)} />
       <AccommodationList />
     </Box>

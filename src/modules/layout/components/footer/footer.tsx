@@ -5,7 +5,6 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
-export const footerHeight = 50;
 const styles = {
   footer: {
     backgroundColor: '#f7f7f7',
@@ -19,7 +18,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    minHeight: footerHeight,
+    minHeight: 'var(--footer-height)',
     px: 5,
   },
 };

@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { Footer, footerHeight } from './footer/footer';
-import { Header, headerHeight } from './header/header';
+import { Header } from './header/header';
+import { Footer } from './footer/footer';
 
 export function Layout() {
   return (
@@ -13,7 +13,7 @@ export function Layout() {
       }}
     >
       <Header />
-      <Box mt={`${headerHeight}px`} mb={`${footerHeight}px`}>
+      <Box mt="var(--header-height)" mb="var(--footer-height)">
         <Outlet />
       </Box>
       <Footer />
