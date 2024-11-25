@@ -9,20 +9,24 @@ import IconButton from '@mui/material/IconButton';
 import StarRate from '@mui/icons-material/StarRate';
 import { useState } from 'react';
 import { pink } from '@mui/material/colors';
+import { type AccommodationAddress } from '../types/accommodation-address.type';
+import { parseAddress } from '../utils/parse-address.util';
+import { CardSkeleton } from './card-skeleton';
 
 interface AccommodationCardProps {
-  image: string;
-  name: string;
-  address: string;
-  pricePerNight: number;
-  rating: number;
+  status: 'pending' | 'error' | 'success';
+  id?: string;
+  image?: string;
+  name?: string;
+  address?: AccommodationAddress | null;
+  pricePerNight?: number;
+  rating?: number;
 }
 
 const styles = {
   card: {
-    textAlign: 'start',
-    maxWidth: '300px',
     position: 'relative',
+    cursor: 'pointer',
   },
   iconButton: {
     position: 'absolute',
@@ -37,7 +41,8 @@ const styles = {
     right: '5px',
     color: 'pink[500]',
   },
-  cardMedia: { height: '250px', borderRadius: '10px 10px 0 0', marginBottom: '5px' },
+  cardLoadingBox: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
+  cardMedia: { width: '100%', aspectRatio: 1, borderRadius: 3 },
   cardContent: { padding: '5px 0 0 0' },
   cardContentBox: { display: 'flex', justifyContent: 'space-between' },
   cardContentText: {
@@ -52,32 +57,44 @@ const styles = {
   ratingStar: { fontSize: '17px' },
 };
 
-export function AccommodationCard({ pricePerNight, address, name, rating, image }: AccommodationCardProps) {
+export function AccommodationCard({ status, id, pricePerNight, address, name, rating, image }: AccommodationCardProps) {
   const [addToWishlist, setAddToWishlist] = useState(true);
+
+  function handleHeartClick(event: React.MouseEvent) {
+    event.preventDefault();
+    setAddToWishlist(!addToWishlist);
+  }
+
   return (
     <Card sx={styles.card}>
-      <IconButton aria-label="add to favorites" sx={styles.iconButtonBorder} onClick={() => setAddToWishlist(!addToWishlist)}>
-        {addToWishlist ? <FavoriteBorderIcon sx={{ color: 'white' }} /> : <FavoriteIcon sx={{ color: pink[500] }} />}
-      </IconButton>
-      <IconButton aria-label="add to favorites" sx={styles.iconButton} onClick={() => setAddToWishlist(!addToWishlist)}>
-        {!addToWishlist || <FavoriteIcon sx={{ color: 'GrayText' }} />}
-      </IconButton>
-      <CardMedia component="img" image={image} alt="Apartment" sx={styles.cardMedia} />
-      <CardContent sx={styles.cardContent}>
-        <Typography variant="h5" component="div" fontSize="large" sx={styles.cardContentText}>
-          {name}
-        </Typography>
-        <Typography sx={styles.cardAddress} fontSize="medium">
-          {address}
-        </Typography>
-        <Typography sx={styles.cardContentText} fontSize="medium">
-          ${pricePerNight} per night
-        </Typography>
-      </CardContent>
-      <CardActions sx={styles.cardActions}>
-        <StarRate fontSize="small" sx={styles.ratingStar} />
-        <Typography sx={styles.ratingNumber}>{rating}</Typography>
-      </CardActions>
+      {status === 'pending' ? (
+        <CardSkeleton />
+      ) : (
+        <a href={`/accommodations/${id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
+          <IconButton type="button" onClick={handleHeartClick} sx={styles.iconButtonBorder}>
+            {addToWishlist ? <FavoriteBorderIcon sx={{ color: 'white' }} /> : <FavoriteIcon sx={{ color: pink[500] }} />}
+          </IconButton>
+          <IconButton type="button" onClick={handleHeartClick} sx={styles.iconButton}>
+            <FavoriteIcon sx={{ color: 'GrayText' }} />
+          </IconButton>
+          <CardMedia component="img" image={image} alt="Apartment" sx={styles.cardMedia} />
+          <CardContent sx={styles.cardContent}>
+            <Typography variant="h5" component="div" fontSize="large" sx={styles.cardContentText}>
+              {name}
+            </Typography>
+            <Typography sx={styles.cardAddress} fontSize="medium">
+              {parseAddress(address)}
+            </Typography>
+            <Typography sx={styles.cardContentText} fontSize="medium">
+              ${pricePerNight} per night
+            </Typography>
+          </CardContent>
+          <CardActions sx={styles.cardActions}>
+            <StarRate fontSize="small" sx={styles.ratingStar} />
+            <Typography sx={styles.ratingNumber}>{rating}</Typography>
+          </CardActions>
+        </a>
+      )}
     </Card>
   );
 }
