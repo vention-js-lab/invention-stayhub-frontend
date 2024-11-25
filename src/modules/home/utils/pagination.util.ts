@@ -1,3 +1,5 @@
+import { type AccommodationListResponseDataMetadata } from '../types/accommodation-list-metadata.type';
+
 export function calculateInitialLimit(card: HTMLDivElement | null, limit: number) {
   if (card) {
     const cardHeight = card.clientHeight;
@@ -10,4 +12,12 @@ export function calculateInitialLimit(card: HTMLDivElement | null, limit: number
   }
 
   return limit;
+}
+
+export function getNextPageNumber(metadata: AccommodationListResponseDataMetadata) {
+  if (!metadata.hasNextPage) {
+    return undefined;
+  }
+
+  return metadata.page + 1;
 }
