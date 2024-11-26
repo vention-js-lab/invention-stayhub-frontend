@@ -1,18 +1,36 @@
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import { ProfileOptions } from './profile-options';
 import { Logo } from './logo';
-import { style } from '#/modules/layout/styles/style';
+import Link from '@mui/material/Link';
+
+const styles = {
+  header: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    zIndex: 10,
+  },
+  headerContent: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    minHeight: 'var(--header-height)',
+    width: '100%',
+    px: 5,
+  },
+};
 
 export function Header() {
   return (
-    <Box sx={style.header}>
-      <Container maxWidth="xl">
-        <Box sx={style.headerContent}>
+    <Box sx={styles.header}>
+      <Box sx={styles.headerContent}>
+        <Link href="/">
           <Logo />
-          <ProfileOptions />
-        </Box>
-      </Container>
+        </Link>
+        <ProfileOptions />
+      </Box>
     </Box>
   );
 }

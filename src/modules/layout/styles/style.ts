@@ -6,19 +6,6 @@ export const style = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    minHeight: 80,
-    borderBottom: '1px solid #ddd',
-  },
-  headerContent: {
-    display: 'flex',
-    justifyContent: { xs: 'center', md: 'space-between' },
-    alignItems: 'center',
-    minHeight: 80,
-    px: 4,
-  },
   languages: {
     color: (theme: Theme) => theme.palette.text.primary,
     fontWeight: 'bold',
