@@ -19,7 +19,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     minHeight: 'var(--footer-height)',
-    px: 5,
+    px: 15,
   },
 };
 
