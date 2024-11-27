@@ -11,4 +11,7 @@
 
 body {
   -webkit-font-smoothing: antialiased;
+  --header-height: 80px;
+  --footer-height: 50px;
+  --filter-area-height: 60px;
 }
