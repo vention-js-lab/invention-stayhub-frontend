@@ -35,7 +35,7 @@ export function AccommodationList() {
 
   if (status === 'pending') {
     return (
-      <Grid2 container={true} spacing={3} px={5} py={3}>
+      <Grid2 container={true} spacing={3}>
         <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
           <div ref={cardRef}>
             <CardSkeleton />
@@ -47,7 +47,7 @@ export function AccommodationList() {
   }
 
   return (
-    <Grid2 container={true} spacing={3} px={5} py={3}>
+    <Grid2 container={true} spacing={3}>
       {data.pages.map((group) => (
         <React.Fragment key={uuidv4()}>
           {group.result.map((accommodation) => (
