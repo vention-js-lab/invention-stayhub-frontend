@@ -2,7 +2,7 @@ import { apiClient } from '#/shared/libs/api-client.lib';
 import { useQuery } from '@tanstack/react-query';
 import { type Accommodation } from '../types/accommodation.type';
 
-export function useAccommodationQuery(id: string) {
+export function useAccommodationQuery(id: string | undefined) {
   const accommodationQuery = useQuery({
     queryKey: ['accommodation', id],
     queryFn: async () => {

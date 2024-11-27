@@ -13,9 +13,9 @@ interface ReservationCardProps {
   pricePerNight: number;
   cleaningFee: number;
   serviceFee: number;
-  maxGuests: number;
-  availableFrom: string;
-  availableTo: string;
+  maxGuests: number | null;
+  availableFrom: string | null;
+  availableTo: string | null;
 }
 
 const styles = {
