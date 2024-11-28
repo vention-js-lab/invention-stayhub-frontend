@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 import { AccommodationList } from '../components/accommodation-list';
-import { ReviewCard } from '../components/review-card';
 
 const styles = {
   filterArea: (showShadow: boolean) => ({
@@ -32,29 +31,10 @@ export function HomeRoute() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const reviewsData = {
-    reviews: [
-      {
-        id: '0c6ff9f4-50d4-4c7c-96fd-2d4f5f328830',
-        content: 'Very nice to stay here',
-        rating: 4,
-        createdAt: '2023-12-10',
-        user: {
-          firstName: 'Muhammadjon',
-          lastName: 'Ubaydullaev',
-          photo: null,
-          profileCreatedAt: '2020-09-01',
-          country: 'Uzbekistan',
-        },
-      },
-    ],
-  };
-
   return (
     <Box mt="var(--filter-area-height)">
       <Box sx={styles.filterArea(showShadow)} />
       <AccommodationList />
-      <ReviewCard review={reviewsData.reviews[0]} />
     </Box>
   );
 }
