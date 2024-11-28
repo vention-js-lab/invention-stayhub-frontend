@@ -22,6 +22,7 @@ interface AccommodationCardProps {
   address?: AccommodationAddress | null;
   pricePerNight?: number;
   rating?: number;
+  hasUserWishlisted?: boolean;
 }
 
 const styles = {
@@ -45,47 +46,61 @@ const styles = {
   ratingStar: { fontSize: '17px' },
 };
 
-export function AccommodationCard({ status, id, pricePerNight, address, name, rating, image }: AccommodationCardProps) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
+export function AccommodationCard({
+  status,
+  id,
+  pricePerNight,
+  address,
+  name,
+  rating,
+  image,
+  hasUserWishlisted,
+}: AccommodationCardProps) {
+  const [isWishlisted, setIsWishlisted] = useState(hasUserWishlisted);
   const { wishlistMutation } = useWishlistMutation();
   const requireAuth = useRequireAuth();
 
   function handleHeartClick(event: React.MouseEvent) {
     event.preventDefault();
-    setIsWishlisted(!isWishlisted);
 
-    requireAuth(() => {
-      if (id) {
-        wishlistMutation.mutate(
-          {
-            data: {
-              accommodationId: id,
-            },
-            action: isWishlisted ? 'remove' : 'add',
-          },
-          {
-            onSuccess: (data) => {
-              const message = data ? wishlistActionToastMessages.addSuccess : wishlistActionToastMessages.removeSuccess;
-              enqueueSnackbar(message, {
-                variant: data ? 'success' : 'info',
-                hideIconVariant: true,
-                autoHideDuration: 3000,
-                anchorOrigin: { vertical: 'top', horizontal: 'center' },
-              });
-            },
-            onError: () => {
-              const message = wishlistActionToastMessages.fail;
-              enqueueSnackbar(message, {
-                variant: 'error',
-                hideIconVariant: true,
-                autoHideDuration: 3000,
-                anchorOrigin: { vertical: 'top', horizontal: 'center' },
-              });
-            },
-          }
-        );
+    function handleWishlistAction() {
+      if (!id) {
+        return;
       }
-    });
+
+      setIsWishlisted((prev) => !prev);
+      wishlistMutation.mutate(
+        {
+          data: {
+            accommodationId: id,
+          },
+          action: isWishlisted ? 'remove' : 'add',
+        },
+        {
+          onSuccess: (data) => {
+            const message = data ? wishlistActionToastMessages.addSuccess : wishlistActionToastMessages.removeSuccess;
+            enqueueSnackbar(message, {
+              variant: data ? 'success' : 'info',
+              hideIconVariant: true,
+              autoHideDuration: 3000,
+              anchorOrigin: { vertical: 'top', horizontal: 'center' },
+            });
+          },
+          onError: () => {
+            setIsWishlisted((prev) => !prev);
+            const message = wishlistActionToastMessages.fail;
+            enqueueSnackbar(message, {
+              variant: 'error',
+              hideIconVariant: true,
+              autoHideDuration: 3000,
+              anchorOrigin: { vertical: 'top', horizontal: 'center' },
+            });
+          },
+        }
+      );
+    }
+
+    requireAuth(handleWishlistAction);
   }
 
   return (

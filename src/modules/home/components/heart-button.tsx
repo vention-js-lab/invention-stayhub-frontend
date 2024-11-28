@@ -5,7 +5,7 @@ import { type MouseEvent } from 'react';
 import { type Theme } from '@mui/material/styles';
 
 interface HeartOutlineProps {
-  isWishlisted: boolean;
+  isWishlisted: boolean | undefined | null;
   handleClick: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
