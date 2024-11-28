@@ -2,7 +2,7 @@ import { lazyRoute } from '#/shared/utils/router.util';
 import { type RouteObject } from 'react-router-dom';
 
 const { HomeRoute } = lazyRoute(() => import('./routes/home.route'), 'HomeRoute');
-const { AccountRoute } = lazyRoute(() => import('../account/routes/account.route'), 'AccountRoute');
+const { ProfileRoute } = lazyRoute(() => import('../account/routes/profile.route'), 'ProfileRoute');
 
 export const HomeRoutes: RouteObject[] = [
   {
@@ -11,6 +11,6 @@ export const HomeRoutes: RouteObject[] = [
   },
   {
     path: '/account/personal-info',
-    element: <AccountRoute />,
+    element: <ProfileRoute />,
   },
 ];

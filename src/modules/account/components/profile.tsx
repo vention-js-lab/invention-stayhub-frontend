@@ -45,10 +45,11 @@ const styles = {
 };
 const CountryDialCodes: Record<string, string> = PhoneCodes;
 
-export function PersonalInfo({ name, lastname, image, country, description, gender, phoneNumber }: UserInfoProps) {
+export function ProfileInfo({ name, lastname, image, country, description, gender, phoneNumber }: UserInfoProps) {
   const [disabled, setDisabled] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState(country);
   const [phone, setPhone] = useState(phoneNumber);
+  const [selectedDender, setSelectedDender] = useState(gender);
   const mutation = useUserUpdateMutation();
 
   const {
@@ -120,7 +121,7 @@ export function PersonalInfo({ name, lastname, image, country, description, gend
           <Stack spacing={4}>
             <FormControl sx={styles.formControlGender}>
               <Typography>Gender</Typography>
-              <Select value={gender} disabled={disabled}>
+              <Select value={selectedDender} disabled={disabled} onChange={(e) => setSelectedDender(e.target.value)}>
                 <MenuItem value={'Male'}>Male</MenuItem>
                 <MenuItem value={'Female'}>Female</MenuItem>
               </Select>
