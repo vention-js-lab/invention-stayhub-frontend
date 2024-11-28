@@ -60,46 +60,46 @@ export function AccommodationCard({
   const { wishlistMutation } = useWishlistMutation();
   const requireAuth = useRequireAuth();
 
-  function handleHeartClick(event: React.MouseEvent) {
-    event.preventDefault();
-
-    function handleWishlistAction() {
-      if (!id) {
-        return;
-      }
-
-      setIsWishlisted((prev) => !prev);
-      wishlistMutation.mutate(
-        {
-          data: {
-            accommodationId: id,
-          },
-          action: isWishlisted ? 'remove' : 'add',
-        },
-        {
-          onSuccess: (data) => {
-            const message = data ? wishlistActionToastMessages.addSuccess : wishlistActionToastMessages.removeSuccess;
-            enqueueSnackbar(message, {
-              variant: data ? 'success' : 'info',
-              hideIconVariant: true,
-              autoHideDuration: 3000,
-              anchorOrigin: { vertical: 'top', horizontal: 'center' },
-            });
-          },
-          onError: () => {
-            setIsWishlisted((prev) => !prev);
-            const message = wishlistActionToastMessages.fail;
-            enqueueSnackbar(message, {
-              variant: 'error',
-              hideIconVariant: true,
-              autoHideDuration: 3000,
-              anchorOrigin: { vertical: 'top', horizontal: 'center' },
-            });
-          },
-        }
-      );
+  function handleWishlistAction() {
+    if (!id) {
+      return;
     }
 
+    setIsWishlisted((prev) => !prev);
+
+    wishlistMutation.mutate(
+      {
+        data: {
+          accommodationId: id,
+        },
+        action: isWishlisted ? 'remove' : 'add',
+      },
+      {
+        onSuccess: (data) => {
+          const message = data ? wishlistActionToastMessages.addSuccess : wishlistActionToastMessages.removeSuccess;
+          enqueueSnackbar(message, {
+            variant: data ? 'success' : 'info',
+            hideIconVariant: true,
+            autoHideDuration: 3000,
+            anchorOrigin: { vertical: 'top', horizontal: 'center' },
+          });
+        },
+        onError: () => {
+          setIsWishlisted((prev) => !prev);
+          const message = wishlistActionToastMessages.fail;
+          enqueueSnackbar(message, {
+            variant: 'error',
+            hideIconVariant: true,
+            autoHideDuration: 3000,
+            anchorOrigin: { vertical: 'top', horizontal: 'center' },
+          });
+        },
+      }
+    );
+  }
+
+  function handleHeartClick(event: React.MouseEvent) {
+    event.preventDefault();
     requireAuth(handleWishlistAction);
   }
 
