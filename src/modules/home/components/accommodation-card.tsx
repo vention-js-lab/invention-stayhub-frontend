@@ -3,15 +3,16 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import IconButton from '@mui/material/IconButton';
 import StarRate from '@mui/icons-material/StarRate';
 import { useState } from 'react';
-import { pink } from '@mui/material/colors';
 import { type AccommodationAddress } from '../types/accommodation-address.type';
 import { parseAddress } from '../utils/parse-address.util';
 import { CardSkeleton } from './card-skeleton';
+import { useWishlistMutation } from '#/modules//wishlist/api/wishlist.api';
+import { HeartButton } from './heart-button';
+import { enqueueSnackbar } from 'notistack';
+import { wishlistActionToastMessages } from '#/shared/constants/wishlist-toast-messages.constant';
+import { useRequireAuth } from '#/shared/hooks/require-auth.hook';
 
 interface AccommodationCardProps {
   status: 'pending' | 'error' | 'success';
@@ -27,19 +28,6 @@ const styles = {
   card: {
     position: 'relative',
     cursor: 'pointer',
-  },
-  iconButton: {
-    position: 'absolute',
-    top: '5px',
-    right: '5px',
-    color: 'pink[500]',
-  },
-  iconButtonBorder: {
-    position: 'absolute',
-    zIndex: '2',
-    top: '5px',
-    right: '5px',
-    color: 'pink[500]',
   },
   cardLoadingBox: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
   cardMedia: { width: '100%', aspectRatio: 1, borderRadius: 3 },
@@ -58,11 +46,46 @@ const styles = {
 };
 
 export function AccommodationCard({ status, id, pricePerNight, address, name, rating, image }: AccommodationCardProps) {
-  const [addToWishlist, setAddToWishlist] = useState(true);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const { wishlistMutation } = useWishlistMutation();
+  const requireAuth = useRequireAuth();
 
   function handleHeartClick(event: React.MouseEvent) {
     event.preventDefault();
-    setAddToWishlist(!addToWishlist);
+    setIsWishlisted(!isWishlisted);
+
+    requireAuth(() => {
+      if (id) {
+        wishlistMutation.mutate(
+          {
+            data: {
+              accommodationId: id,
+            },
+            action: isWishlisted ? 'remove' : 'add',
+          },
+          {
+            onSuccess: (data) => {
+              const message = data ? wishlistActionToastMessages.addSuccess : wishlistActionToastMessages.removeSuccess;
+              enqueueSnackbar(message, {
+                variant: data ? 'success' : 'info',
+                hideIconVariant: true,
+                autoHideDuration: 3000,
+                anchorOrigin: { vertical: 'top', horizontal: 'center' },
+              });
+            },
+            onError: () => {
+              const message = wishlistActionToastMessages.fail;
+              enqueueSnackbar(message, {
+                variant: 'error',
+                hideIconVariant: true,
+                autoHideDuration: 3000,
+                anchorOrigin: { vertical: 'top', horizontal: 'center' },
+              });
+            },
+          }
+        );
+      }
+    });
   }
 
   return (
@@ -71,12 +94,7 @@ export function AccommodationCard({ status, id, pricePerNight, address, name, ra
         <CardSkeleton />
       ) : (
         <a href={`/accommodations/${id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
-          <IconButton type="button" onClick={handleHeartClick} sx={styles.iconButtonBorder}>
-            {addToWishlist ? <FavoriteBorderIcon sx={{ color: 'white' }} /> : <FavoriteIcon sx={{ color: pink[500] }} />}
-          </IconButton>
-          <IconButton type="button" onClick={handleHeartClick} sx={styles.iconButton}>
-            <FavoriteIcon sx={{ color: 'GrayText' }} />
-          </IconButton>
+          <HeartButton isWishlisted={isWishlisted} handleClick={handleHeartClick} />
           <CardMedia component="img" image={image} alt="Apartment" sx={styles.cardMedia} />
           <CardContent sx={styles.cardContent}>
             <Typography variant="h5" component="div" fontSize="large" sx={styles.cardContentText}>

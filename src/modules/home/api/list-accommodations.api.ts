@@ -27,7 +27,7 @@ interface AccommodationListResponse {
   data: AccommodationListResponseData;
 }
 
-export async function getAccommodations(pageParam: number, limit: number, params: ListAccommodationQueryParams) {
+async function getAccommodations(pageParam: number, limit: number, params: ListAccommodationQueryParams) {
   const searchParams = new URLSearchParams(params).toString();
 
   const response = await apiClient.get<AccommodationListResponse>(
