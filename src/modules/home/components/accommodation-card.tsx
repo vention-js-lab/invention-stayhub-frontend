@@ -22,7 +22,7 @@ interface AccommodationCardProps {
   address?: AccommodationAddress | null;
   pricePerNight?: number;
   rating?: number;
-  hasUserWishlisted?: boolean;
+  isSavedToWishlist?: boolean;
 }
 
 const styles = {
@@ -54,9 +54,9 @@ export function AccommodationCard({
   name,
   rating,
   image,
-  hasUserWishlisted,
+  isSavedToWishlist,
 }: AccommodationCardProps) {
-  const [isWishlisted, setIsWishlisted] = useState(hasUserWishlisted);
+  const [isWishlisted, setIsWishlisted] = useState(isSavedToWishlist);
   const { wishlistMutation } = useWishlistMutation();
   const requireAuth = useRequireAuth();
 
