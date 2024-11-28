@@ -1,13 +1,13 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import { type AccommodationImage } from '#/modules/home/types/accommodation-image.type';
-import { ImagesCarousel } from './images-carousel';
+import { ImagesCarousel } from './images-carousel/images-carousel';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { useState } from 'react';
 import { NoDataAvailable } from '#/shared/components/no-data-response';
-import { pink } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
+import { type Theme } from '@mui/material/styles';
 
 const styles = {
   homeImages: {
@@ -17,7 +17,11 @@ const styles = {
     borderRadius: 2,
   },
   viewMoreBox: { position: 'absolute', bottom: '10px', right: '10px' },
-  viewMoreButton: { padding: '6px 26px', backgroundColor: pink[500], '&:hover': { backgroundColor: 'GrayText' } },
+  viewMoreButton: {
+    padding: '6px 26px',
+    backgroundColor: (theme: Theme) => theme.palette.secondary.main,
+    '&:hover': { backgroundColor: (theme: Theme) => theme.palette.primary.main },
+  },
   closeButton: { color: 'white', position: 'absolute', top: '10%', right: '13%' },
 };
 

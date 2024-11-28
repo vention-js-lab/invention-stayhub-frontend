@@ -1,12 +1,11 @@
 import { AccommodationDetails } from '../components/accommodation-details';
 import { AccommodationImages } from '../components/accommodation-images';
-import { useAccommodationQuery } from '#/modules/home/api/single-accommodation.api';
+import { useAccommodationQuery } from '#/modules/single-accommodation/api/single-accommodation.api';
 import { useParams } from 'react-router-dom';
 import { ReservationCard } from '../components/reservation-card';
 import Box from '@mui/material/Box';
 import { AccommodationDetailsSkeleton } from '../components/skeleton-details';
 import { AccommodationImagesSkeleton } from '../components/skeleton-images';
-import { CardSkeleton } from '../components/card-skeleton';
 import { NoDataAvailable } from '#/shared/components/no-data-response';
 import { AccommodationAmenities } from '../components/accommodation-amenities';
 import Divider from '@mui/material/Divider';
@@ -30,7 +29,6 @@ export function SingleAccommodationRoute() {
         <AccommodationImagesSkeleton />
         <Box sx={styles.skeleton}>
           <AccommodationDetailsSkeleton />
-          <CardSkeleton />
         </Box>
       </Box>
     );
