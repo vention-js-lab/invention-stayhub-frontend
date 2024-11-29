@@ -24,10 +24,10 @@ export function useWishlistMutation() {
 
 async function addToWishlist(data: MutationData) {
   const response = await apiClient.post<BaseResponse<WishlistItem>>('/wishlists', data);
-  return response.data.data;
+  return response.data;
 }
 
 async function removeFromWishlist(data: MutationData) {
   const response = await apiClient.delete<BaseResponse<null>>(`/wishlists/${data.accommodationId}`);
-  return response.data.data;
+  return response.data;
 }

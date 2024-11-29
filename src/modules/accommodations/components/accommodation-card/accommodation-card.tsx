@@ -7,10 +7,10 @@ import StarRate from '@mui/icons-material/StarRate';
 import { useState } from 'react';
 import { CardSkeleton } from './card-skeleton';
 import { HeartButton } from './heart-button';
-import { enqueueSnackbar } from 'notistack';
 import { parseAddress } from '#/modules/accommodations/utils/parse-address.util';
 import { useWishlistMutation } from '#/modules/accommodations/api/toggle-wishlist.api';
 import { useAuthGuardAction } from '#/shared/hooks/auth-guard-action.hook';
+import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { type AccommodationAddress } from '#/modules/accommodations/types/accommodation-address.type';
 
 interface AccommodationCardProps {
@@ -74,22 +74,17 @@ export function AccommodationCard({
         action: isWishlisted ? 'remove' : 'add',
       },
       {
-        onSuccess: (data) => {
-          const message = data ? 'Accommodation was added to wishlist' : 'Accommodation was removed from wishlist';
-          enqueueSnackbar(message, {
-            variant: data ? 'success' : 'info',
-            hideIconVariant: true,
-            autoHideDuration: 3000,
-            anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        onSuccess: (response) => {
+          showSnackbar({
+            message: response.status === 201 ? 'Accommodation was added to wishlist' : 'Accommodation was removed from wishlist',
+            variant: response.status === 201 ? 'success' : 'info',
           });
         },
         onError: () => {
           setIsWishlisted((prev) => !prev);
-          enqueueSnackbar('Something went wrong. Please try again later', {
+          showSnackbar({
+            message: 'Something went wrong. Please try again later',
             variant: 'error',
-            hideIconVariant: true,
-            autoHideDuration: 3000,
-            anchorOrigin: { vertical: 'top', horizontal: 'center' },
           });
         },
       }
