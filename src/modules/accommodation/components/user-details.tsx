@@ -11,7 +11,7 @@ interface UserDetailsProps {
 }
 
 const styles = {
-  container: { display: 'flex', padding: '16px 16px', alignItems: 'center', gap: 2 },
+  container: { display: 'flex', padding: '16px 8px', alignItems: 'center', gap: 2 },
   avatar: { width: 70, height: 70, cursor: 'pointer' },
 };
 

@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Slider from 'react-slick';
 import { type AccommodationImage } from '#/modules/home/types/accommodation-image.type';
 import { NoDataAvailable } from '#/shared/components/no-data-response';
-import { CustomNextArrow, CustomPrevArrow } from './images-buttons';
+import { CustomNextArrow, CustomPrevArrow } from './carousel-buttons';
 
 const styles = {
   container: {
@@ -24,7 +24,7 @@ const styles = {
   },
 };
 
-export function ImagesCarousel({ images }: { images: AccommodationImage[] | null }) {
+export function ImageCarousel({ images }: { images: AccommodationImage[] | null }) {
   if (!images) {
     return <NoDataAvailable data={'images'} />;
   }

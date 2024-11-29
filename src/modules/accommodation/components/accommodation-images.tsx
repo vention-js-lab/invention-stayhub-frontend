@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import { type AccommodationImage } from '#/modules/home/types/accommodation-image.type';
-import { ImagesCarousel } from './images-carousel/images-carousel';
+import { ImageCarousel } from './image-carousel/image-carousel';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { useState } from 'react';
@@ -57,7 +57,7 @@ export function AccommodationImages({ images }: { images: AccommodationImage[] |
 
       <Modal open={open} onClose={handleClose} slotProps={{ backdrop: { sx: { backgroundColor: 'rgba(0, 0, 0, 0.8)' } } }}>
         <Box>
-          <ImagesCarousel images={images} />
+          <ImageCarousel images={images} />
           <Button onClick={handleClose} sx={styles.closeButton}>
             <CloseIcon />
           </Button>

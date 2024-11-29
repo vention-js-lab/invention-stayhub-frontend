@@ -1,6 +1,6 @@
 import { apiClient } from '#/shared/libs/api-client.lib';
 import { useQuery } from '@tanstack/react-query';
-import { type Accommodation } from '../../home/types/accommodation.type';
+import { type Accommodation } from '#/modules/home/types/accommodation.type';
 import { type WithBaseResponse } from '#/shared/types/with-base-response.type';
 
 export function useAccommodationQuery(id: string | undefined) {

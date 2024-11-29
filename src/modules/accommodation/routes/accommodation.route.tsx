@@ -1,6 +1,6 @@
 import { AccommodationDetails } from '../components/accommodation-details';
 import { AccommodationImages } from '../components/accommodation-images';
-import { useAccommodationQuery } from '#/modules/single-accommodation/api/single-accommodation.api';
+import { useAccommodationQuery } from '#/modules/accommodation/api/accommodation.api';
 import { useParams } from 'react-router-dom';
 import { ReservationCard } from '../components/reservation-card';
 import Box from '@mui/material/Box';
@@ -19,7 +19,7 @@ const styles = {
   details: { maxWidth: '60%' },
 };
 
-export function SingleAccommodationRoute() {
+export function AccommodationRoute() {
   const { id } = useParams<{ id: string }>();
   const { data, status } = useAccommodationQuery(id);
 

@@ -40,12 +40,6 @@ export function AccommodationAmenities({ amenities }: { amenities: Accommodation
     return null;
   }
   const amenityList = getAmenities(amenities, amenitiesMap);
-  // const amenity = (Object.keys(amenities) as AmenityKey[])
-  //   .filter((key) => key in amenitiesMap && amenities[key])
-  //   .map((key) => ({
-  //     icon: amenitiesMap[key].icon,
-  //     label: amenitiesMap[key].label,
-  //   }));
 
   const limitedAmenities = amenityList.slice(0, 6);
   return (
