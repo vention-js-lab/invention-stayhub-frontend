@@ -1,16 +1,16 @@
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import AvatarImage from '#/assets/images/card-temp-image.jpg';
 import { AccommodationDetails } from '../components/accommodation-details';
 import { AccommodationImages } from '../components/accommodation-images';
-import { useAccommodationQuery } from '#/modules/accommodation/api/accommodation.api';
 import { useParams } from 'react-router-dom';
 import { ReservationCard } from '../components/reservation-card';
-import Box from '@mui/material/Box';
 import { AccommodationDetailsSkeleton } from '../components/skeleton-details';
 import { AccommodationImagesSkeleton } from '../components/skeleton-images';
 import { NoDataAvailable } from '#/shared/components/no-data-response';
 import { AccommodationAmenities } from '../components/accommodation-amenities';
-import Divider from '@mui/material/Divider';
 import { UserDetails } from '../components/user-details';
-import AvatarImage from '#/assets/images/card-temp-image.jpg';
+import { useSingleAccommodationQuery } from '../api/single-accommodation.api';
 
 const styles = {
   skeleton: { display: 'flex', justifyContent: 'space-between', mt: 2 },
@@ -19,9 +19,9 @@ const styles = {
   details: { maxWidth: '60%' },
 };
 
-export function AccommodationRoute() {
+export function SingleAccommodationRoute() {
   const { id } = useParams<{ id: string }>();
-  const { data, status } = useAccommodationQuery(id);
+  const { data, status } = useSingleAccommodationQuery(id);
 
   if (status === 'pending') {
     return (

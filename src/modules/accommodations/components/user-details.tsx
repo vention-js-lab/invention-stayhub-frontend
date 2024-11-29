@@ -18,7 +18,7 @@ const styles = {
 export function UserDetails({ image, firstname, lastname, description }: UserDetailsProps) {
   return (
     <Box sx={styles.container}>
-      <Link href="users/profile">
+      <Link href="/users/profile">
         <Avatar src={image} sx={styles.avatar} />
       </Link>
       <Box>

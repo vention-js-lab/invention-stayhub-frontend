@@ -1,8 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
 import Divider from '@mui/material/Divider';
-import { type Accommodation } from '#/modules/home/types/accommodation.type';
+import { type Accommodation } from '#/modules/accommodations/types/accommodation.type';
 
 const styles = {
   container: { padding: '0 0 30px 16px' },

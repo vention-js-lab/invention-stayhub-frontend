@@ -4,12 +4,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { amenitiesMap } from '../constants/amenities-map.constant';
-import { type AccommodationAmenity } from '#/modules/home/types/accommodation-amenity.type';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
+import { amenitiesMap } from '../constants/amenities-map.constant';
+import { type AccommodationAmenity } from '#/modules/accommodations/types/accommodation-amenity.type';
 import { type Theme } from '@mui/material/styles';
-import { AmenitiesModal } from './amenities-modal';
+import { AmenitiesModal } from '#/modules/accommodations/components/amenities-modal';
 import { getAmenities } from '../utils/get-amenities.util';
 
 const styles = {

@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Slider from 'react-slick';
-import { type AccommodationImage } from '#/modules/home/types/accommodation-image.type';
+import { type AccommodationImage } from '#/modules/accommodations/types/accommodation-image.type';
 import { NoDataAvailable } from '#/shared/components/no-data-response';
 import { CustomNextArrow, CustomPrevArrow } from './carousel-buttons';
 

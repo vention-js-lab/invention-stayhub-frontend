@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
-import { type AccommodationImage } from '#/modules/home/types/accommodation-image.type';
+import { type AccommodationImage } from '#/modules/accommodations/types/accommodation-image.type';
 import { ImageCarousel } from './image-carousel/image-carousel';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';

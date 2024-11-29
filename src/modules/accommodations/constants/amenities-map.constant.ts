@@ -1,5 +1,5 @@
-import { type AmenityKey } from '#/modules/home/types/accommodation-amenity.type';
-import { Icons } from './icons.constant';
+import { type AmenityKey } from '#/modules/accommodations/types/accommodation-amenity.type';
+import { Icons } from '#/modules/accommodations/constants/icons.constant';
 
 export const amenitiesMap: Record<AmenityKey, { icon: React.ElementType; label: string }> = {
   hasWifi: { icon: Icons.Wifi, label: 'WiFi' },

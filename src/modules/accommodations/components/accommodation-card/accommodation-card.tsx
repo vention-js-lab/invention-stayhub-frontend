@@ -5,13 +5,13 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import StarRate from '@mui/icons-material/StarRate';
 import { useState } from 'react';
-import { type AccommodationAddress } from '../types/accommodation-address.type';
-import { parseAddress } from '../utils/parse-address.util';
 import { CardSkeleton } from './card-skeleton';
 import { HeartButton } from './heart-button';
 import { enqueueSnackbar } from 'notistack';
-import { useWishlistMutation } from '../api/toggle-wishlist.api';
+import { parseAddress } from '#/modules/accommodations/utils/parse-address.util';
+import { useWishlistMutation } from '#/modules/accommodations/api/toggle-wishlist.api';
 import { useAuthGuardAction } from '#/shared/hooks/auth-guard-action.hook';
+import { type AccommodationAddress } from '#/modules/accommodations/types/accommodation-address.type';
 
 interface AccommodationCardProps {
   status: 'pending' | 'error' | 'success';

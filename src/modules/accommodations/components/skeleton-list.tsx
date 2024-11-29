@@ -1,6 +1,6 @@
 import Grid2 from '@mui/material/Grid2';
-import { CardSkeleton } from './card-skeleton';
 import { v4 as uuidv4 } from 'uuid';
+import { CardSkeleton } from './accommodation-card/card-skeleton';
 
 interface SkeletonListProps {
   limit: number;
