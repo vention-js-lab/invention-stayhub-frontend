@@ -19,3 +19,20 @@ export interface AccommodationAmenity {
   updatedAt: string;
   accommodationId: string;
 }
+
+export type AmenityKey =
+  | 'hasWifi'
+  | 'hasParking'
+  | 'hasSwimmingPool'
+  | 'hasPetAllowance'
+  | 'hasBackyard'
+  | 'hasSmokingAllowance'
+  | 'hasHospitalNearby'
+  | 'hasLaundryService'
+  | 'hasKitchen'
+  | 'hasAirConditioning'
+  | 'hasTv'
+  | 'hasAirportTransfer'
+  | 'isCloseToCenter'
+  | 'isChildFriendly'
+  | 'isQuietArea';

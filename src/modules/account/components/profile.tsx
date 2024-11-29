@@ -18,7 +18,7 @@ import { useUserUpdateMutation } from '../api/user-update.api';
 
 interface UserInfoProps {
   image: string;
-  name: string;
+  firstname: string;
   lastname: string;
   phoneNumber: string;
   country: string;
@@ -45,15 +45,18 @@ const styles = {
 };
 const CountryDialCodes: Record<string, string> = PhoneCodes;
 
-export function ProfileInfo({ name, lastname, image, country, description, gender, phoneNumber }: UserInfoProps) {
+export function ProfileInfo({ firstname, lastname, image, country, description, gender, phoneNumber }: UserInfoProps) {
   const [disabled, setDisabled] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState(country);
   const [phone, setPhone] = useState(phoneNumber);
   const [selectedDender, setSelectedDender] = useState(gender);
+  const [name, setName] = useState(firstname);
+  const [familyName, setFamilyName] = useState(lastname);
   const mutation = useUserUpdateMutation();
 
   const {
     handleSubmit,
+    register,
     formState: { errors },
   } = useForm<PersonalInfoData>({ resolver: zodResolver(personalInfoSchema) });
 
@@ -87,11 +90,14 @@ export function ProfileInfo({ name, lastname, image, country, description, gende
           <Stack spacing={4}>
             <FormControl sx={styles.formControl} variant="outlined">
               <Typography>Firstname</Typography>
-              <OutlinedInput
+              <TextField
+                multiline={true}
                 disabled={disabled}
                 id="outlined-adornment-weight"
                 defaultValue={name}
+                {...register('firstname', { required: 'First name is required' })}
                 error={Boolean(errors.firstname)}
+                helperText={errors.firstname?.message}
               />
             </FormControl>
             <FormControl sx={styles.formControl} variant="outlined">
@@ -128,29 +134,30 @@ export function ProfileInfo({ name, lastname, image, country, description, gende
             </FormControl>
             <FormControl sx={styles.formControl}>
               <Typography>Description</Typography>
-              <TextField
-                placeholder={description}
+              <OutlinedInput
                 multiline={true}
-                minRows={3}
-                maxRows={4}
-                // value={description}
                 disabled={disabled}
+                id="outlined-adornment-weight"
+                defaultValue={description}
+                error={Boolean(errors.firstname)}
               />
             </FormControl>
           </Stack>
         </Stack>
+
+        {!disabled ? (
+          <Button
+            type="submit"
+            sx={styles.saveButton}
+            variant="contained"
+            // onClick={() => {
+            //   setDisabled(!disabled);
+            // }}
+          >
+            Save
+          </Button>
+        ) : null}
       </form>
-      {!disabled ? (
-        <Button
-          sx={styles.saveButton}
-          variant="contained"
-          onClick={() => {
-            setDisabled(!disabled);
-          }}
-        >
-          Save
-        </Button>
-      ) : null}
     </Box>
   );
 }

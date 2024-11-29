@@ -18,7 +18,7 @@ const styles = {
     alignItems: 'center',
     minHeight: 'var(--header-height)',
     width: '100%',
-    px: 5,
+    px: 15,
   },
 };
 
