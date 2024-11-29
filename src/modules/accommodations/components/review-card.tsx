@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
-import { Card, CardContent, Typography, Avatar, Button, Box, Rating, Modal } from '@mui/material';
-import { Review } from '../types/review.type';
+import { useState } from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import { type Review } from '../types/review.type';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
+import Modal from '@mui/material/Modal';
 
 const styles = {
   modalBox: {
@@ -18,11 +25,21 @@ const styles = {
   },
 
   cardStyle: {
-    maxWidth: 400,
+    width: 600,
+    height: 300,
     margin: 'auto',
-    boxShadow: 3,
+    boxShadow: 2,
     borderRadius: 2,
-    mb: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  truncatedContent: {
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: 4,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
 };
 
@@ -30,7 +47,7 @@ interface ReviewCardProps {
   review: Review;
 }
 
-export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
+export function ReviewCard({ review }: ReviewCardProps) {
   const [open, setOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
 
@@ -43,9 +60,10 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
     setOpen(false);
     setSelectedReview(null);
   };
-  const truncatedContent =
-    review.content && review.content.length > 150 ? `${review.content.slice(0, 150)}...` : review.content || '';
 
+  const avatarContent = review.user.photo || review.user.firstName?.[0] || '';
+  const userName = `${review.user.firstName || ''} ${review.user.lastName || ''}`;
+  const userCountry = review.user.country || '';
   const shouldShowMoreButton = review.content && review.content.length > 150;
 
   return (
@@ -53,52 +71,53 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
       <Card key={review.id} sx={styles.cardStyle}>
         <CardContent>
           <Box display="flex" alignItems="center" mb={2}>
-            <Avatar sx={{ marginRight: 2 }}>{review.user.photo || review.user.firstName?.[0] || ''}</Avatar>
+            <Avatar sx={{ marginRight: 2 }}>{avatarContent}</Avatar>
             <Box>
               <Typography variant="h6" fontWeight="bold">
-                {review.user.firstName || ''} {review.user.lastName || ''}
+                {userName}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                {review.user.country || ''}
+                {userCountry}
               </Typography>
             </Box>
           </Box>
           <Typography variant="body2" color="textSecondary">
             {review.createdAt}
           </Typography>
-          <Rating value={review.rating} readOnly sx={{ marginY: 1 }} />
-          <Typography variant="body2" color="textPrimary" paragraph>
-            {truncatedContent}
+          <Rating value={review.rating} readOnly={true} sx={{ marginY: 1 }} />
+          <Typography variant="body2" color="textPrimary" paragraph={true} sx={styles.truncatedContent}>
+            {review.content}
           </Typography>
-          {shouldShowMoreButton && (
+
+          {shouldShowMoreButton ? (
             <Button variant="text" color="primary" onClick={() => handleOpen(review)}>
               Show more
             </Button>
-          )}
+          ) : null}
         </CardContent>
       </Card>
 
       <Modal open={open} onClose={handleClose}>
         <Box sx={styles.modalBox} aria-labelledby="modal-title" aria-describedby="modal-description">
-          {selectedReview && (
+          {selectedReview ? (
             <>
               <Typography id="modal-title" variant="h6" fontWeight="bold" mb={2}>
-                {selectedReview.user.firstName || ''} {selectedReview.user.lastName || ''}
+                {userName}
               </Typography>
               <Typography variant="body2" color="textSecondary" mb={1}>
-                {selectedReview.user.country || 'Unknown'} - from {selectedReview.user.profileCreatedAt || 'Unknown'} in Airbnb
+                {userCountry} - from {selectedReview.user.createdAt}
               </Typography>
-              <Rating value={selectedReview.rating} readOnly />
+              <Rating value={selectedReview.rating} readOnly={true} />
               <Typography id="modal-description" variant="body2" color="textPrimary" paragraph={true}>
-                {selectedReview.content || ''}
+                {selectedReview.content}
               </Typography>
               <Button variant="contained" color="primary" onClick={handleClose} sx={{ mt: 2 }}>
                 Close
               </Button>
             </>
-          )}
+          ) : null}
         </Box>
       </Modal>
     </div>
   );
-};
+}
