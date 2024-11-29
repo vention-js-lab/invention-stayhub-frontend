@@ -10,6 +10,7 @@ export function Layout() {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
+        paddingX: 15,
       }}
     >
       <Header />
