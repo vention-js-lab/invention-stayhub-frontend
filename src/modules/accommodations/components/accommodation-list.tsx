@@ -7,9 +7,9 @@ import { useListAccommodationsQuery } from '../api/list-accommodations.api';
 import { SkeletonList } from './skeleton-list';
 import { CardSkeleton } from './card-skeleton';
 import { useInView } from 'react-intersection-observer';
-import { useListAccommodationQueryParams } from '#/shared/hooks/list-accommodations-query-params.hook';
+import { useListAccommodationQueryParams } from '#/modules/accommodations/hooks/list-accommodations-query-params.hook';
 import { useInfiniteScroll } from '#/shared/hooks/infinite-scroll.hook';
-import { usePaginationLimit } from '#/shared/hooks/pagination-limit.hook';
+import { usePaginationLimit } from '#/modules/accommodations/hooks/pagination-limit.hook';
 
 export function AccommodationList() {
   const { ref: bottomOfPageRef, inView: isBottomOfPageInView } = useInView();

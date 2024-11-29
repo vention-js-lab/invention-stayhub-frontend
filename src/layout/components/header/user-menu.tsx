@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '#/shared/hooks/auth.hook';
-import { style } from '#/modules/layout/styles/style';
+import { style } from '#/layout/styles/style';
 import Box from '@mui/material/Box';
 
 export function UserMenu() {

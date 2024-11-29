@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { calculateInitialLimit } from '#/modules/home/utils/pagination.util';
+import { calculateInitialLimit } from '#/modules/accommodations/utils/pagination.util';
 
 interface PaginationLimitProps {
   cardRef: React.RefObject<HTMLDivElement>;

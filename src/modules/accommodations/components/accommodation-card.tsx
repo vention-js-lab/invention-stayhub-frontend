@@ -8,11 +8,10 @@ import { useState } from 'react';
 import { type AccommodationAddress } from '../types/accommodation-address.type';
 import { parseAddress } from '../utils/parse-address.util';
 import { CardSkeleton } from './card-skeleton';
-import { useWishlistMutation } from '#/modules//wishlist/api/wishlist.api';
 import { HeartButton } from './heart-button';
 import { enqueueSnackbar } from 'notistack';
-import { wishlistActionToastMessages } from '#/shared/constants/wishlist-toast-messages.constant';
-import { useRequireAuth } from '#/shared/hooks/require-auth.hook';
+import { useWishlistMutation } from '../api/toggle-wishlist.api';
+import { useAuthGuardAction } from '#/shared/hooks/auth-guard-action.hook';
 
 interface AccommodationCardProps {
   status: 'pending' | 'error' | 'success';
@@ -58,7 +57,7 @@ export function AccommodationCard({
 }: AccommodationCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(isSavedToWishlist);
   const { wishlistMutation } = useWishlistMutation();
-  const requireAuth = useRequireAuth();
+  const authGuardAction = useAuthGuardAction();
 
   function handleWishlistAction() {
     if (!id) {
@@ -76,7 +75,7 @@ export function AccommodationCard({
       },
       {
         onSuccess: (data) => {
-          const message = data ? wishlistActionToastMessages.addSuccess : wishlistActionToastMessages.removeSuccess;
+          const message = data ? 'Accommodation was added to wishlist' : 'Accommodation was removed from wishlist';
           enqueueSnackbar(message, {
             variant: data ? 'success' : 'info',
             hideIconVariant: true,
@@ -86,8 +85,7 @@ export function AccommodationCard({
         },
         onError: () => {
           setIsWishlisted((prev) => !prev);
-          const message = wishlistActionToastMessages.fail;
-          enqueueSnackbar(message, {
+          enqueueSnackbar('Something went wrong. Please try again later', {
             variant: 'error',
             hideIconVariant: true,
             autoHideDuration: 3000,
@@ -100,7 +98,7 @@ export function AccommodationCard({
 
   function handleHeartClick(event: React.MouseEvent) {
     event.preventDefault();
-    requireAuth(handleWishlistAction);
+    authGuardAction(handleWishlistAction);
   }
 
   return (

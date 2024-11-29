@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import {
   listAccommodationQueryParamsSchema,
   type ListAccommodationQueryParams,
-} from '#/modules/home/schemas/list-accommodation-query-params.schema';
+} from '#/modules/accommodations/schemas/list-accommodation-query-params.schema';
 
 export function useListAccommodationQueryParams() {
   const [searchParams, setSearchParams] = useSearchParams();
