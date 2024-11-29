@@ -2,6 +2,12 @@ import { type AccommodationAddress } from './accommodation-address.type';
 import { type AccommodationAmenity } from './accommodation-amenity.type';
 import { type AccommodationImage } from './accommodation-image.type';
 
+export interface Booking {
+  startDate: string;
+  endDate: string;
+  status: string;
+}
+
 export interface Accommodation {
   id: string;
   name: string;
@@ -20,5 +26,7 @@ export interface Accommodation {
   address: AccommodationAddress | null;
   amenity: AccommodationAmenity | null;
   images: AccommodationImage[] | null;
+  bookings: Booking[];
+
   deletedAt: string | null;
 }

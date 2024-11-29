@@ -86,7 +86,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
                 {selectedReview.user.firstName || ''} {selectedReview.user.lastName || ''}
               </Typography>
               <Typography variant="body2" color="textSecondary" mb={1}>
-                {selectedReview.user.country || 'Unknown'} - from {selectedReview.user.profileCreatedAt || 'Unknown'} in Airbnb
+                {selectedReview.user.country || 'Unknown'} - from {selectedReview.user.createdAt || 'Unknown'} in Airbnb
               </Typography>
               <Rating value={selectedReview.rating} readOnly />
               <Typography id="modal-description" variant="body2" color="textPrimary" paragraph={true}>
