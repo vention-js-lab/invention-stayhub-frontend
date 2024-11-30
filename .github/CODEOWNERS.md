@@ -1,3 +1,3 @@
 # Any changes to the repo files should be reviewed by the team
 
-* @vention-js-lab/ventioners
+* @vention-js-lab/invention
