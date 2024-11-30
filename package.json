@@ -10,7 +10,8 @@
     "dev": "vite",
     "preview": "vite preview",
     "lint": "npx eslint",
-    "lint:fix": "npx eslint --fix"
+    "lint:fix": "npx eslint --fix",
+    "prepare": "husky"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
