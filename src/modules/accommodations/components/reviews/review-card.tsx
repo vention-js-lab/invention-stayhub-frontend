@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { type Review } from '../types/review.type';
+import { type Review } from '../../types/review.type';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -105,7 +105,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
                 {userName}
               </Typography>
               <Typography variant="body2" color="textSecondary" mb={1}>
-                {userCountry} - from {selectedReview.user.createdAt}
+                {userCountry} - from {selectedReview.user.createdAt} Airbn user
               </Typography>
               <Rating value={selectedReview.rating} readOnly={true} />
               <Typography id="modal-description" variant="body2" color="textPrimary" paragraph={true}>
