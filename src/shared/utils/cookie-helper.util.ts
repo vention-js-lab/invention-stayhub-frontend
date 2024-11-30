@@ -1,3 +1,5 @@
+import { time } from '../libs/time.lib';
+
 interface CookieOptions {
   expires?: Date;
   path?: string;
@@ -30,5 +32,5 @@ export function getCookie(name: string) {
 }
 
 export function deleteCookie(name: string, path: string = '/') {
-  setCookie(name, '', { expires: new Date(0), path });
+  setCookie(name, '', { expires: time(0).toDate(), path });
 }

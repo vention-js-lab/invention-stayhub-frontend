@@ -28,10 +28,12 @@ export function useAuth() {
 
   function login(user: CurrentUser) {
     const decodedAccessToken = jwtDecode<DecodedToken>(user.accessToken);
+    // eslint-disable-next-line no-restricted-syntax
     const accessTokenExpirationDate = new Date(decodedAccessToken.exp * 1000);
     setCookie('accessToken', user.accessToken, { expires: accessTokenExpirationDate });
 
     const decodedRefreshToken = jwtDecode<DecodedToken>(user.refreshToken);
+    // eslint-disable-next-line no-restricted-syntax
     const refreshTokenExpirationDate = new Date(decodedRefreshToken.exp * 1000);
     setCookie('refreshToken', user.accessToken, { expires: refreshTokenExpirationDate });
   }
