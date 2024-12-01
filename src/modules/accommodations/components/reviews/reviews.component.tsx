@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { type Review } from '../../types/review.type';
+import { type Review } from '#/modules/accommodations/types/review.type';
 import { ReviewCard } from './review-card';
 import { NoDataAvailable } from '#/shared/components/no-data-response';
 import { ReviewAllCard } from './review-all-card.component';
@@ -31,7 +31,7 @@ type ReviewsListProps = {
 export function ReviewsList({ reviews }: ReviewsListProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   if (!reviews) {
-    return <NoDataAvailable data={'data'} />;
+    return <NoDataAvailable data={'reviews'} />;
   }
 
   const handleOpen = () => setIsModalOpen(true);

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
-import { type Review } from '../../types/review.type';
+import { type Review } from '#/modules/accommodations/types/review.type';
 
 type ReviewsListProps = {
   reviews: Review[] | null;

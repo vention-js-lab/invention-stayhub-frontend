@@ -2,12 +2,13 @@ import { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { type Review } from '../../types/review.type';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Modal from '@mui/material/Modal';
+import { format } from 'date-fns';
+import { type Review } from '#/modules/accommodations/types/review.type';
 
 const styles = {
   modalBox: {
@@ -62,9 +63,21 @@ export function ReviewCard({ review }: ReviewCardProps) {
   };
 
   const avatarContent = review.user.photo || review.user.firstName?.[0] || '';
-  const userName = `${review.user.firstName || ''} ${review.user.lastName || ''}`;
-  const userCountry = review.user.country || '';
-  const shouldShowMoreButton = review.content && review.content.length > 150;
+  const userName = `${review.user.firstName} ${review.user.lastName}`.trim();
+
+  const userCountry = review.user.country;
+  const createdAt = review.user.createdAt ? new Date(review.user.createdAt) : null;
+
+  const formattedDate = createdAt
+    ? format(
+        createdAt,
+        createdAt.getFullYear() === new Date().getFullYear() ? "' on StayHub since' MMMM d" : "'on StayHub since' MMMM d, yyyy"
+      )
+    : null;
+
+  const userInfo = [userCountry, formattedDate].filter(Boolean).join(' • ');
+
+  const shouldShowMoreButton = review.content && review.content.length > 50;
 
   return (
     <div>
@@ -77,12 +90,12 @@ export function ReviewCard({ review }: ReviewCardProps) {
                 {userName}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                {userCountry}
+                {userInfo}
               </Typography>
             </Box>
           </Box>
           <Typography variant="body2" color="textSecondary">
-            {review.createdAt}
+            Commented in {review.createdAt.split(' ')[0]}
           </Typography>
           <Rating value={review.rating} readOnly={true} sx={{ marginY: 1 }} />
           <Typography variant="body2" color="textPrimary" paragraph={true} sx={styles.truncatedContent}>
@@ -105,7 +118,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
                 {userName}
               </Typography>
               <Typography variant="body2" color="textSecondary" mb={1}>
-                {userCountry} - from {selectedReview.user.createdAt} Airbn user
+                {userInfo}
               </Typography>
               <Rating value={selectedReview.rating} readOnly={true} />
               <Typography id="modal-description" variant="body2" color="textPrimary" paragraph={true}>
