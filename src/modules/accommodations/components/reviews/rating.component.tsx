@@ -10,7 +10,7 @@ type ReviewsListProps = {
 
 const styles = {
   box: { display: 'flex', alignItems: 'center', padding: 2 },
-  rating: { fontWeight: 'bold', fontSize: '2rem' },
+  rating: { fontWeight: 'bold', fontSize: '1.2rem' },
 };
 
 export function AccommodationRating({ reviews }: ReviewsListProps) {
