@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { CardSkeleton } from './card-skeleton';
 import { HeartButton } from './heart-button';
 import { parseAddress } from '#/modules/accommodations/utils/parse-address.util';
-import { useWishlistMutation } from '../../api/toggle-wishlist.api';
+import { useWishlistMutation } from '#/modules/accommodations/api/toggle-wishlist.api';
 import { useAuthGuardAction } from '#/shared/hooks/auth-guard-action.hook';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { type AccommodationAddress } from '#/modules/accommodations/types/accommodation-address.type';
