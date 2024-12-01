@@ -1,6 +1,6 @@
 import Grid2 from '@mui/material/Grid2';
 import CardImage from '#/assets/images/card-temp-image.jpg';
-import { useWishlistQuery } from '../api/toggle-wishlist.api';
+import { useWishlistQuery } from '../api/wishlist.api';
 import { SkeletonList } from '#/modules/accommodations/components/skeleton-list';
 import { CardSkeleton } from '#/modules/accommodations/components/accommodation-card/card-skeleton';
 import { AccommodationCard } from '#/modules/accommodations/components/accommodation-card/accommodation-card';
