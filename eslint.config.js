@@ -7,6 +7,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import pluginQuery from '@tanstack/eslint-plugin-query';
 import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import importPlugin from 'eslint-plugin-import';
+import maxParams from 'eslint-plugin-max-params-no-constructor';
 
 export default tseslint.config(
   { ignores: ['dist', 'vite.config.ts'] },
@@ -29,6 +30,7 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'jsx-a11y': eslintPluginJsxA11y,
       import: importPlugin,
+      'max-params-no-constructor': maxParams,
     },
     rules: {
       ...reactESLint.configs.flat.recommended.rules,
@@ -94,6 +96,13 @@ export default tseslint.config(
       radix: 'error',
       'require-await': 'error',
       yoda: 'error',
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'NewExpression[callee.name="Date"]',
+          message: 'Use `time` lib instead of `Date` constructor',
+        },
+      ],
 
       // ==== TypeScript rules ==== //
       '@typescript-eslint/no-misused-promises': 'off',
@@ -167,7 +176,7 @@ export default tseslint.config(
           leadingUnderscore: 'allow',
         },
       ],
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/prefer-as-const': 'error',
       '@typescript-eslint/no-unnecessary-qualifier': 'warn',
       '@typescript-eslint/no-duplicate-enum-values': 'warn',
@@ -239,6 +248,9 @@ export default tseslint.config(
       'import/no-duplicates': ['error', { 'prefer-inline': true }],
       'import/no-mutable-exports': 'error',
       'import/no-named-default': 'error',
+
+      // ==== Max params no constructor rules ==== //
+      'max-params-no-constructor/max-params-no-constructor': ['error', 3],
     },
   },
   {
