@@ -7,8 +7,8 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Modal from '@mui/material/Modal';
-import { format } from 'date-fns';
 import { type Review } from '#/modules/accommodations/types/review.type';
+import { formatStayHubDate } from '../../utils/get-formatted-date.util';
 
 const styles = {
   modalBox: {
@@ -66,18 +66,13 @@ export function ReviewCard({ review }: ReviewCardProps) {
   const userName = `${review.user.firstName} ${review.user.lastName}`.trim();
 
   const userCountry = review.user.country;
-  const createdAt = review.user.createdAt ? new Date(review.user.createdAt) : null;
+  const joinDate = formatStayHubDate(review.user.createdAt);
 
-  const formattedDate = createdAt
-    ? format(
-        createdAt,
-        createdAt.getFullYear() === new Date().getFullYear() ? "' on StayHub since' MMMM d" : "'on StayHub since' MMMM d, yyyy"
-      )
-    : null;
+  const userInfo = joinDate ? `${userCountry} • since ${joinDate}` : `${userCountry}`;
 
-  const userInfo = [userCountry, formattedDate].filter(Boolean).join(' • ');
+  const commentedDate = formatStayHubDate(review.createdAt);
 
-  const shouldShowMoreButton = review.content && review.content.length > 50;
+  const shouldShowMoreButton = review.content && review.content.length > 250;
 
   return (
     <div>
@@ -95,7 +90,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
             </Box>
           </Box>
           <Typography variant="body2" color="textSecondary">
-            Commented in {review.createdAt.split(' ')[0]}
+            Commented in {commentedDate}
           </Typography>
           <Rating value={review.rating} readOnly={true} sx={{ marginY: 1 }} />
           <Typography variant="body2" color="textPrimary" paragraph={true} sx={styles.truncatedContent}>

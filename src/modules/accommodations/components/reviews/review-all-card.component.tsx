@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import { type Review } from '#/modules/accommodations/types/review.type';
 import Avatar from '@mui/material/Avatar';
 import Rating from '@mui/material/Rating';
-import { format } from 'date-fns';
+import { formatStayHubDate } from '../../utils/get-formatted-date.util';
 
 const styles = {
   cardStyle: {
@@ -28,14 +28,7 @@ export function ReviewAllCard({ review }: ReviewCardProps) {
   const userName = `${review.user.firstName || ''} ${review.user.lastName || ''}`;
   const userCountry = review.user.country || '';
 
-  const createdAt = review.user.createdAt ? new Date(review.user.createdAt) : null;
-
-  const formattedDate = createdAt
-    ? format(
-        createdAt,
-        createdAt.getFullYear() === new Date().getFullYear() ? "'on StayHub since' MMMM d" : "'on StayHub since' MMMM d, yyyy"
-      )
-    : null;
+  const formattedDate = formatStayHubDate(review.user.createdAt);
 
   const userInfo = [userCountry, formattedDate].filter(Boolean).join(' • ');
 
