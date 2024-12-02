@@ -1,6 +1,9 @@
 import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 import { AccommodationList } from '../components/accommodation-list';
+import { Search } from '../components/search';
+import { AccommodationFilterModal } from '../components/filter-modal';
+import { FilterButton } from '../components/filter-button';
 
 const styles = {
   filterArea: (showShadow: boolean) => ({
@@ -15,11 +18,16 @@ const styles = {
     borderTop: '1px solid #ddd',
     boxShadow: showShadow ? '0px 4px 8px rgba(0, 0, 0, 0.2)' : 'none',
     transition: 'box-shadow 0.3s ease',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingX: '40px',
   }),
 };
 
 export function HomeRoute() {
   const [showShadow, setShowShadow] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,7 +41,11 @@ export function HomeRoute() {
 
   return (
     <Box mt="var(--filter-area-height)">
-      <Box sx={styles.filterArea(showShadow)} />
+      <Box sx={styles.filterArea(showShadow)}>
+        <Search />
+        <FilterButton onClick={() => setOpenModal(true)} />
+        <AccommodationFilterModal open={openModal} setOpen={setOpenModal} />
+      </Box>
       <AccommodationList />
     </Box>
   );
