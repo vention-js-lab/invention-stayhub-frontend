@@ -10,7 +10,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 
@@ -19,12 +18,21 @@ import { accommdationSortByMap, AccommodationListSortBy } from '../constants/sor
 import { SortOrder, sortOrderMap } from '#/shared/constants/sort-order.constant';
 import { useListAccommodationQueryParams } from '../hooks/list-accommodations-query-params.hook';
 import { useSearchParams } from 'react-router-dom';
-import { amenitiesMap } from '../constants/amenities-map.constant';
+import { type AmenityKey } from '../types/accommodation-amenity.type';
+import { AmenitiesList } from './amenities-list';
+import { cleanParams } from '../utils/clean-params.util';
 
 interface FilterModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
+
+const initialFilterParams: AccommodationFilterParams = {
+  minPrice: 0,
+  maxPrice: 10000,
+  sortBy: AccommodationListSortBy.Price,
+  sortOrder: SortOrder.Asc,
+};
 
 const styles = {
   closeIcon: {
@@ -44,21 +52,6 @@ const styles = {
     },
   },
 
-  amenityButtons: (isSelected: boolean) => ({
-    border: '1px solid #C7C7C7',
-    borderColor: isSelected ? '#E91E63' : '#C7C7C7',
-    fontSize: '16px',
-    borderRadius: '20px',
-    backgroundColor: isSelected ? '#E91E63' : '#fff',
-    margin: '0 2px 2px 0',
-    color: isSelected ? '#fff' : '#C7C7C7',
-    '&:hover': {
-      borderColor: '#E91E63',
-      backgroundColor: '#E91E63',
-      color: '#fff',
-    },
-  }),
-
   roomButton: (isSelected: boolean) => ({
     flex: 1,
     paddingY: '8px',
@@ -77,15 +70,10 @@ const styles = {
 export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
   const { setQueryParams } = useListAccommodationQueryParams();
   const [_searchParams, setSearchParams] = useSearchParams();
-  const [filterParams, setFilterParams] = useState<AccommodationFilterParams>({
-    minPrice: 0,
-    maxPrice: 10000,
-    sortBy: AccommodationListSortBy.Price,
-    sortOrder: SortOrder.Asc,
-  });
+  const [filterParams, setFilterParams] = useState<AccommodationFilterParams>({ ...initialFilterParams });
 
-  const handlePriceRange = (newPrice: number | number[]) => {
-    const [minPrice, maxPrice] = newPrice as number[];
+  const handlePriceRange = (newPriceRange: [min: number, max: number]) => {
+    const [minPrice, maxPrice] = newPriceRange as number[];
     setFilterParams((prev) => ({
       ...prev,
       minPrice,
@@ -93,21 +81,13 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
     }));
   };
 
-  const handlePriceChange = (value: number, isMinPrice: boolean) => {
+  const handlePriceChange = (value: number, is: 'min' | 'max') => {
     if (!value || value === Infinity) {
       return;
     }
-    if (isMinPrice) {
-      setFilterParams((prev) => ({
-        ...prev,
-        minPrice: Math.min(value, prev.maxPrice),
-      }));
-    } else {
-      setFilterParams((prev) => ({
-        ...prev,
-        maxPrice: Math.max(value, prev.minPrice),
-      }));
-    }
+    setFilterParams((prev) =>
+      is === 'min' ? { ...prev, minPrice: Math.min(value, prev.maxPrice) } : { ...prev, maxPrice: Math.max(value, prev.minPrice) }
+    );
   };
 
   const handleRoomSelection = (rooms: number) => {
@@ -117,7 +97,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
     }));
   };
 
-  const handleAmenitySelection = (amenityKey: keyof AccommodationFilterParams) => {
+  const handleAmenitySelection = (amenityKey: AmenityKey) => {
     setFilterParams((prev) => ({
       ...prev,
       [amenityKey]: !prev[amenityKey],
@@ -125,18 +105,13 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
   };
 
   const handleApplyFilters = () => {
-    setQueryParams(filterParams);
+    const cleanedParams = cleanParams(filterParams);
+    setQueryParams(cleanedParams);
     setOpen(false);
   };
 
   const handleClearAll = () => {
-    setFilterParams({
-      minPrice: 0,
-      maxPrice: 10000,
-      sortBy: AccommodationListSortBy.Price,
-      sortOrder: SortOrder.Asc,
-    });
-
+    setFilterParams(initialFilterParams);
     setSearchParams({});
   };
 
@@ -161,7 +136,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
           </Typography>
           <Slider
             value={[filterParams.minPrice, filterParams.maxPrice]}
-            onChange={(_, newPrice) => handlePriceRange(newPrice)}
+            onChange={(_, newPrice) => handlePriceRange(newPrice as [min: number, max: number])}
             valueLabelDisplay="auto"
             color="secondary"
             min={0}
@@ -179,13 +154,13 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
                 endAdornment: <Typography>$</Typography>,
               },
             }}
-            onChange={(e) => handlePriceChange(Number(e.target.value), true)}
+            onChange={(e) => handlePriceChange(Number(e.target.value), 'min')}
           />
           <TextField
             sx={{ width: '200px' }}
             label="Max Price"
             value={filterParams.maxPrice}
-            onChange={(e) => handlePriceChange(Number(e.target.value), false)}
+            onChange={(e) => handlePriceChange(Number(e.target.value), 'max')}
             slotProps={{
               input: {
                 endAdornment: <Typography>$</Typography>,
@@ -262,18 +237,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
           <Typography fontWeight="500" mb="8px" fontSize="16px">
             Amenities
           </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            {Object.entries(amenitiesMap).map(([key, { icon: Icon, label }]) => (
-              <IconButton
-                sx={styles.amenityButtons(Boolean(filterParams[key as keyof AccommodationFilterParams]))}
-                key={key}
-                onClick={() => handleAmenitySelection(key as keyof AccommodationFilterParams)}
-              >
-                <Icon />
-                <Typography>{label}</Typography>
-              </IconButton>
-            ))}
-          </Box>
+          <AmenitiesList filterParams={filterParams} handleAmenitySelection={handleAmenitySelection} />
         </Box>
 
         <DialogActions sx={{ display: 'flex', justifyContent: 'space-between', padding: '0', marginTop: '25px' }}>

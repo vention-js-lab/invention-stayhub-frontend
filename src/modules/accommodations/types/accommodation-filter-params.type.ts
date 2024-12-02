@@ -1,4 +1,4 @@
-import { type AccommodationListSortBy } from '../constants/sort-by.constant';
+import { type AccommodationListSortBy } from '#/modules/accommodations/constants/sort-by.constant';
 import { type SortOrder } from '#/shared/constants/sort-order.constant';
 
 export interface AccommodationFilterParams {

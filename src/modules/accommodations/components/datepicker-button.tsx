@@ -11,7 +11,7 @@ const styles = {
     borderRadius: '35px',
     backgroundColor: isFocused ? '#fff' : '#e0e0e0',
     whiteSpace: 'nowrap',
-    height: '100%',
+    height: '80%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',

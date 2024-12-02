@@ -4,6 +4,6 @@ export enum SortOrder {
 }
 
 export const sortOrderMap = [
-  { key: SortOrder.Asc, name: 'From lower to highest' },
-  { key: SortOrder.Desc, name: 'From highest to lower' },
+  { key: SortOrder.Asc, name: 'Ascending' },
+  { key: SortOrder.Desc, name: 'Descending' },
 ];

@@ -35,8 +35,9 @@ const styles = {
 
   inputBase: (isFocused: boolean) => ({
     paddingX: '16px',
+    marginLeft: '7px',
     borderRadius: '35px',
-    height: '100%',
+    height: '80%',
     backgroundColor: isFocused ? '#fff' : '#e0e0e0',
     fontSize: '16px',
     color: '#333',
