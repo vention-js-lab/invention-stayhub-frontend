@@ -11,6 +11,8 @@ import { NoDataAvailable } from '#/shared/components/no-data-response';
 import { AccommodationAmenities } from '../components/accommodation-amenities';
 import { UserDetails } from '../components/user-details';
 import { useSingleAccommodationQuery } from '../api/single-accommodation.api';
+import { ReviewsList } from '../components/reviews/reviews.component';
+import { AccommodationRating } from '../components/reviews/rating.component';
 
 const styles = {
   skeleton: { display: 'flex', justifyContent: 'space-between', mt: 2 },
@@ -55,6 +57,10 @@ export function SingleAccommodationRoute() {
           availableFrom={data.availableFrom}
           availableTo={data.availableTo}
         />
+      </Box>
+      <Box sx={{ mt: 2 }}>
+        <AccommodationRating reviews={data.reviews} />
+        <ReviewsList reviews={data.reviews} />
       </Box>
     </Box>
   );

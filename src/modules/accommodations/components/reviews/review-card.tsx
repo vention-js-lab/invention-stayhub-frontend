@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { type Review } from '../types/review.type';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Modal from '@mui/material/Modal';
+import { type Review } from '#/modules/accommodations/types/review.type';
+import { formatDate } from '#/modules/accommodations/utils/get-formatted-date.util';
 
 const styles = {
   modalBox: {
@@ -23,10 +24,9 @@ const styles = {
     maxHeight: '80vh',
     overflowY: 'auto',
   },
-
   cardStyle: {
     width: 600,
-    height: 300,
+    height: 270,
     margin: 'auto',
     boxShadow: 2,
     borderRadius: 2,
@@ -50,6 +50,9 @@ interface ReviewCardProps {
 export function ReviewCard({ review }: ReviewCardProps) {
   const [open, setOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
+  const [shouldShowMoreButton, setShouldShowMoreButton] = useState(false);
+
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = (newReview: Review) => {
     setSelectedReview(newReview);
@@ -62,9 +65,18 @@ export function ReviewCard({ review }: ReviewCardProps) {
   };
 
   const avatarContent = review.user.photo || review.user.firstName?.[0] || '';
-  const userName = `${review.user.firstName || ''} ${review.user.lastName || ''}`;
-  const userCountry = review.user.country || '';
-  const shouldShowMoreButton = review.content && review.content.length > 150;
+  const userName = `${review.user.firstName} ${review.user.lastName}`.trim();
+  const userCountry = review.user.country;
+  const joinDate = formatDate(review.user.createdAt);
+  const userInfo = joinDate ? `${userCountry} • since ${joinDate}` : `${userCountry}`;
+  const commentedDate = formatDate(review.createdAt);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const element = contentRef.current;
+      setShouldShowMoreButton(element.scrollHeight > element.clientHeight);
+    }
+  }, [review.content]);
 
   return (
     <div>
@@ -77,15 +89,15 @@ export function ReviewCard({ review }: ReviewCardProps) {
                 {userName}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                {userCountry}
+                {userInfo}
               </Typography>
             </Box>
           </Box>
           <Typography variant="body2" color="textSecondary">
-            {review.createdAt}
+            Commented in {commentedDate}
           </Typography>
           <Rating value={review.rating} readOnly={true} sx={{ marginY: 1 }} />
-          <Typography variant="body2" color="textPrimary" paragraph={true} sx={styles.truncatedContent}>
+          <Typography ref={contentRef} variant="body2" color="textPrimary" paragraph={true} sx={styles.truncatedContent}>
             {review.content}
           </Typography>
 
@@ -105,7 +117,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
                 {userName}
               </Typography>
               <Typography variant="body2" color="textSecondary" mb={1}>
-                {userCountry} - from {selectedReview.user.createdAt}
+                {userInfo}
               </Typography>
               <Rating value={selectedReview.rating} readOnly={true} />
               <Typography id="modal-description" variant="body2" color="textPrimary" paragraph={true}>
