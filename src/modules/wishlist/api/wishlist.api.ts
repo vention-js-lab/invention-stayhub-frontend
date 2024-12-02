@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '#/shared/libs/api-client.lib';
 import { type BaseResponse } from '#/shared/types/base-response.type';
-import { type WishlistItem } from '../types/wishlist.type';
+import { type WishlistItem } from '#/shared/types/wishlist.type';
 
 export function useWishlistQuery() {
   return useQuery({

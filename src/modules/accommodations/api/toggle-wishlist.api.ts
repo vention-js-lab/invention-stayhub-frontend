@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { apiClient } from '#/shared/libs/api-client.lib';
 import { type BaseResponse } from '#/shared/types/base-response.type';
-import { type WishlistItem } from '#/modules/wishlist/types/wishlist.type';
+import { type WishlistItem } from '#/shared/types/wishlist.type';
 
 interface MutationData {
   accommodationId: string;

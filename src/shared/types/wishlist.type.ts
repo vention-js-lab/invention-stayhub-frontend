@@ -8,12 +8,3 @@ export interface WishlistItem {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface MutationData {
-  accommodationId: string;
-}
-
-export interface MutationParams {
-  action: 'add' | 'remove';
-  data: MutationData;
-}
