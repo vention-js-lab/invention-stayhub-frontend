@@ -75,7 +75,6 @@ export function Search() {
 
   const onSubmit = () => {
     setQueryParams(searchParams);
-    setSearchParams({ search: '' });
   };
 
   return (
