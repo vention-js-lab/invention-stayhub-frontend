@@ -1,7 +1,6 @@
 import { ProfileRoutes } from '#/modules/account';
 import { AuthRoutes } from '#/modules/auth';
-import { HomeRoutes } from '#/modules/home';
-import { AccommodationRoutes } from '#/modules/accommodation';
+import { AccommodationsRoutes } from '#/modules/accommodations';
 import { composeModuleRoutes } from '#/shared/utils/router.util';
 
-export const publicRoutes = composeModuleRoutes(HomeRoutes, AuthRoutes, AccommodationRoutes, ProfileRoutes);
+export const publicRoutes = composeModuleRoutes(AuthRoutes, AccommodationsRoutes, ProfileRoutes);
