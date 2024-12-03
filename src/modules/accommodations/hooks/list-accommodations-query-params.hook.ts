@@ -3,7 +3,6 @@ import {
   listAccommodationQueryParamsSchema,
   type ListAccommodationQueryParams,
 } from '#/modules/accommodations/schemas/list-accommodation-query-params.schema';
-import { cleanParams } from '../utils/clean-params.util';
 
 export function useListAccommodationQueryParams() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,9 +17,11 @@ export function useListAccommodationQueryParams() {
     .parse(Object.fromEntries(searchParams));
 
   function setQueryParams(newParams: ListAccommodationQueryParams) {
-    const updatedParams = { ...Object.fromEntries(searchParams), ...newParams };
-    const cleanedParams = cleanParams(updatedParams);
-    setSearchParams(cleanedParams);
+    const updatedParams = {
+      ...Object.fromEntries(searchParams),
+      ...Object.fromEntries(Object.entries(newParams).map(([key, value]) => [key, String(value)])),
+    };
+    setSearchParams(updatedParams);
   }
 
   return { validatedQueryParams, setQueryParams };

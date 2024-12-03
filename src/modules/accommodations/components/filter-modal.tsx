@@ -20,7 +20,6 @@ import { useListAccommodationQueryParams } from '../hooks/list-accommodations-qu
 import { useSearchParams } from 'react-router-dom';
 import { type AmenityKey } from '../types/accommodation-amenity.type';
 import { AmenitiesList } from './amenities-list';
-import { cleanParams } from '../utils/clean-params.util';
 
 interface FilterModalProps {
   open: boolean;
@@ -105,8 +104,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
   };
 
   const handleApplyFilters = () => {
-    const cleanedParams = cleanParams(filterParams);
-    setQueryParams(cleanedParams);
+    setQueryParams(filterParams);
     setOpen(false);
   };
 
