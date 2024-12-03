@@ -16,6 +16,7 @@ export const listAccommodationQueryParamsSchema = z.object({
     (value) => (typeof value === 'string' ? value.toUpperCase() : value),
     z.enum(['ASC', 'DESC']).optional()
   ),
+  search: z.string().optional(),
   minPrice: toOptionalNumber(),
   maxPrice: toOptionalNumber(),
   rooms: toOptionalNumber(),

@@ -1,12 +1,16 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { type Dayjs } from 'dayjs';
 import { type FocusedElement } from '../types/search-focused-element.type';
 import { DatePickerButton } from './datepicker-button';
+import { type AccommodationFilterParams } from '../types/accommodation-filter-params.type';
+import { useListAccommodationQueryParams } from '../hooks/list-accommodations-query-params.hook';
 
 const styles = {
   searchContainer: {
@@ -45,46 +49,71 @@ const styles = {
 };
 
 export function Search() {
-  const [searchValue, setSearchValue] = useState('');
+  const { setQueryParams } = useListAccommodationQueryParams();
+  const { handleSubmit } = useForm();
   const [focusedElement, setFocusedElement] = useState<FocusedElement>(null);
-  const [checkinDate, setCheckinDate] = useState<Dayjs | null>(null);
-  const [checkoutDate, setCheckoutDate] = useState<Dayjs | null>(null);
+  const [searchParams, setSearchParams] = useState<AccommodationFilterParams>({
+    search: '',
+  });
 
   const handleFocus = (element: FocusedElement) => setFocusedElement(element);
   const handleBlur = () => setFocusedElement(null);
 
+  const handleSearchChange = (search: string) => {
+    setSearchParams((prev) => ({
+      ...prev,
+      search,
+    }));
+  };
+
+  const handleDateChange = (key: 'availableFrom' | 'availableTo') => (date: Dayjs | null) => {
+    setSearchParams((prev) => ({
+      ...prev,
+      [key]: date ? date.format('YYYY-MM-DD') : null,
+    }));
+  };
+
+  const onSubmit = () => {
+    setQueryParams(searchParams);
+    setSearchParams({ search: '' });
+  };
+
   return (
-    <Box sx={styles.searchContainer} style={{ backgroundColor: focusedElement ? '#e0e0e0' : '#fff' }}>
-      <InputBase
-        placeholder="Search..."
-        value={searchValue}
-        onFocus={() => handleFocus('search')}
-        onBlur={handleBlur}
-        onChange={(event) => setSearchValue(event.target.value)}
-        sx={styles.inputBase(focusedElement === 'search' || focusedElement === null)}
-      />
-
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePickerButton
-          label="Check in"
-          date={checkinDate}
-          onDateChange={setCheckinDate}
-          focused={focusedElement === 'checkin' || focusedElement === null}
-          onFocus={() => handleFocus('checkin')}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Box sx={styles.searchContainer} style={{ backgroundColor: focusedElement ? '#e0e0e0' : '#fff' }}>
+        <InputBase
+          placeholder="Search..."
+          value={searchParams.search}
+          onFocus={() => handleFocus('search')}
           onBlur={handleBlur}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          sx={styles.inputBase(focusedElement === 'search' || focusedElement === null)}
         />
 
-        <DatePickerButton
-          label="Check out"
-          date={checkoutDate}
-          onDateChange={setCheckoutDate}
-          focused={focusedElement === 'checkout' || focusedElement === null}
-          onFocus={() => handleFocus('checkout')}
-          onBlur={handleBlur}
-        />
-      </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePickerButton
+            label="Check in"
+            date={searchParams.availableFrom || null}
+            onDateChange={handleDateChange('availableFrom')}
+            focused={focusedElement === 'checkin' || focusedElement === null}
+            onFocus={() => handleFocus('checkin')}
+            onBlur={handleBlur}
+          />
 
-      <SearchIcon sx={styles.searchIcon} />
-    </Box>
+          <DatePickerButton
+            label="Check out"
+            date={searchParams.availableTo || null}
+            onDateChange={handleDateChange('availableTo')}
+            focused={focusedElement === 'checkout' || focusedElement === null}
+            onFocus={() => handleFocus('checkout')}
+            onBlur={handleBlur}
+          />
+        </LocalizationProvider>
+
+        <IconButton type="submit" sx={styles.searchIcon}>
+          <SearchIcon />
+        </IconButton>
+      </Box>
+    </form>
   );
 }

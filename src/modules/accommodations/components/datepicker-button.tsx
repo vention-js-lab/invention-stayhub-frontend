@@ -7,7 +7,7 @@ import dayjs, { type Dayjs } from 'dayjs';
 const styles = {
   dateButton: (isFocused: boolean) => ({
     padding: '0 30px',
-    width: '180px',
+    width: '160px',
     borderRadius: '35px',
     backgroundColor: isFocused ? '#fff' : '#e0e0e0',
     whiteSpace: 'nowrap',
@@ -21,7 +21,7 @@ const styles = {
 
 interface DatePickerButtonProps {
   label: string;
-  date: Dayjs | null;
+  date: Date | null;
   onDateChange: (newDate: Dayjs | null) => void;
   focused: boolean;
   onFocus: () => void;
@@ -43,7 +43,6 @@ export function DatePickerButton({ label, date, onDateChange, focused, onFocus, 
       <DatePicker
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        value={date}
         onChange={(newDate) => {
           onDateChange(newDate);
           setIsOpen(false);

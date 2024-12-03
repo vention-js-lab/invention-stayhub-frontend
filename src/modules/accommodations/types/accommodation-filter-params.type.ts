@@ -4,8 +4,8 @@ import { type SortOrder } from '#/shared/constants/sort-order.constant';
 export interface AccommodationFilterParams {
   sortBy?: AccommodationListSortBy;
   sortOrder?: SortOrder;
-  minPrice: number;
-  maxPrice: number;
+  minPrice?: number;
+  maxPrice?: number;
   search?: string;
   street?: string;
   city?: string;

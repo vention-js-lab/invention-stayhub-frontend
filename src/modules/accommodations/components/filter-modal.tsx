@@ -85,7 +85,9 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
       return;
     }
     setFilterParams((prev) =>
-      is === 'min' ? { ...prev, minPrice: Math.min(value, prev.maxPrice) } : { ...prev, maxPrice: Math.max(value, prev.minPrice) }
+      is === 'min'
+        ? { ...prev, minPrice: Math.min(value, prev.maxPrice || 10000) }
+        : { ...prev, maxPrice: Math.max(value, prev.minPrice || 0) }
     );
   };
 
@@ -133,7 +135,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
             Nightly prices before fees and taxes
           </Typography>
           <Slider
-            value={[filterParams.minPrice, filterParams.maxPrice]}
+            value={[filterParams.minPrice ?? 0, filterParams.maxPrice ?? 10000]}
             onChange={(_, newPrice) => handlePriceRange(newPrice as [min: number, max: number])}
             valueLabelDisplay="auto"
             color="secondary"
