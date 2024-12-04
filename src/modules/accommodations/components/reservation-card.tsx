@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { createBooking } from '../api/booking.api';
 import { useTheme } from '@mui/material/styles';
-import { getTodayDate } from '#/shared/utils/date-utils';
-import { calculateTotal, calculateNights, validateDates } from '#/modules/accommodations/utils/reservation-dates.util';
-import { type AppTheme } from '#/styles';
+import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
+import { time } from '../utils/time';
+import { isDateUnavailable } from '../utils/reservation-dates.util';
 
 interface ReservationCardProps {
   pricePerNight: number;
@@ -17,190 +20,193 @@ interface ReservationCardProps {
   maxGuests: number | null;
   availableFrom: string | null;
   availableTo: string | null;
+  accommodationId: string;
+  bookings: { startDate: string; endDate: string }[];
 }
 
-const styles = {
-  cardContainer: (theme: AppTheme) => ({
-    border: '1px solid',
-    borderColor: theme.palette.primary.main,
-    borderRadius: '8px',
-    padding: '16px',
-    maxWidth: '400px',
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-  }),
-  button: (theme: AppTheme, isEnabled: boolean) => ({
-    backgroundColor: isEnabled ? theme.palette.secondary.main : theme.palette.action.disabled,
-    color: 'white',
-    fontWeight: 'bold',
-    marginBottom: '16px',
-    height: '56px',
-    '&:hover': {
-      backgroundColor: isEnabled ? theme.palette.secondary.dark : theme.palette.action.disabled,
-    },
-  }),
-  textField: {
-    flex: 1,
-  },
-  section: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '8px',
-  },
-  headingPrice: {
-    fontWeight: 'bold',
-    marginBottom: '16px',
-  },
-  flexBox: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '16px',
-  },
-  guestsDropdown: {
-    marginBottom: '16px',
-  },
-  notChargedText: (theme: AppTheme) => ({
-    textAlign: 'center',
-    color: theme.palette.grey[600],
-    marginBottom: '16px',
-  }),
-  divider: {
-    marginBottom: '16px',
-  },
-  totalText: {
-    fontWeight: 'bold',
-  },
-};
-
-export function ReservationCard({
+function ReservationCard({
   pricePerNight,
   cleaningFee,
   serviceFee,
   maxGuests,
   availableFrom,
   availableTo,
+  accommodationId,
+  bookings = [],
 }: ReservationCardProps) {
   const theme = useTheme();
-  const todayDate = getTodayDate();
-
-  const [checkIn, setCheckIn] = useState<string | null>(null);
-  const [checkOut, setCheckOut] = useState<string | null>(null);
+  const [checkIn, setCheckIn] = useState<ReturnType<typeof time> | null>(null);
+  const [checkOut, setCheckOut] = useState<ReturnType<typeof time> | null>(null);
   const [guests, setGuests] = useState<number>(1);
+  const [total, setTotal] = useState<number>(0);
+  const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
 
-  const isReserveEnabled = validateDates({
-    availableFrom: availableFrom,
-    availableTo: availableTo,
-    checkIn: checkIn,
-    checkOut: checkOut,
-  });
-  const calculateTotalPrice = calculateTotal({
-    checkIn: checkIn,
-    checkOut: checkOut,
-    pricePerNight,
-    cleaningFee,
-    serviceFee,
-  });
-  const maxGuestsArray = Array.from({ length: maxGuests ?? 0 }, (_, i) => {
-    return {
-      key: i + 1,
-      value: i === 0 ? 'guest' : 'guests',
+  const todayDate = time();
+
+  useEffect(() => {
+    if (checkIn && checkOut) {
+      const nights = checkOut.diff(checkIn, 'day');
+      const totalCost = nights * pricePerNight + cleaningFee + serviceFee;
+
+      const hasConflict = isDateUnavailable({ date: checkIn, bookings }) || isDateUnavailable({ date: checkOut, bookings });
+
+      setTotal(totalCost);
+      setIsButtonEnabled(nights > 0 && !hasConflict);
+    } else {
+      setIsButtonEnabled(false);
+    }
+  }, [checkIn, checkOut, pricePerNight, cleaningFee, serviceFee, bookings]);
+
+  const handleReserve = async () => {
+    if (!checkIn || !checkOut) {
+      showSnackbar({ message: 'Please select valid dates.', variant: 'warning' });
+      return;
+    }
+
+    if (isDateUnavailable({ date: checkIn, bookings }) || isDateUnavailable({ date: checkOut, bookings })) {
+      showSnackbar({ message: 'The selected dates are unavailable. Please choose different dates.', variant: 'warning' });
+      return;
+    }
+
+    const bookingPayload = {
+      accommodationId,
+      startDate: checkIn.toISOString(),
+      endDate: checkOut.toISOString(),
+      guests,
     };
-  });
-  const pricePerNights = calculateNights(checkIn, checkOut);
 
-  function handleReserve() {
-    alert('Reservation confirmed!');
-  }
+    try {
+      await createBooking(bookingPayload);
+      showSnackbar({ message: 'Reservation confirmed!', variant: 'success' });
+    } catch {
+      showSnackbar({ message: 'Failed to create booking. Please try again.', variant: 'warning' });
+    }
+  };
+
+  const styles = {
+    container: {
+      border: `1px solid ${theme.palette.action.disabled}`,
+      borderRadius: '8px',
+      padding: '16px',
+      maxWidth: '400px',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+    },
+    priceHeading: {
+      fontWeight: 'bold',
+      marginBottom: '8px',
+    },
+    priceText: {
+      color: theme.palette.action.disabled,
+      marginBottom: '16px',
+    },
+    section: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '16px',
+    },
+    dateBox: {
+      flex: 1,
+      marginRight: '8px',
+    },
+    guestsField: {
+      marginBottom: '16px',
+    },
+    reserveButton: {
+      backgroundColor: isButtonEnabled ? theme.palette.secondary.main : theme.palette.action.disabled,
+      color: isButtonEnabled ? '#fff' : theme.palette.action.disabled,
+      fontWeight: 'bold',
+      padding: '12px 0',
+      textTransform: 'none',
+      fontSize: '16px',
+      marginBottom: '16px',
+    },
+    bottomText: {
+      textAlign: 'center',
+      color: theme.palette.action.disabled,
+    },
+  };
 
   return (
-    <Box sx={styles.cardContainer}>
-      <Typography variant="h6" sx={styles.headingPrice}>
-        ${pricePerNight} <span style={{ fontWeight: 'normal' }}>night</span>
-      </Typography>
-      <Box sx={styles.flexBox}>
-        <TextField
-          label="Check-In"
-          type="date"
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-            htmlInput: {
-              min: todayDate,
-              max: availableTo,
-            },
-          }}
-          value={checkIn ?? ''}
-          onChange={(e) => setCheckIn(e.target.value)}
-          sx={{ ...styles.textField, marginRight: '8px' }}
-        />
-        <TextField
-          label="Check-Out"
-          type="date"
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-            htmlInput: {
-              min: checkIn ?? todayDate,
-              max: availableTo,
-            },
-          }}
-          value={checkOut ?? ''}
-          onChange={(e) => setCheckOut(e.target.value)}
-          sx={styles.textField}
-        />
-      </Box>
-      <TextField
-        label="Guests"
-        select={true}
-        fullWidth={true}
-        value={guests}
-        onChange={(e) => setGuests(Number(e.target.value))}
-        sx={styles.guestsDropdown}
-      >
-        {maxGuestsArray.map((guest) => (
-          <MenuItem key={guest.key} value={guest.key}>
-            {guest.key} {guest.value}
-          </MenuItem>
-        ))}
-      </TextField>
-      <Button
-        variant="contained"
-        fullWidth={true}
-        disabled={!isReserveEnabled}
-        sx={styles.button(theme, isReserveEnabled)}
-        onClick={handleReserve}
-      >
-        Reserve
-      </Button>
-      <Typography variant="body2" sx={styles.notChargedText}>
-        You won’t be charged yet
-      </Typography>
-      <Divider sx={styles.divider} />
-      <Box sx={styles.section}>
-        <Typography variant="body1">
-          ${pricePerNight} x {pricePerNights} nights
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Box sx={styles.container}>
+        <Typography variant="h5" sx={styles.priceHeading}>
+          ${total || pricePerNight}
         </Typography>
-        <Typography variant="body1">${pricePerNight * pricePerNights}</Typography>
-      </Box>
-      <Box sx={styles.section}>
-        <Typography variant="body1">Cleaning fee</Typography>
-        <Typography variant="body1">${cleaningFee}</Typography>
-      </Box>
-      <Box sx={styles.section}>
-        <Typography variant="body1">Service fee</Typography>
-        <Typography variant="body1">${serviceFee}</Typography>
-      </Box>
-      <Divider sx={styles.divider} />
-      <Box sx={styles.section}>
-        <Typography variant="h6" sx={styles.totalText}>
+        <Typography variant="body2" sx={styles.priceText}>
           Total before taxes
         </Typography>
-        <Typography variant="h6" sx={styles.totalText}>
-          ${calculateTotalPrice}
+
+        <Box sx={styles.section}>
+          <Box sx={styles.dateBox}>
+            <DatePicker
+              label="Check-In"
+              value={checkIn}
+              onChange={(newValue) => setCheckIn(newValue)}
+              disablePast={true}
+              minDate={availableFrom ? time(availableFrom) : todayDate}
+              maxDate={availableTo ? time(availableTo) : undefined}
+              shouldDisableDate={(date) => isDateUnavailable({ date, bookings })}
+              slotProps={{
+                day: ({ day }: { day: ReturnType<typeof time> }) => ({
+                  sx: isDateUnavailable({ date: day, bookings })
+                    ? { textDecoration: 'line-through', color: theme.palette.error.main }
+                    : {},
+                }),
+              }}
+            />
+          </Box>
+          <Box sx={styles.dateBox}>
+            <DatePicker
+              label="Check-Out"
+              value={checkOut}
+              onChange={(newValue) => setCheckOut(newValue)}
+              disablePast={true}
+              minDate={checkIn || todayDate}
+              maxDate={availableTo ? time(availableTo) : undefined}
+              shouldDisableDate={(date) => isDateUnavailable({ date, bookings })}
+              slotProps={{
+                day: ({ day }: { day: ReturnType<typeof time> }) => ({
+                  sx: isDateUnavailable({ date: day, bookings })
+                    ? { textDecoration: 'line-through', color: theme.palette.error.main }
+                    : {},
+                }),
+              }}
+            />
+          </Box>
+        </Box>
+
+        <TextField
+          label="Guests"
+          select={true}
+          fullWidth={true}
+          value={guests}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGuests(Number(e.target.value))}
+          sx={styles.guestsField}
+        >
+          {Array.from({ length: maxGuests || 1 }, (_, i) => i + 1).map((num) => (
+            <MenuItem key={num} value={num}>
+              {num} {num === 1 ? 'guest' : 'guests'}
+            </MenuItem>
+          ))}
+        </TextField>
+
+        <Button
+          variant="contained"
+          fullWidth={true}
+          sx={styles.reserveButton}
+          disabled={!isButtonEnabled}
+          onClick={handleReserve}
+        >
+          Reserve
+        </Button>
+
+        <Typography variant="body2" sx={styles.bottomText}>
+          You won&apos;t be charged yet
         </Typography>
       </Box>
-    </Box>
+    </LocalizationProvider>
   );
 }
+
+export { ReservationCard };

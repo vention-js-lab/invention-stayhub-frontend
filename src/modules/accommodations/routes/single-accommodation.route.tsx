@@ -4,7 +4,6 @@ import AvatarImage from '#/assets/images/card-temp-image.jpg';
 import { AccommodationDetails } from '../components/accommodation-details';
 import { AccommodationImages } from '../components/accommodation-images';
 import { useParams } from 'react-router-dom';
-import { ReservationCard } from '../components/reservation-card';
 import { AccommodationDetailsSkeleton } from '../components/skeleton-details';
 import { AccommodationImagesSkeleton } from '../components/skeleton-images';
 import { NoDataAvailable } from '#/shared/components/no-data-response';
@@ -13,6 +12,7 @@ import { UserDetails } from '../components/user-details';
 import { useSingleAccommodationQuery } from '../api/single-accommodation.api';
 import { ReviewsList } from '../components/reviews/reviews.component';
 import { AccommodationRating } from '../components/reviews/rating.component';
+import { ReservationCard } from '../components/reservation-card';
 
 const styles = {
   skeleton: { display: 'flex', justifyContent: 'space-between', mt: 2 },
@@ -56,6 +56,8 @@ export function SingleAccommodationRoute() {
           maxGuests={data.allowedNumberOfPeople}
           availableFrom={data.availableFrom}
           availableTo={data.availableTo}
+          accommodationId={data.id}
+          bookings={data.bookings || []}
         />
       </Box>
       <Box sx={{ mt: 2 }}>
