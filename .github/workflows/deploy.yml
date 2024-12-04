@@ -26,20 +26,24 @@ jobs:
           docker push $IMAGE_NAME:latest
 
   deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to EC2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ubuntu
-        run: |
-          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
-            set -e
-            docker pull ${{ secrets.DOCKER_USERNAME }}/stayhub:latest
-            docker stop stayhub || true
-            docker rm stayhub || true
-            docker run -d --name stayhub -p 3000:80 ${{ secrets.DOCKER_USERNAME }}/stayhub:latest
-            docker image prune -f
-          EOF
+  runs-on: ubuntu-latest
+  needs: build
+  steps:
+    - name: Deploy to EC2
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+        EC2_USER: ubuntu
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
+          set -e
+          cd ~/invention-stayhub-frontend
+          
+          docker pull ${{ secrets.DOCKER_USERNAME }}/stayhub:latest
+          docker stop stayhub || true
+          docker rm stayhub || true
+          docker run -d --name stayhub -p 3000:80 ${{ secrets.DOCKER_USERNAME }}/stayhub:latest
+          
+          docker image prune -f
+        EOF
+
