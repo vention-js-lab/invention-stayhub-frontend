@@ -11,8 +11,8 @@ export interface AccommodationFilterParams {
   city?: string;
   country?: string;
   available?: boolean;
-  availableFrom?: Date;
-  availableTo?: Date;
+  availableFrom?: string;
+  availableTo?: string;
   rooms?: number;
   hasWifi?: boolean;
   hasParking?: boolean;

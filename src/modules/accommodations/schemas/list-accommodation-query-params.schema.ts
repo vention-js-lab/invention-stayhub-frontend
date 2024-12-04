@@ -17,6 +17,8 @@ export const listAccommodationQueryParamsSchema = z.object({
     z.enum(['ASC', 'DESC']).optional()
   ),
   search: z.string().optional(),
+  availableFrom: z.string().date().optional(),
+  availableTo: z.string().date().optional(),
   minPrice: toOptionalNumber(),
   maxPrice: toOptionalNumber(),
   rooms: toOptionalNumber(),

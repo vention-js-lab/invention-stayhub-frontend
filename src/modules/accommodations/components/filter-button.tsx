@@ -11,7 +11,7 @@ const styles = {
     color: '#fff',
     borderRadius: '35px',
     padding: '18px 20px',
-    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.2)',
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.4)',
     '&:hover': {
       backgroundColor: '#CA1A55',
     },
