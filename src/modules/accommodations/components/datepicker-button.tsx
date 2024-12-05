@@ -25,7 +25,7 @@ const styles = {
 
 interface DatePickerButtonProps {
   label: string;
-  date: string | null;
+  date: Dayjs | null;
   onDateChange: (newDate: Dayjs | null) => void;
 }
 
@@ -38,11 +38,12 @@ export function DatePickerButton({ label, date, onDateChange }: DatePickerButton
       <Button ref={buttonRef} onClick={() => setIsOpen(true)} sx={styles.dateButton}>
         <Typography fontSize="medium">{label}</Typography>
         <Typography fontSize="small" color="silver">
-          {date ? date : 'When?'}
+          {date ? date.format('YYYY-MM-DD') : 'When?'}
         </Typography>
       </Button>
       <DatePicker
         open={isOpen}
+        value={date}
         onClose={() => setIsOpen(false)}
         onChange={(newDate) => {
           onDateChange(newDate);

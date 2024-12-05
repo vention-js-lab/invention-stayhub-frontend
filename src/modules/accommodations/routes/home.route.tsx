@@ -2,8 +2,8 @@ import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 import { AccommodationList } from '../components/accommodation-list';
 import { Search } from '../components/search';
-import { AccommodationFilterModal } from '../components/filter-modal';
-import { FilterButton } from '../components/filter-button';
+import { AccommodationFilterModal } from '../components/filter/filter-modal';
+import { FilterButton } from '../components/filter/filter-button';
 
 const styles = {
   filterArea: (showShadow: boolean) => ({

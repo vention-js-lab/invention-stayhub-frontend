@@ -1,3 +1,4 @@
+import { SortOrder } from '#/shared/constants/sort-order.constant';
 import { z } from 'zod';
 import { AccommodationListSortBy } from '../constants/sort-by.constant';
 
@@ -14,7 +15,7 @@ export const listAccommodationQueryParamsSchema = z.object({
   sortBy: z.nativeEnum(AccommodationListSortBy).optional(),
   sortOrder: z.preprocess(
     (value) => (typeof value === 'string' ? value.toUpperCase() : value),
-    z.enum(['ASC', 'DESC']).optional()
+    z.enum([SortOrder.Asc, SortOrder.Desc]).optional()
   ),
   search: z.string().optional(),
   availableFrom: z.string().date().optional(),

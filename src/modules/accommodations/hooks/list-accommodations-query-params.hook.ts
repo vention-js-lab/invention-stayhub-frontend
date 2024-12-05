@@ -19,7 +19,12 @@ export function useListAccommodationQueryParams() {
   function setQueryParams(newParams: ListAccommodationQueryParams) {
     const updatedParams = {
       ...Object.fromEntries(searchParams),
-      ...Object.fromEntries(Object.entries(newParams).map(([key, value]) => [key, String(value)])),
+      ...Object.fromEntries(
+        Object.entries(newParams)
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          .filter(([_, value]) => value !== undefined)
+          .map(([key, value]) => [key, String(value)])
+      ),
     };
     setSearchParams(updatedParams);
   }

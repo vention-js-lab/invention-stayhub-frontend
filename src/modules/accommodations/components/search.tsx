@@ -1,15 +1,14 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Box from '@mui/material/Box';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
+import { useForm, Controller } from 'react-hook-form';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { type Dayjs } from 'dayjs';
 import { DatePickerButton } from './datepicker-button';
 import { type AccommodationFilterParams } from '../types/accommodation-filter-params.type';
 import { useListAccommodationQueryParams } from '../hooks/list-accommodations-query-params.hook';
+import Box from '@mui/material/Box';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
 
 const styles = {
   searchContainer: {
@@ -49,59 +48,57 @@ const styles = {
 
 export function Search() {
   const { setQueryParams } = useListAccommodationQueryParams();
-  const { handleSubmit } = useForm();
-  const [searchParams, setSearchParams] = useState<AccommodationFilterParams>({});
-
-  const handleSearchChange = (search: string) => {
-    setSearchParams((prev) => ({
-      ...prev,
-      search,
-    }));
-  };
+  const { handleSubmit, control, setValue, getValues } = useForm<AccommodationFilterParams>();
 
   const handleDateChange = (key: 'availableFrom' | 'availableTo') => (date: Dayjs | null) => {
-    setSearchParams((prev) => {
-      const updatedParams = {
-        ...prev,
-        [key]: date ? date.format('YYYY-MM-DD') : null,
-      };
+    const newValue = date ? date.format('YYYY-MM-DD') : undefined;
+    setValue(key, newValue);
 
-      const { availableFrom, availableTo } = updatedParams;
+    const { availableFrom, availableTo } = getValues();
 
-      if (availableFrom && availableTo && dayjs(availableFrom).isAfter(dayjs(availableTo))) {
-        const swapKey = key === 'availableTo' ? 'availableFrom' : 'availableTo';
-        updatedParams[swapKey] = updatedParams[key];
-      }
-
-      return updatedParams;
-    });
+    if (availableFrom && availableTo && dayjs(availableFrom).isAfter(dayjs(availableTo))) {
+      const swapKey = key === 'availableTo' ? 'availableFrom' : 'availableTo';
+      setValue(swapKey, newValue);
+    }
   };
 
-  const onSubmit = () => {
-    setQueryParams(searchParams);
+  const onSubmit = (data: AccommodationFilterParams) => {
+    setQueryParams(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box sx={styles.searchContainer}>
-        <InputBase
-          placeholder="Search..."
-          value={searchParams.search || ''}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          sx={styles.inputBase}
+        <Controller
+          name="search"
+          control={control}
+          defaultValue=""
+          render={({ field }) => <InputBase placeholder="Search..." {...field} sx={styles.inputBase} />}
         />
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePickerButton
-            label="Check in"
-            date={searchParams.availableFrom || null}
-            onDateChange={handleDateChange('availableFrom')}
+          <Controller
+            name="availableFrom"
+            control={control}
+            render={({ field }) => (
+              <DatePickerButton
+                label="Check in"
+                date={field.value ? dayjs(field.value) : null}
+                onDateChange={handleDateChange('availableFrom')}
+              />
+            )}
           />
 
-          <DatePickerButton
-            label="Check out"
-            date={searchParams.availableTo || null}
-            onDateChange={handleDateChange('availableTo')}
+          <Controller
+            name="availableTo"
+            control={control}
+            render={({ field }) => (
+              <DatePickerButton
+                label="Check out"
+                date={field.value ? dayjs(field.value) : null}
+                onDateChange={handleDateChange('availableTo')}
+              />
+            )}
           />
         </LocalizationProvider>
 
