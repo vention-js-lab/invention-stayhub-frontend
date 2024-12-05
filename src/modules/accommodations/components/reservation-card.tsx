@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
@@ -7,11 +7,11 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { createBooking } from '../api/booking.api';
 import { useTheme } from '@mui/material/styles';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { time } from '../utils/time';
 import { isDateUnavailable } from '../utils/reservation-dates.util';
+import { useCreateBookingMutation } from '../api/create-booking.api';
 
 interface ReservationCardProps {
   pricePerNight: number;
@@ -40,7 +40,7 @@ function ReservationCard({
   const [guests, setGuests] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
-
+  const createBookingMutation = useCreateBookingMutation();
   const todayDate = time();
 
   useEffect(() => {
@@ -57,7 +57,7 @@ function ReservationCard({
     }
   }, [checkIn, checkOut, pricePerNight, cleaningFee, serviceFee, bookings]);
 
-  const handleReserve = async () => {
+  const handleReserve = () => {
     if (!checkIn || !checkOut) {
       showSnackbar({ message: 'Please select valid dates.', variant: 'warning' });
       return;
@@ -70,17 +70,27 @@ function ReservationCard({
 
     const bookingPayload = {
       accommodationId,
-      startDate: checkIn.toISOString(),
-      endDate: checkOut.toISOString(),
+      startDate: checkIn.format('YYYY-MM-DD'),
+      endDate: checkOut.format('YYYY-MM-DD'),
       guests,
     };
 
-    try {
-      await createBooking(bookingPayload);
-      showSnackbar({ message: 'Reservation confirmed!', variant: 'success' });
-    } catch {
-      showSnackbar({ message: 'Failed to create booking. Please try again.', variant: 'warning' });
-    }
+    createBookingMutation.mutate(bookingPayload, {
+      onSuccess: () => {
+        showSnackbar({ message: 'Reservation confirmed!', variant: 'success' });
+      },
+      onError: () => {
+        showSnackbar({ message: 'Failed to create booking', variant: 'error' });
+      },
+    });
+  };
+
+  const generateGuestOptions = (maxGuestsCount: number | null): JSX.Element[] => {
+    return Array.from({ length: maxGuestsCount || 1 }, (_, i) => i + 1).map((num) => (
+      <MenuItem key={num} value={num}>
+        {num} {num === 1 ? 'guest' : 'guests'}
+      </MenuItem>
+    ));
   };
 
   const styles = {
@@ -181,14 +191,10 @@ function ReservationCard({
           select={true}
           fullWidth={true}
           value={guests}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGuests(Number(e.target.value))}
+          onChange={(e) => setGuests(Number(e.target.value))}
           sx={styles.guestsField}
         >
-          {Array.from({ length: maxGuests || 1 }, (_, i) => i + 1).map((num) => (
-            <MenuItem key={num} value={num}>
-              {num} {num === 1 ? 'guest' : 'guests'}
-            </MenuItem>
-          ))}
+          {generateGuestOptions(maxGuests)}
         </TextField>
 
         <Button
