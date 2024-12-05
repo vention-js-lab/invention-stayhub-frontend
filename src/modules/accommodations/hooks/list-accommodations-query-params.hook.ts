@@ -21,8 +21,7 @@ export function useListAccommodationQueryParams() {
       ...Object.fromEntries(searchParams),
       ...Object.fromEntries(
         Object.entries(newParams)
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          .filter(([_, value]) => value !== undefined)
+          .filter(([_, value]: [string, string | number | boolean | undefined]) => value !== undefined)
           .map(([key, value]) => [key, String(value)])
       ),
     };
