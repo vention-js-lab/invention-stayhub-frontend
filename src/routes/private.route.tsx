@@ -1,7 +1,7 @@
 import { composeModuleRoutes } from '#/shared/utils/router.util';
 import { WishlistRoutes } from '#/modules/wishlist';
 import { ProtectedLayout } from '#/layout/components/protected-layout';
-import { UserAccommodationsRoutes } from '#/modules/user-accommodations';
+import { UserAccommodationsRoutes } from '#/modules/owner';
 
 export const privateRoutes = [
   {

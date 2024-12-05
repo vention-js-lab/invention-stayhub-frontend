@@ -4,13 +4,15 @@ import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { type Theme } from '@mui/material';
+import { useDispatch } from 'react-redux';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { type CreateAccommodation, createAccommodationSchema } from '../schemas/create-accommodation.schema';
 import { useCreateAccommodationMutation } from '../api/create-accommodation.api';
+import { addCreatedAccommodation } from '#/store/slices/accommodation-slice';
+import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { time } from '#/shared/libs/time.lib';
 
 const styles = {
@@ -30,9 +32,9 @@ const styles = {
   },
 };
 
-// eslint-disable-next-line complexity
 export function CreateAccommodationForm() {
-  const { createAccommodationMutation } = useCreateAccommodationMutation();
+  const createAccommodationMutation = useCreateAccommodationMutation();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -56,7 +58,17 @@ export function CreateAccommodationForm() {
   });
 
   const onSubmit: SubmitHandler<CreateAccommodation> = (data) => {
-    createAccommodationMutation.mutate(data);
+    createAccommodationMutation.mutate(data, {
+      onSuccess: (response) => {
+        dispatch(addCreatedAccommodation(response.id));
+      },
+      onError: () => {
+        showSnackbar({
+          message: 'Something went wrong. Please try again later',
+          variant: 'error',
+        });
+      },
+    });
   };
 
   const watchAvailableFrom = watch('availableFrom');
@@ -73,7 +85,6 @@ export function CreateAccommodationForm() {
             label="Available"
             control={<Switch {...register('available')} defaultChecked={true} color="success" defaultValue="true" />}
           />
-          {errors.available ? <FormHelperText error={true}>{errors.available.message}</FormHelperText> : null}
         </Grid2>
 
         <Grid2 size={{ xs: 12, sm: 6 }}>

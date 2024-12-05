@@ -17,3 +17,5 @@ export const amenitySchema = z.object({
   isChildFriendly: z.boolean().optional(),
   isQuietArea: z.boolean().optional(),
 });
+
+export type CreateAccommodationAmenity = z.infer<typeof amenitySchema>;

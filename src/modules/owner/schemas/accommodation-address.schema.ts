@@ -8,3 +8,5 @@ export const addressSchema = z.object({
   latitude: z.number().optional(),
   longitude: z.number().optional(),
 });
+
+export type CreateAccommodationAddress = z.infer<typeof addressSchema>;
