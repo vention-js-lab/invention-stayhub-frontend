@@ -1,29 +1,29 @@
+import { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import { type Theme } from '@mui/material/styles';
-import { useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
-import { type SelectChangeEvent } from '@mui/material';
-import { PhoneCodes } from '#/shared/data/phone-masks';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { personalInfoSchema, type PersonalInfoData } from '../schemas/personal-info.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useUserUpdateMutation } from '../api/user-update.api';
+import { useUserUpdateMutation } from '../api/update-user.api';
+import { CountrySelect } from './country-select';
+import { Countries } from '../constants/countries.constant';
+import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone';
 
 interface UserInfoProps {
-  image: string;
-  firstname: string;
-  lastname: string;
-  phoneNumber: string;
-  country: string;
-  gender: string;
-  description: string;
+  image?: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  country?: string;
+  gender?: string;
+  description?: string;
 }
 
 const styles = {
@@ -42,121 +42,124 @@ const styles = {
     margin: '15px',
     padding: '8px 40px',
   },
+  cancelButton: {
+    backgroundColor: '#ccc',
+    margin: '15px',
+    padding: '8px 40px',
+  },
 };
-const CountryDialCodes: Record<string, string> = PhoneCodes;
 
-export function ProfileInfo({ firstname, lastname, image, country, description, gender, phoneNumber }: UserInfoProps) {
+export function ProfileInfo({ firstName, lastName, image, country, description, gender, phoneNumber }: UserInfoProps) {
   const [disabled, setDisabled] = useState(true);
-  const [selectedCountry, setSelectedCountry] = useState(country);
-  const [phone, setPhone] = useState(phoneNumber);
-  const [selectedDender, setSelectedDender] = useState(gender);
-  const [name, setName] = useState(firstname);
-  const [familyName, setFamilyName] = useState(lastname);
-  const mutation = useUserUpdateMutation();
+
+  const { mutation } = useUserUpdateMutation();
 
   const {
     handleSubmit,
     register,
+    setValue,
+    watch,
     formState: { errors },
-  } = useForm<PersonalInfoData>({ resolver: zodResolver(personalInfoSchema) });
+    clearErrors,
+  } = useForm<PersonalInfoData>({
+    resolver: zodResolver(personalInfoSchema),
+    defaultValues: { firstName, lastName, country, phoneNumber, gender, description },
+  });
 
-  const onSave: SubmitHandler<PersonalInfoData> = (data) => {
+  const onSubmit: SubmitHandler<PersonalInfoData> = (data) => {
     mutation.mutate(data, {
-      onSuccess: () => {},
+      onSuccess: () => setDisabled(true),
     });
   };
 
-  const handleCountryChange = (event: SelectChangeEvent) => {
-    const selectCountryCode = event.target.value;
-    setSelectedCountry(selectCountryCode);
-    setPhone(CountryDialCodes[selectCountryCode] || '');
+  const handleCancel = () => {
+    setDisabled(true);
+    setValue('firstName', firstName);
+    setValue('lastName', lastName);
+    setValue('country', country);
+    setValue('phoneNumber', phoneNumber);
+    setValue('gender', gender);
+    setValue('description', description);
+    clearErrors();
   };
 
   return (
     <Box sx={{ width: '100%' }}>
       <Stack sx={styles.userHeader}>
         <Box sx={styles.imageBox}>
-          <Box component="img" sx={styles.image} src={image} alt="User image" />
+          <Box sx={{ position: 'relative' }}>
+            <CloudUploadTwoToneIcon sx={{ position: 'absolute', zIndex: '2', bottom: '0', left: '20px' }} />
+            <Box component="img" sx={styles.image} src={image} alt="User image" />
+          </Box>
           <Typography>
-            {name} {lastname}
+            {watch('firstName')} {watch('lastName')}
           </Typography>
         </Box>
-        <Button sx={styles.editButton} disabled={!disabled} variant="contained" onClick={() => setDisabled(!disabled)}>
+        <Button sx={styles.editButton} disabled={!disabled} variant="contained" onClick={() => setDisabled(false)}>
           Edit
         </Button>
       </Stack>
-      <form onSubmit={handleSubmit(onSave)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Stack direction="column" sx={styles.inputsContainer}>
           <Stack spacing={4}>
             <FormControl sx={styles.formControl} variant="outlined">
-              <Typography>Firstname</Typography>
+              <Typography>First name</Typography>
               <TextField
-                multiline={true}
                 disabled={disabled}
-                id="outlined-adornment-weight"
-                defaultValue={name}
-                {...register('firstname', { required: 'First name is required' })}
-                error={Boolean(errors.firstname)}
-                helperText={errors.firstname?.message}
+                {...register('firstName')}
+                error={!!errors.firstName}
+                helperText={errors.firstName?.message}
               />
             </FormControl>
             <FormControl sx={styles.formControl} variant="outlined">
-              <Typography>Lastname</Typography>
-              <OutlinedInput disabled={disabled} id="outlined-adornment-weight" defaultValue={lastname} />
+              <Typography>Last name</Typography>
+              <TextField
+                disabled={disabled}
+                {...register('lastName')}
+                error={!!errors.lastName}
+                helperText={errors.lastName?.message}
+              />
             </FormControl>
           </Stack>
           <Stack spacing={4}>
             <FormControl sx={styles.formControl} variant="outlined">
               <Typography>Country</Typography>
-              <Select disabled={disabled} value={selectedCountry} onChange={handleCountryChange}>
-                <MenuItem value={'uzb'}>Uzbekistan</MenuItem>
-                <MenuItem value={'rus'}>Russia</MenuItem>
-                <MenuItem value={'usa'}>USA</MenuItem>
-              </Select>
+              <CountrySelect
+                disabled={disabled}
+                selectedCountry={Countries.find((c) => c.label === watch('country')) || null}
+                onCountryChange={(_, newCountry) => setValue('country', newCountry?.label || '')}
+              />
             </FormControl>
             <FormControl sx={styles.formControl} variant="outlined">
               <Typography>Phone number</Typography>
-              <OutlinedInput
-                disabled={disabled}
-                id="outlined-adornment-weight"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
+              <TextField disabled={disabled} {...register('phoneNumber')} />
             </FormControl>
           </Stack>
           <Stack spacing={4}>
             <FormControl sx={styles.formControlGender}>
               <Typography>Gender</Typography>
-              <Select value={selectedDender} disabled={disabled} onChange={(e) => setSelectedDender(e.target.value)}>
-                <MenuItem value={'Male'}>Male</MenuItem>
-                <MenuItem value={'Female'}>Female</MenuItem>
+              <Select value={watch('gender')} onChange={(e) => setValue('gender', e.target.value)} disabled={disabled}>
+                <MenuItem value="not specified">Not specified</MenuItem>
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
               </Select>
             </FormControl>
             <FormControl sx={styles.formControl}>
               <Typography>Description</Typography>
-              <OutlinedInput
-                multiline={true}
-                disabled={disabled}
-                id="outlined-adornment-weight"
-                defaultValue={description}
-                error={Boolean(errors.firstname)}
-              />
+              <TextField multiline disabled={disabled} {...register('description')} />
             </FormControl>
           </Stack>
         </Stack>
-
-        {!disabled ? (
-          <Button
-            type="submit"
-            sx={styles.saveButton}
-            variant="contained"
-            // onClick={() => {
-            //   setDisabled(!disabled);
-            // }}
-          >
-            Save
-          </Button>
-        ) : null}
+        {!disabled && (
+          <Stack direction="row" justifyContent="flex-start">
+            <Button type="submit" sx={styles.saveButton} variant="contained">
+              Save
+            </Button>
+            <Button sx={styles.cancelButton} variant="contained" onClick={handleCancel}>
+              Cancel
+            </Button>
+          </Stack>
+        )}
       </form>
     </Box>
   );

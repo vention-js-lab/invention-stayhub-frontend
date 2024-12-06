@@ -51,7 +51,7 @@ export function UserMenu() {
       >
         {authStatus === 'authenticated' ? (
           <Box>
-            <MenuItem onClick={() => navigate('/account')}>My Account</MenuItem>
+            <MenuItem onClick={() => navigate('/account/personal-info')}>My Account</MenuItem>
             <MenuItem onClick={() => navigate('/wishlist')}>My Wishlist</MenuItem>
             <MenuItem onClick={() => navigate('/accommodations')}>My Accommodations</MenuItem>
             <MenuItem onClick={() => navigate('/bookings')}>My Bookings</MenuItem>
