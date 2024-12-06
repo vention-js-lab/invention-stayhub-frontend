@@ -17,7 +17,14 @@ export function useListAccommodationQueryParams() {
     .parse(Object.fromEntries(searchParams));
 
   function setQueryParams(newParams: ListAccommodationQueryParams) {
-    const updatedParams = { ...Object.fromEntries(searchParams), ...newParams };
+    const updatedParams = {
+      ...Object.fromEntries(searchParams),
+      ...Object.fromEntries(
+        Object.entries(newParams)
+          .filter(([_, value]: [string, string | number | boolean | undefined]) => value !== undefined)
+          .map(([key, value]) => [key, String(value)])
+      ),
+    };
     setSearchParams(updatedParams);
   }
 

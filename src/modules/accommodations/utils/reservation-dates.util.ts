@@ -1,49 +1,51 @@
-import { time } from '#/shared/libs/time.lib';
+import { time } from './time';
 
-interface CalculateTotalArgs {
-  checkIn: string | null;
-  checkOut: string | null;
+interface CalculateTotalParams {
+  checkIn: string;
+  checkOut: string;
   pricePerNight: number;
   cleaningFee: number;
   serviceFee: number;
 }
-export function calculateTotal({ checkIn, checkOut, cleaningFee, pricePerNight, serviceFee }: CalculateTotalArgs): number {
-  if (!checkIn || !checkOut) {
-    return 0;
+
+export const calculateTotal = ({ checkIn, checkOut, pricePerNight, cleaningFee, serviceFee }: CalculateTotalParams): number => {
+  if (checkIn && checkOut) {
+    const start = time(checkIn);
+    const end = time(checkOut);
+    const nights = Math.max(0, end.diff(start, 'day'));
+    return nights * pricePerNight + cleaningFee + serviceFee;
   }
+  return 0;
+};
 
-  const start = time(checkIn).toDate();
-  const end = time(checkOut).toDate();
-  const nights = Math.max(0, (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-  return nights * pricePerNight + cleaningFee + serviceFee;
+interface ValidateDatesParams {
+  checkIn: string;
+  checkOut: string;
+  availableFrom: string;
+  availableTo: string;
 }
 
-export function calculateNights(checkIn: string | null, checkOut: string | null) {
-  if (!checkIn || !checkOut) {
-    return 0;
+export const validateDates = ({ checkIn, checkOut, availableFrom, availableTo }: ValidateDatesParams): boolean => {
+  if (checkIn && checkOut) {
+    const start = time(checkIn);
+    const end = time(checkOut);
+    const availableStart = time(availableFrom);
+    const availableEnd = time(availableTo);
+
+    return start.isSameOrAfter(availableStart) && end.isSameOrBefore(availableEnd) && start.isBefore(end);
   }
+  return false;
+};
 
-  const start = time(checkIn).toDate();
-  const end = time(checkOut).toDate();
-
-  return Math.max(0, (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+interface IsDateUnavailableParams {
+  date: ReturnType<typeof time>;
+  bookings?: { startDate: string; endDate: string }[];
 }
 
-interface ValidateDatesArgs {
-  checkIn: string | null;
-  checkOut: string | null;
-  availableFrom: string | null;
-  availableTo: string | null;
-}
-export const validateDates = ({ checkIn, checkOut, availableFrom, availableTo }: ValidateDatesArgs): boolean => {
-  if (!checkIn || !checkOut) {
+export const isDateUnavailable = ({ date, bookings = [] }: IsDateUnavailableParams): boolean => {
+  if (bookings.length === 0) {
     return false;
   }
 
-  const start = time(checkIn).toDate();
-  const end = time(checkOut).toDate();
-  const availableStart = time(availableFrom).toDate();
-  const availableEnd = time(availableTo).toDate();
-
-  return start >= availableStart && end <= availableEnd && start < end;
+  return bookings.some(({ startDate, endDate }) => date.isBetween(time(startDate), time(endDate), null, '[]'));
 };
