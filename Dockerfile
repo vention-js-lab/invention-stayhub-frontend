@@ -1,23 +1,35 @@
-# Step 1: Use the official Node.js image as the base image
+# Step 1: Build Stage
 FROM node:18 AS build
 
-# Step 2: Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Step 3: Set the NODE_ENV environment variable to production
-ENV NODE_ENV=production
-
-# Step 4: Copy package.json and package-lock.json to install dependencies
+# Copy package.json and package-lock.json to install dependencies
 COPY package.json package-lock.json ./
 
-# Step 5: Install production dependencies
+# Install production dependencies
 RUN npm ci
 
-# Step 6: Copy the rest of the application files
+# Copy the rest of the application files
 COPY . .
 
-# Step 7: Build the application for production
+# Build the application
 RUN npm run build
 
-# Step 8: Run the application directly using Node.js
-CMD ["npx", "serve", "-s", "dist", "-l", "3000"]
+# Step 2: Production Stage
+FROM nginx:1.25
+
+# Remove default Nginx static files
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy built static files from the build stage
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

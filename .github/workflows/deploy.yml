@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - feat/deploy-frontend-aws
 
 jobs:
   build:
@@ -12,6 +12,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linting
+        run: npm run lint
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -21,7 +32,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/stayhub
+          IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_TAG }}
           docker build -t $IMAGE_NAME:latest .
           docker push $IMAGE_NAME:latest
 
@@ -35,14 +46,19 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ubuntu
         run: |
-          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
             set -e
-            cd ~/invention-stayhub-frontend
 
-            docker pull ${{ secrets.DOCKER_USERNAME }}/stayhub:latest
+            # Pull the latest Docker image
+            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_TAG }}:latest
+
+            # Stop and remove any existing container
             docker stop stayhub || true
             docker rm stayhub || true
-            docker run -d --name stayhub -p 3000:80 ${{ secrets.DOCKER_USERNAME }}/stayhub:latest
 
+            # Run the new container
+            docker run -d --name stayhub -p 80:80 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_TAG }}:latest
+
+            # Clean up dangling images
             docker image prune -f
           EOF
