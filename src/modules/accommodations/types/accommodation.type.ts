@@ -1,6 +1,7 @@
 import { type AccommodationAddress } from './accommodation-address.type';
 import { type AccommodationAmenity } from './accommodation-amenity.type';
 import { type AccommodationImage } from './accommodation-image.type';
+import { type Booking } from './booking.type';
 import { type Review } from './review.type';
 
 export interface Accommodation {
@@ -21,6 +22,7 @@ export interface Accommodation {
   address: AccommodationAddress | null;
   amenity: AccommodationAmenity | null;
   images: AccommodationImage[] | null;
+  bookings: Booking[] | null;
   deletedAt: string | null;
   reviews: Review[] | null;
 }

@@ -28,7 +28,8 @@ interface AccommodationListResponse {
 }
 
 async function getAccommodations(pageParam: number, limit: number, params: ListAccommodationQueryParams) {
-  const searchParams = new URLSearchParams(params).toString();
+  const stringifiedParams = Object.fromEntries(Object.entries(params).map(([key, value]) => [key, String(value)]));
+  const searchParams = new URLSearchParams(stringifiedParams).toString();
 
   const response = await apiClient.get<AccommodationListResponse>(
     `/accommodations?page=${pageParam}&limit=${limit}&${searchParams}`
