@@ -16,7 +16,7 @@ const styles = {
   },
 };
 
-export function UserAccommodationsRoute() {
+export function OwnerRoute() {
   return (
     <Box sx={styles.header}>
       <Typography sx={styles.heading}>My Accommodations</Typography>

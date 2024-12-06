@@ -2,12 +2,12 @@ import { lazyRoute } from '#/shared/utils/router.util';
 import { type RouteObject } from 'react-router-dom';
 import { CreateAccommodationRoute } from './routes/create-accommodation.route';
 
-const { UserAccommodationsRoute } = lazyRoute(() => import('./routes/user-accommodations.route'), 'UserAccommodationsRoute');
+const { OwnerRoute } = lazyRoute(() => import('./routes/owner.route'), 'OwnerRoute');
 
-export const UserAccommodationsRoutes: RouteObject[] = [
+export const OwnerRoutes: RouteObject[] = [
   {
     path: '/accommodations',
-    element: <UserAccommodationsRoute />,
+    element: <OwnerRoute />,
   },
   {
     path: '/accommodations/create',
