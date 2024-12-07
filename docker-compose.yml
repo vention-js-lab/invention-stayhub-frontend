@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  react-app:
+    build: .
+    container_name: react-app
+    ports:
+      - "8080:80"
+    networks:
+      - frontend
+    restart: always
+
+networks:
+  frontend:
+    driver: bridge
