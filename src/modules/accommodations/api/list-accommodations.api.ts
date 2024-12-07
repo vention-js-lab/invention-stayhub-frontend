@@ -17,7 +17,7 @@ export function useListAccommodationsQuery(limit: number, params: ListAccommodat
   return listAccommodationsQuery;
 }
 
-interface AccommodationListResponseData {
+interface AccommodationList {
   result: Accommodation[];
   metadata: AccommodationListResponseDataMetadata;
 }
@@ -26,7 +26,7 @@ async function getAccommodations(pageParam: number, limit: number, params: ListA
   const stringifiedParams = Object.fromEntries(Object.entries(params).map(([key, value]) => [key, String(value)]));
   const searchParams = new URLSearchParams(stringifiedParams).toString();
 
-  const response = await apiClient.get<BaseResponse<AccommodationListResponseData>>(
+  const response = await apiClient.get<BaseResponse<AccommodationList>>(
     `/accommodations?page=${pageParam}&limit=${limit}&${searchParams}`
   );
 
