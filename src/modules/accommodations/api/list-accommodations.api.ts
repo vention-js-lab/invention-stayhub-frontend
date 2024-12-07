@@ -4,6 +4,7 @@ import { getNextPageNumber } from '../utils/pagination.util';
 import { type Accommodation } from '../types/accommodation.type';
 import { type ListAccommodationQueryParams } from '../schemas/list-accommodation-query-params.schema';
 import { type AccommodationListResponseDataMetadata } from '../types/accommodation-list-metadata.type';
+import { type BaseResponse } from '#/shared/types/base-response.type';
 
 export function useListAccommodationsQuery(limit: number, params: ListAccommodationQueryParams) {
   const listAccommodationsQuery = useInfiniteQuery({
@@ -21,17 +22,11 @@ interface AccommodationListResponseData {
   metadata: AccommodationListResponseDataMetadata;
 }
 
-interface AccommodationListResponse {
-  status: number;
-  message: string;
-  data: AccommodationListResponseData;
-}
-
 async function getAccommodations(pageParam: number, limit: number, params: ListAccommodationQueryParams) {
   const stringifiedParams = Object.fromEntries(Object.entries(params).map(([key, value]) => [key, String(value)]));
   const searchParams = new URLSearchParams(stringifiedParams).toString();
 
-  const response = await apiClient.get<AccommodationListResponse>(
+  const response = await apiClient.get<BaseResponse<AccommodationListResponseData>>(
     `/accommodations?page=${pageParam}&limit=${limit}&${searchParams}`
   );
 
