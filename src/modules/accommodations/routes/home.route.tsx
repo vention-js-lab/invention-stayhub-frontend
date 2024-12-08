@@ -27,7 +27,7 @@ const styles = {
 
 export function HomeRoute() {
   const [showShadow, setShowShadow] = useState<boolean>(false);
-  const [isFilterModalOpen, setFilterModalOpen] = useState<boolean>(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,8 +43,8 @@ export function HomeRoute() {
     <Box mt="var(--filter-area-height)">
       <Box sx={styles.filterArea(showShadow)}>
         <Search />
-        <FilterButton onClick={() => setFilterModalOpen(true)} />
-        <AccommodationFilterModal open={isFilterModalOpen} setOpen={setFilterModalOpen} />
+        <FilterButton onClick={() => setIsFilterModalOpen(true)} />
+        <AccommodationFilterModal open={isFilterModalOpen} setOpen={setIsFilterModalOpen} />
       </Box>
       <AccommodationList />
     </Box>
