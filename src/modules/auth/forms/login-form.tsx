@@ -11,7 +11,7 @@ import { type LoginFormData, loginFormDataSchema } from '../schemas/login-form.s
 import { LoginButton } from '../components/login-button';
 import { LoadingButton } from '../components/login-loading-button';
 import { useLoginMutation } from '../api/login.api';
-import { setCurrentUser, setAuthStatus } from '#/store/slices/auth-slice';
+import { setCurrentUser, setAuthStatus } from '#/redux/slices/auth-slice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { parseLoginError } from '../utils/login-error-parser.util';

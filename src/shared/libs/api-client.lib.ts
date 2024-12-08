@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { getCookie } from '../utils/cookie-helper.util';
+import { validatedEnv } from '#/configs/env.config';
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: validatedEnv.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },

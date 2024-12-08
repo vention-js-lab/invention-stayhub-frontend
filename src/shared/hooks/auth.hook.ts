@@ -1,10 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setAuthStatus, setCurrentUser, clearCurrentUser } from '#/store/slices/auth-slice';
+import { setAuthStatus, setCurrentUser, clearCurrentUser } from '#/redux/slices/auth-slice';
 import { useEffect } from 'react';
 import { getLocalUser } from '#/modules/auth/utils/get-local-user.util';
 import { deleteCookie, setCookie } from '../utils/cookie-helper.util';
 import { jwtDecode } from 'jwt-decode';
-import { type StoreState } from '#/store/store';
+import { type StoreState } from '#/redux/store';
 import { type CurrentUser } from '#/modules/auth/schemas/current-user.schema';
 import { type DecodedToken } from '#/modules/auth/types/decoded-access-token.type';
 
