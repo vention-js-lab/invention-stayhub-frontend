@@ -6,7 +6,10 @@ import { deleteCookie, setCookie } from '../utils/cookie-helper.util';
 import { jwtDecode } from 'jwt-decode';
 import { type StoreState } from '#/redux/store';
 import { type CurrentUser } from '#/modules/auth/schemas/current-user.schema';
-import { type DecodedToken } from '#/modules/auth/types/decoded-access-token.type';
+
+interface DecodedToken {
+  exp: number;
+}
 
 export function useAuth() {
   const dispatch = useDispatch();

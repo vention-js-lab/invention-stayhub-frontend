@@ -3,13 +3,13 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import { RegisterLink } from '../components/register-link';
+import { RegisterLink } from './register-link';
 import { useAuth } from '#/shared/hooks/auth.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type LoginFormData, loginFormDataSchema } from '../schemas/login-form.schema';
-import { LoginButton } from '../components/login-button';
-import { LoadingButton } from '../components/login-loading-button';
+import { LoginButton } from './login-button';
+import { LoadingButton } from './login-loading-button';
 import { useLoginMutation } from '../api/login.api';
 import { setCurrentUser, setAuthStatus } from '#/redux/slices/auth-slice';
 import { useDispatch } from 'react-redux';
@@ -25,7 +25,7 @@ const styles = {
 };
 
 export function LoginForm() {
-  const { loginMutation } = useLoginMutation();
+  const loginMutation = useLoginMutation();
   const { login } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
