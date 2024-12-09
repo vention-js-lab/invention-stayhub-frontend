@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { type CreateAccommodation, createAccommodationSchema } from '../schemas/create-accommodation.schema';
 import { useCreateAccommodationMutation } from '../api/create-accommodation.api';
-import { addCreatedAccommodation } from '#/store/slices/accommodation-slice';
+import { addCreatedAccommodation } from '#/redux/slices/accommodation-slice';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { time } from '#/shared/libs/time.lib';
 
