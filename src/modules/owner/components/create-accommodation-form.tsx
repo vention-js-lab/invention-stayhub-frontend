@@ -14,6 +14,7 @@ import { useCreateAccommodationMutation } from '../api/create-accommodation.api'
 import { addCreatedAccommodation } from '#/store/slices/accommodation-slice';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { time } from '#/shared/libs/time.lib';
+import { useNavigate } from 'react-router-dom';
 
 const styles = {
   heading: {
@@ -35,6 +36,7 @@ const styles = {
 export function CreateAccommodationForm() {
   const createAccommodationMutation = useCreateAccommodationMutation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -61,6 +63,8 @@ export function CreateAccommodationForm() {
     createAccommodationMutation.mutate(data, {
       onSuccess: (response) => {
         dispatch(addCreatedAccommodation(response.id));
+        if (response.id) localStorage.setItem('createdAccommodationId', response.id);
+        navigate('/accommodations/create/address');
       },
       onError: () => {
         showSnackbar({
@@ -89,7 +93,7 @@ export function CreateAccommodationForm() {
 
         <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
-            type="string"
+            type="text"
             fullWidth={true}
             label="Accommodation Name"
             {...register('name')}
