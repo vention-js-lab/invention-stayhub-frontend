@@ -14,7 +14,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useUserUpdateMutation } from '../api/update-user.api';
 import { CountrySelect } from './country-select';
 import { Countries } from '../constants/countries.constant';
-import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone';
+import DefaultImage from '#/assets/images/avatar-placeholder.png';
+import { ImageUpload } from './image-upload';
+import { type Country } from '../types/country.type';
+import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 
 interface UserInfoProps {
   image?: string;
@@ -51,7 +54,7 @@ const styles = {
 
 export function ProfileInfo({ firstName, lastName, image, country, description, gender, phoneNumber }: UserInfoProps) {
   const [disabled, setDisabled] = useState(true);
-
+  const [imageUrl, setImageUrl] = useState(image || DefaultImage);
   const { mutation } = useUserUpdateMutation();
 
   const {
@@ -67,9 +70,18 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
   });
 
   const onSubmit: SubmitHandler<PersonalInfoData> = (data) => {
-    mutation.mutate(data, {
-      onSuccess: () => setDisabled(true),
-    });
+    mutation.mutate(
+      { ...data, image: imageUrl },
+      {
+        onSuccess: () => setDisabled(true),
+        onError: () => {
+          showSnackbar({
+            message: 'Phone number is invalid',
+            variant: 'error',
+          });
+        },
+      }
+    );
   };
 
   const handleCancel = () => {
@@ -82,14 +94,19 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
     setValue('description', description);
     clearErrors();
   };
-
+  const handleImageUpload = (uploadedImageUrl: string) => {
+    setImageUrl(uploadedImageUrl);
+  };
+  const handleCountryChange = (_: unknown, newCountry: Country | null) => {
+    setValue('country', newCountry?.label || '');
+    setValue('phoneNumber', newCountry?.phone ? `+${newCountry.phone}` : '');
+  };
   return (
     <Box sx={{ width: '100%' }}>
       <Stack sx={styles.userHeader}>
         <Box sx={styles.imageBox}>
           <Box sx={{ position: 'relative' }}>
-            <CloudUploadTwoToneIcon sx={{ position: 'absolute', zIndex: '2', bottom: '0', left: '20px' }} />
-            <Box component="img" sx={styles.image} src={image} alt="User image" />
+            <ImageUpload defaultImage={imageUrl} onImageUpload={handleImageUpload} disabled={disabled} />
           </Box>
           <Typography>
             {watch('firstName')} {watch('lastName')}
@@ -107,7 +124,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
               <TextField
                 disabled={disabled}
                 {...register('firstName')}
-                error={!!errors.firstName}
+                error={Boolean(errors.firstName)}
                 helperText={errors.firstName?.message}
               />
             </FormControl>
@@ -116,7 +133,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
               <TextField
                 disabled={disabled}
                 {...register('lastName')}
-                error={!!errors.lastName}
+                error={Boolean(errors.lastName)}
                 helperText={errors.lastName?.message}
               />
             </FormControl>
@@ -127,7 +144,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
               <CountrySelect
                 disabled={disabled}
                 selectedCountry={Countries.find((c) => c.label === watch('country')) || null}
-                onCountryChange={(_, newCountry) => setValue('country', newCountry?.label || '')}
+                onCountryChange={handleCountryChange}
               />
             </FormControl>
             <FormControl sx={styles.formControl} variant="outlined">
@@ -139,14 +156,13 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
             <FormControl sx={styles.formControlGender}>
               <Typography>Gender</Typography>
               <Select value={watch('gender')} onChange={(e) => setValue('gender', e.target.value)} disabled={disabled}>
-                <MenuItem value="not specified">Not specified</MenuItem>
                 <MenuItem value="male">Male</MenuItem>
                 <MenuItem value="female">Female</MenuItem>
               </Select>
             </FormControl>
             <FormControl sx={styles.formControl}>
               <Typography>Description</Typography>
-              <TextField multiline disabled={disabled} {...register('description')} />
+              <TextField multiline={true} disabled={disabled} {...register('description')} />
             </FormControl>
           </Stack>
         </Stack>
