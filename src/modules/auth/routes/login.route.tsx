@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { LoginForm } from '../forms/login-form';
+import { LoginForm } from '../components/login-form';
 
 const styles = {
   rootContainer: {

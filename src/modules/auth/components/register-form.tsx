@@ -3,14 +3,13 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { style } from '../styles/style';
 import { registerFormDataSchema, type RegisterFormData } from '../schemas/register-form.schema';
 import { useRegisterMutation } from '../api/register.api';
 import { useSnackbar } from 'notistack';
 
 export function RegisterForm() {
-  const { mutation } = useRegisterMutation();
+  const mutation = useRegisterMutation();
   const {
     register,
     handleSubmit,
