@@ -9,10 +9,11 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useUpdateAccommodationMutation } from '../api/update-accommodation.api';
 import { addressSchema, type CreateAccommodationAddress } from '../schemas/accommodation-address.schema';
 import { type Theme } from '@mui/material';
-import { countries } from '#/shared/constants/countries';
+import { countries } from '#/shared/constants/countries.constant';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { GoogleMapComponent } from './google-map';
 import { useNavigate } from 'react-router-dom';
+import { type UpdateAddressData } from '../types/create-accommodation-response.type';
 
 const styles = {
   heading: {
@@ -32,13 +33,12 @@ const styles = {
 };
 
 export function AddressForm() {
-  const updateAccommodationMutation = useUpdateAccommodationMutation();
+  const updateAccommodationMutation = useUpdateAccommodationMutation<UpdateAddressData>();
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     setValue,
-    // watch,
     formState: { errors },
   } = useForm<CreateAccommodationAddress>({
     resolver: zodResolver(addressSchema),
@@ -50,7 +50,16 @@ export function AddressForm() {
       updateAccommodationMutation.mutate(
         {
           id: accommodationId,
-          data,
+          data: {
+            address: {
+              street: data.street,
+              city: data.city,
+              country: data.country,
+              zipCode: data.zipCode,
+              latitude: data.latitude,
+              longitude: data.longitude,
+            },
+          },
         },
         {
           onSuccess: () => {
@@ -124,7 +133,6 @@ export function AddressForm() {
               <TextField
                 {...params}
                 label="Choose a country"
-                // {...register('country')}
                 error={Boolean(errors.country)}
                 helperText={errors.country?.message}
                 slotProps={{

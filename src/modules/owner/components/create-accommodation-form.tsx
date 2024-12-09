@@ -62,8 +62,10 @@ export function CreateAccommodationForm() {
   const onSubmit: SubmitHandler<CreateAccommodation> = (data) => {
     createAccommodationMutation.mutate(data, {
       onSuccess: (response) => {
-        dispatch(addCreatedAccommodation(response.id));
-        if (response.id) localStorage.setItem('createdAccommodationId', response.id);
+        if (response.data.id) {
+          dispatch(addCreatedAccommodation(response.data.id));
+          if (response.data.id) localStorage.setItem('createdAccommodationId', response.data.id);
+        }
         navigate('/accommodations/create/address');
       },
       onError: () => {

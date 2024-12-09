@@ -1,27 +1,17 @@
 import { apiClient } from '#/shared/libs/api-client.lib';
 import { useMutation } from '@tanstack/react-query';
 import { type AxiosError } from 'axios';
-import { type CreateAccommodationAddress } from '../schemas/accommodation-address.schema';
-import { type CreateAccommodationResponse } from '../types/create-accommodation-response.type';
+import { type UpdateAccommodationData, type CreateAccommodationResponse } from '../types/create-accommodation-response.type';
+import { type BaseResponse } from '#/shared/types/base-response.type';
 
-export function useUpdateAccommodationMutation() {
+export function useUpdateAccommodationMutation<T>() {
   const updateAccommodationMutation = useMutation<
-    CreateAccommodationResponse,
+    BaseResponse<CreateAccommodationResponse>,
     AxiosError,
-    { id: string; data: CreateAccommodationAddress }
+    UpdateAccommodationData<T>
   >({
     mutationFn: async ({ id, data }) => {
-      const requestData = {
-        address: {
-          street: data.street,
-          city: data.city,
-          country: data.country,
-          zipCode: data.zipCode,
-          latitude: data.latitude,
-          longitude: data.longitude,
-        },
-      };
-      const res = await apiClient.patch<CreateAccommodationResponse>(`/accommodations/${id}`, requestData);
+      const res = await apiClient.patch<BaseResponse<CreateAccommodationResponse>>(`/accommodations/${id}`, data);
       return res.data;
     },
   });
