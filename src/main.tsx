@@ -12,7 +12,7 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from '#/routes';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { store } from './redux/store';
 
 import '@fontsource/roboto/100.css';
 import '@fontsource/roboto/300.css';
