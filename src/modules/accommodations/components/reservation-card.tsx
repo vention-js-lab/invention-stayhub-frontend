@@ -12,6 +12,7 @@ import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { time } from '../utils/time';
 import { isDateUnavailable } from '../utils/reservation-dates.util';
 import { useCreateBookingMutation } from '../api/create-booking.api';
+import { useAuthGuardAction } from '#/shared/hooks/auth-guard-action.hook';
 
 interface ReservationCardProps {
   pricePerNight: number;
@@ -24,7 +25,7 @@ interface ReservationCardProps {
   bookings: { startDate: string; endDate: string }[];
 }
 
-function ReservationCard({
+export function ReservationCard({
   pricePerNight,
   cleaningFee,
   serviceFee,
@@ -42,6 +43,7 @@ function ReservationCard({
   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
   const createBookingMutation = useCreateBookingMutation();
   const todayDate = time();
+  const authGuardAction = useAuthGuardAction();
 
   useEffect(() => {
     if (checkIn && checkOut) {
@@ -84,6 +86,10 @@ function ReservationCard({
       },
     });
   };
+
+  function handleClick() {
+    authGuardAction(handleReserve);
+  }
 
   const generateGuestOptions = (maxGuestsCount: number | null): JSX.Element[] => {
     return Array.from({ length: maxGuestsCount || 1 }, (_, i) => i + 1).map((num) => (
@@ -197,13 +203,7 @@ function ReservationCard({
           {generateGuestOptions(maxGuests)}
         </TextField>
 
-        <Button
-          variant="contained"
-          fullWidth={true}
-          sx={styles.reserveButton}
-          disabled={!isButtonEnabled}
-          onClick={handleReserve}
-        >
+        <Button variant="contained" fullWidth={true} sx={styles.reserveButton} disabled={!isButtonEnabled} onClick={handleClick}>
           Reserve
         </Button>
 
@@ -214,5 +214,3 @@ function ReservationCard({
     </LocalizationProvider>
   );
 }
-
-export { ReservationCard };
