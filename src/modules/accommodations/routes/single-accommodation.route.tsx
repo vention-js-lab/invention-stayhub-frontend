@@ -17,6 +17,9 @@ import {
   singleAccommodationUrlParamsSchema,
   type SingleAccommodationUrlParams,
 } from '../schemas/single-accommodation-url-params.schema';
+import { SingleAccommodationMap } from '../components/single-accommodation-map';
+import { parseAddress } from '../utils/parse-address.util';
+import Typography from '@mui/material/Typography';
 
 const styles = {
   skeleton: { display: 'flex', justifyContent: 'space-between', mt: 2 },
@@ -70,6 +73,15 @@ export function SingleAccommodationRoute() {
         <AccommodationRating reviews={data.reviews} />
         <ReviewsList reviews={data.reviews} />
       </Box>
+      {data.address?.latitude && data.address.longitude ? (
+        <>
+          <Divider />
+          <SingleAccommodationMap latitude={data.address.latitude} longitude={data.address.longitude} />
+        </>
+      ) : null}
+      <Typography fontSize={16} fontWeight="bold" mt={2}>
+        {parseAddress(data.address)}
+      </Typography>
     </Box>
   );
 }
