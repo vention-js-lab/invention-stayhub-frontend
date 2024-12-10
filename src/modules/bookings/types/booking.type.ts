@@ -8,6 +8,6 @@ export interface Booking {
   createdAt: string;
   updatedAt: string;
   accountId: string;
-  accommodationId: string | null;
-  accommodation: Accommodation | null;
+  accommodationId: string;
+  accommodation: Accommodation;
 }
