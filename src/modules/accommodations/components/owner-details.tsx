@@ -15,7 +15,7 @@ const styles = {
   avatar: { width: 70, height: 70, cursor: 'pointer' },
 };
 
-export function UserDetails({ image, firstname, lastname, description }: UserDetailsProps) {
+export function OwnerDetails({ image, firstname, lastname, description }: UserDetailsProps) {
   return (
     <Box sx={styles.container}>
       <Link href="/users/profile">

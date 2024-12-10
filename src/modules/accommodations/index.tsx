@@ -10,7 +10,7 @@ export const AccommodationsRoutes: RouteObject[] = [
     element: <HomeRoute />,
   },
   {
-    path: '/accommodations/:id',
+    path: '/accommodations/:accommodationId',
     element: <SingleAccommodationRoute />,
   },
 ];
