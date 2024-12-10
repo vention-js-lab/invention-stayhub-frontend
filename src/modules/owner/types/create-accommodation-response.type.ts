@@ -17,3 +17,12 @@ export interface CreateAccommodationResponse {
   amenity?: CreateAccommodationAmenity;
   address?: CreateAccommodationAddress;
 }
+
+export interface UpdateAccommodationData<T> {
+  id: string;
+  data: T;
+}
+
+export interface UpdateAddressData {
+  address: CreateAccommodationAddress;
+}
