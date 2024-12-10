@@ -1,4 +1,4 @@
-import { capitalizer } from '#/shared/helper/capitalizer.helper';
+import { capitalizer } from '#/shared/utils/capitalizer.util';
 import { BookingStatus } from '../constants/booking-status.constant';
 import Typography from '@mui/material/Typography';
 
@@ -11,7 +11,7 @@ const styles = {
   navItem: (isSelected: boolean) => ({
     width: '100%',
     textAlign: 'center',
-    borderBottom: isSelected ? '3px solid #000' : '1px solid #e9e9e9',
+    borderBottom: isSelected ? '3px solid #E91E63' : '1px solid #e9e9e9',
     fontSize: '16px',
     fontWeight: '500',
     padding: '10px 5px',
