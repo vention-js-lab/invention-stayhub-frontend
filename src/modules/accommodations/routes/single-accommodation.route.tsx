@@ -3,16 +3,23 @@ import Divider from '@mui/material/Divider';
 import AvatarImage from '#/assets/images/card-temp-image.jpg';
 import { AccommodationDetails } from '../components/accommodation-details';
 import { AccommodationImages } from '../components/accommodation-images';
-import { useParams } from 'react-router-dom';
 import { AccommodationDetailsSkeleton } from '../components/skeleton-details';
 import { AccommodationImagesSkeleton } from '../components/skeleton-images';
 import { NoDataAvailable } from '#/shared/components/no-data-response';
 import { AccommodationAmenities } from '../components/accommodation-amenities';
-import { UserDetails } from '../components/user-details';
+import { OwnerDetails } from '../components/owner-details';
 import { useSingleAccommodationQuery } from '../api/single-accommodation.api';
 import { ReviewsList } from '../components/reviews/reviews.component';
 import { AccommodationRating } from '../components/reviews/rating.component';
 import { ReservationCard } from '../components/reservation-card';
+import { useValidatedUrlParams } from '#/shared/hooks/validated-url-params.hook';
+import {
+  singleAccommodationUrlParamsSchema,
+  type SingleAccommodationUrlParams,
+} from '../schemas/single-accommodation-url-params.schema';
+import { SingleAccommodationMap } from '../components/single-accommodation-map';
+import { parseAddress } from '../utils/parse-address.util';
+import Typography from '@mui/material/Typography';
 
 const styles = {
   skeleton: { display: 'flex', justifyContent: 'space-between', mt: 2 },
@@ -22,8 +29,8 @@ const styles = {
 };
 
 export function SingleAccommodationRoute() {
-  const { id } = useParams<{ id: string }>();
-  const { data, status } = useSingleAccommodationQuery(id);
+  const { accommodationId } = useValidatedUrlParams<SingleAccommodationUrlParams>(singleAccommodationUrlParamsSchema);
+  const { data, status } = useSingleAccommodationQuery(accommodationId);
 
   if (status === 'pending') {
     return (
@@ -35,9 +42,11 @@ export function SingleAccommodationRoute() {
       </Box>
     );
   }
-  if (!data) {
+
+  if (status === 'error') {
     return <NoDataAvailable data={'data'} />;
   }
+
   return (
     <Box sx={styles.container}>
       <AccommodationImages images={data.images} />
@@ -45,7 +54,7 @@ export function SingleAccommodationRoute() {
         <Box sx={styles.details}>
           <AccommodationDetails data={data} />
           <Divider variant="middle" />
-          <UserDetails image={AvatarImage} firstname="John" lastname="Doe" description="Something about the user" />
+          <OwnerDetails image={AvatarImage} firstname="John" lastname="Doe" description="Something about the user" />
           <Divider variant="middle" />
           <AccommodationAmenities amenities={data.amenity} />
         </Box>
@@ -64,6 +73,15 @@ export function SingleAccommodationRoute() {
         <AccommodationRating reviews={data.reviews} />
         <ReviewsList reviews={data.reviews} />
       </Box>
+      {data.address?.latitude && data.address.longitude ? (
+        <>
+          <Divider />
+          <SingleAccommodationMap latitude={data.address.latitude} longitude={data.address.longitude} />
+        </>
+      ) : null}
+      <Typography fontSize={16} fontWeight="bold" mt={2}>
+        {parseAddress(data.address)}
+      </Typography>
     </Box>
   );
 }

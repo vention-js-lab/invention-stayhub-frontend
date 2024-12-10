@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
+import { validatedEnv } from '#/configs/env.config';
 
 const containerStyle = {
   width: '100%',
@@ -22,7 +23,7 @@ export function GoogleMapComponent({ onLocationChange }: GoogleMapComponentProps
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_APIKEY,
+    googleMapsApiKey: validatedEnv.VITE_GOOGLE_MAP_APIKEY,
     libraries,
   });
 
