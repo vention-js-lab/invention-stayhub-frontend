@@ -30,7 +30,7 @@ export function ImageUpload({ defaultImage, onImageUpload, disabled }: ImageUplo
 
       mutation.mutate(formData, {
         onSuccess: (data) => {
-          onImageUpload(data.url);
+          onImageUpload(data);
         },
         onError: () => {
           alert('Failed to upload image');

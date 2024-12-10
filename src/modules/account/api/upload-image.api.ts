@@ -1,15 +1,12 @@
 import { apiClient } from '#/shared/libs/api-client.lib';
+import { type BaseResponse } from '#/shared/types/base-response.type';
 import { useMutation } from '@tanstack/react-query';
 
-interface UploadResponse {
-  url: string;
-}
-
 export function useUploadImageMutation() {
-  const mutation = useMutation<UploadResponse, Error, FormData>({
+  const mutation = useMutation<string, Error, FormData>({
     mutationFn: async (formdata: FormData) => {
-      const response = await apiClient.post<UploadResponse>('/upload/image', formdata);
-      return response.data;
+      const response = await apiClient.post<BaseResponse<string>>('/uploads/image', formdata);
+      return response.data.data;
     },
   });
   return mutation;
