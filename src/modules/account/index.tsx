@@ -5,7 +5,7 @@ const { ProfileRoute } = lazyRoute(() => import('./routes/profile.route'), 'Prof
 
 export const AccountRoutes: RouteObject[] = [
   {
-    path: '/account/personal-info',
+    path: '/account/profile',
     element: <ProfileRoute />,
   },
 ];

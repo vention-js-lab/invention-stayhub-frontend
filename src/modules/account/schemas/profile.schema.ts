@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const personalInfoSchema = z.object({
+export const profileSchema = z.object({
   image: z.string().optional(),
   firstName: z.string().min(3, 'Firstname should be at least 3 characters'),
   lastName: z.string().min(3, 'Lastname should be at least 3 characters'),
@@ -10,4 +10,4 @@ export const personalInfoSchema = z.object({
   description: z.string().optional(),
 });
 
-export type PersonalInfoData = z.infer<typeof personalInfoSchema>;
+export type ProfileData = z.infer<typeof profileSchema>;

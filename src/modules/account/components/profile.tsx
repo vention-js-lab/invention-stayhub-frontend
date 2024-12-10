@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import { type SubmitHandler, useForm } from 'react-hook-form';
-import { personalInfoSchema, type PersonalInfoData } from '../schemas/personal-info.schema';
+import { profileSchema, type ProfileData } from '../schemas/profile.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useUserUpdateMutation } from '../api/update-user.api';
 import { CountrySelect } from './country-select';
@@ -64,12 +64,12 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
     watch,
     formState: { errors },
     clearErrors,
-  } = useForm<PersonalInfoData>({
-    resolver: zodResolver(personalInfoSchema),
+  } = useForm<ProfileData>({
+    resolver: zodResolver(profileSchema),
     defaultValues: { firstName, lastName, country, phoneNumber, gender, description },
   });
 
-  const onSubmit: SubmitHandler<PersonalInfoData> = (data) => {
+  const onSubmit: SubmitHandler<ProfileData> = (data) => {
     mutation.mutate(
       { ...data, image: imageUrl },
       {
