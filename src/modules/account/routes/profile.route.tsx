@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import { ProfileInfo } from '../components/profile';
-import { useProfileQuery } from '../api/get-user.api';
+import { useProfileQuery } from '../api/get-profile.api';
 import Typography from '@mui/material/Typography';
 
 export function ProfileRoute() {

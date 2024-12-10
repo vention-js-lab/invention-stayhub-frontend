@@ -14,7 +14,7 @@ interface ImageUploadProps {
 export function ImageUpload({ defaultImage, onImageUpload, disabled }: ImageUploadProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string>(defaultImage);
-  const { mutation } = useUploadImageMutation();
+  const mutation = useUploadImageMutation();
   const theme = useTheme();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

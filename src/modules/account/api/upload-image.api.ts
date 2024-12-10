@@ -12,5 +12,5 @@ export function useUploadImageMutation() {
       return response.data;
     },
   });
-  return { mutation };
+  return mutation;
 }

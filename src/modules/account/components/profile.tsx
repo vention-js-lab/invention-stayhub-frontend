@@ -55,7 +55,7 @@ const styles = {
 export function ProfileInfo({ firstName, lastName, image, country, description, gender, phoneNumber }: UserInfoProps) {
   const [disabled, setDisabled] = useState(true);
   const [imageUrl, setImageUrl] = useState(image || DefaultImage);
-  const { mutation } = useUserUpdateMutation();
+  const mutation = useUserUpdateMutation();
 
   const {
     handleSubmit,
