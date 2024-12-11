@@ -24,7 +24,7 @@ const styles = {
 
 export function BookingsNavbar({ selectedCategory, onCategoryChange }: BookingsNavbarProps) {
   return (
-    <nav style={{ display: 'flex' }}>
+    <nav style={{ display: 'flex', marginBottom: '18px' }}>
       {Object.values(BookingStatus).map((status) => (
         <Typography key={status} sx={styles.navItem(selectedCategory === status)} onClick={() => onCategoryChange(status)}>
           {capitalizer(status)}
