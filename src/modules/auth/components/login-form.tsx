@@ -2,8 +2,6 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import { RegisterLink } from './register-link';
 import { useAuth } from '#/shared/hooks/auth.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,7 +12,9 @@ import { useLoginMutation } from '../api/login.api';
 import { setCurrentUser, setAuthStatus } from '#/redux/slices/auth-slice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { parseLoginError } from '../utils/login-error-parser.util';
+import { parseAuthError } from '../utils/auth-error-parser.util';
+import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
+import { RegisterLink } from './register-link';
 
 const styles = {
   passwordContainer: {
@@ -49,30 +49,25 @@ export function LoginForm() {
         login(user);
         dispatch(setCurrentUser(user));
         dispatch(setAuthStatus('authenticated'));
-
         navigate('/');
+      },
+      onError: (error) => {
+        showSnackbar({ message: parseAuthError(error), variant: 'error' });
       },
     });
   }
 
   return (
     <Stack direction="column" spacing={2}>
-      {loginMutation.isError ? (
-        <Typography color="error" align="center" mt={1}>
-          {parseLoginError(loginMutation.error)}
-        </Typography>
-      ) : (
-        <Typography align="center" mt={1}>
-          Please enter your email and password to log in
-        </Typography>
-      )}
-
+      <Typography align="center" mt={1}>
+        Please enter your email and password
+      </Typography>
       <form
         onSubmit={handleSubmit(onSubmit)}
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 16,
+          gap: '16px',
         }}
       >
         <TextField
@@ -86,17 +81,18 @@ export function LoginForm() {
         />
         <Box sx={styles.passwordContainer}>
           <TextField
-            id="password"
             label="Password"
+            variant="outlined"
             fullWidth={true}
-            {...register('password')}
+            margin="normal"
+            type="password"
+            {...register('password', {
+              required: 'Password is required',
+              minLength: { value: 6, message: 'Password should be at least 6 characters' },
+            })}
             error={Boolean(errors.password)}
             helperText={errors.password?.message}
-            autoComplete="current-password"
           />
-          <Link href="" fontSize="small" ml="auto">
-            Forgot your password?
-          </Link>
         </Box>
         {loginMutation.isPending ? <LoadingButton /> : <LoginButton />}
       </form>
