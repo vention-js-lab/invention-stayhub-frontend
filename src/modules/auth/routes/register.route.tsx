@@ -11,10 +11,13 @@ export function RegisterRoute() {
   const navigate = useNavigate();
 
   return (
-    <Box>
-      <Box sx={style.regRouter}>
+    <Box sx={style.mainBox}>
+      <Box sx={style.form}>
         <Typography variant="h2" sx={style.heading} gutterBottom={true}>
           Welcome to StayHub
+        </Typography>
+        <Typography align="center" mt={1}>
+          Please fill in the form to create your account
         </Typography>
         <CloseIcon fontSize="small" sx={style.closeIcon} onClick={() => navigate('/')} />
         <RegisterForm />
