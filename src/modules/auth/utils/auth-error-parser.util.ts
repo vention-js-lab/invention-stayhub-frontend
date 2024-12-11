@@ -1,6 +1,6 @@
 import { type AxiosError } from 'axios';
 
-export function parseLoginError(error: AxiosError) {
+export function parseAuthError(error: AxiosError) {
   if (error.response) {
     return getStatusErrorMessage(error.response.status);
   }
