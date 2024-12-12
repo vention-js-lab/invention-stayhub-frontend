@@ -1,15 +1,18 @@
 import { pink } from '@mui/material/colors';
 
 export const style = {
-  regRouter: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
+  mainBox: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  form: {
     width: 400,
-    p: 4,
-    boxShadow: 10,
-    bgcolor: 'background.paper',
-    transform: 'translate(-50%, -50%)',
+    border: '1px solid #ddd',
+    padding: '40px',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+    borderRadius: '8px',
+    mb: 4,
   },
   closeIcon: {
     position: 'absolute',

@@ -6,7 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { style } from '../styles/style';
 import { registerFormDataSchema, type RegisterFormData } from '../schemas/register-form.schema';
 import { useRegisterMutation } from '../api/register.api';
-import { useSnackbar } from 'notistack';
+import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
+import { parseAuthError } from '../utils/auth-error-parser.util';
 
 export function RegisterForm() {
   const mutation = useRegisterMutation();
@@ -19,20 +20,14 @@ export function RegisterForm() {
     resolver: zodResolver(registerFormDataSchema),
   });
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
     mutation.mutate(data, {
       onSuccess: () => {
         navigate('/');
       },
-      onError: (error: Error) => {
-        enqueueSnackbar(error.message, {
-          variant: 'error',
-          hideIconVariant: true,
-          autoHideDuration: 3000,
-          anchorOrigin: { vertical: 'top', horizontal: 'center' },
-        });
+      onError: (error) => {
+        showSnackbar({ message: parseAuthError(error), variant: 'error' });
       },
     });
   };
