@@ -45,10 +45,10 @@ export function BookingDetails({ booking, priceDetails }: BookingDetailsProps) {
   return (
     <Stack direction="column" sx={styles.container}>
       <Box sx={styles.card}>
-        <CardMedia component="img" image={booking.accommodation?.coverImage || ''} sx={styles.image} />
+        <CardMedia component="img" image={booking.accommodation.coverImage || ''} sx={styles.image} />
         <Box>
-          <Typography fontWeight="bold">{booking.accommodation?.name}</Typography>
-          <Typography>{booking.accommodation?.description}</Typography>
+          <Typography fontWeight="bold">{booking.accommodation.name}</Typography>
+          <Typography>{booking.accommodation.description}</Typography>
         </Box>
       </Box>
       <Divider />
@@ -66,7 +66,7 @@ export function BookingDetails({ booking, priceDetails }: BookingDetailsProps) {
       </Typography>
       <Box sx={styles.row}>
         <Typography>
-          ${booking.accommodation?.price} x {priceDetails.numberOfNights} nights
+          ${booking.accommodation.price} x {priceDetails.numberOfNights} nights
         </Typography>
         <Typography>${priceDetails.totalPriceOfNights.toFixed(2)}</Typography>
       </Box>

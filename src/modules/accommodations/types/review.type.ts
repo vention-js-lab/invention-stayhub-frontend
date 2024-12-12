@@ -3,6 +3,7 @@ export interface Review {
   content: string | null;
   rating: number;
   createdAt: string;
+  updatedAt: string;
   user: {
     firstName: string | null;
     lastName: string | null;
