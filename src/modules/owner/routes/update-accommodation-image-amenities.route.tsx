@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { AccommodationAmenitiesImagesForm } from '../components/accommodation-amenities-images-form';
+import { AccommodationAmenitiesForm } from '../components/accommodation-amenities-form';
+import { AccommodationImagesForm } from '../components/accommodation-images-form';
 
 export function UpdateAccommodationImageAmenitiesRoute() {
   const navigate = useNavigate();
@@ -12,7 +13,8 @@ export function UpdateAccommodationImageAmenitiesRoute() {
 
   return (
     <Box>
-      <AccommodationAmenitiesImagesForm />
+      <AccommodationImagesForm />
+      <AccommodationAmenitiesForm />
     </Box>
   );
 }

@@ -12,6 +12,7 @@ import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { type Theme } from '@mui/material';
 import { amenitiesMap } from '#/shared/constants/amenities-map.constant';
 import { type AmenityKey } from '#/shared/constants/accommodation-amenity.type';
+import { type UpdateAmenityData } from '../types/create-accommodation-response.type';
 
 const styles = {
   heading: {
@@ -47,8 +48,8 @@ const styles = {
   }),
 };
 
-export function AccommodationAmenitiesImagesForm() {
-  const updateAccommodationMutation = useUpdateAccommodationMutation();
+export function AccommodationAmenitiesForm() {
+  const updateAccommodationMutation = useUpdateAccommodationMutation<UpdateAmenityData>();
   const navigate = useNavigate();
   const { handleSubmit, setValue, getValues, control } = useForm<CreateAccommodationAmenity>({
     resolver: zodResolver(amenitySchema),
@@ -60,7 +61,7 @@ export function AccommodationAmenitiesImagesForm() {
       updateAccommodationMutation.mutate(
         {
           id: accommodationId,
-          data,
+          data: { amenity: data },
         },
         {
           onSuccess: () => {
@@ -105,7 +106,7 @@ export function AccommodationAmenitiesImagesForm() {
           </Grid2>
         ))}
       </Grid2>
-      <Box mt={3} mb={5} display="flex" justifyContent="flex-end">
+      <Box mt={2} mb={5} display="flex" justifyContent="flex-end">
         <Button variant="contained" sx={styles.button} type="submit">
           Submit
         </Button>
