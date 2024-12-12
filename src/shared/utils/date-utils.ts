@@ -7,3 +7,9 @@ export const getTodayDate = (): string => {
   const day = String(today.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
+
+export function calculateDayDiff(startDate: string | Date, endDate: string | Date) {
+  const start = time(startDate);
+  const end = time(endDate);
+  return Math.max(0, end.diff(start, 'day'));
+}
