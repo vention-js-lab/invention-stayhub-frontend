@@ -10,6 +10,7 @@ import { useInfiniteScroll } from '#/shared/hooks/infinite-scroll.hook';
 import { usePaginationLimit } from '#/modules/accommodations/hooks/pagination-limit.hook';
 import { CardSkeleton } from './accommodation-card/card-skeleton';
 import { AccommodationCard } from './accommodation-card/accommodation-card';
+import { NoResult } from '#/shared/components/no-result';
 
 export function AccommodationList() {
   const { ref: bottomOfPageRef, inView: isBottomOfPageInView } = useInView();
@@ -50,19 +51,21 @@ export function AccommodationList() {
     <Grid2 container={true} spacing={3}>
       {data.pages.map((group) => (
         <React.Fragment key={uuidv4()}>
-          {group.result.map((accommodation) => (
-            <Grid2 key={accommodation.id} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
-              <AccommodationCard
-                status={status}
-                id={accommodation.id}
-                image={CardImage}
-                name={accommodation.name}
-                address={accommodation.address}
-                pricePerNight={accommodation.price}
-                rating={4.8}
-              />
-            </Grid2>
-          ))}
+          {group.result.length > 0 &&
+            group.result.map((accommodation) => (
+              <Grid2 key={accommodation.id} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
+                <AccommodationCard
+                  status={status}
+                  id={accommodation.id}
+                  image={CardImage}
+                  name={accommodation.name}
+                  address={accommodation.address}
+                  pricePerNight={accommodation.price}
+                  rating={4.8}
+                />
+              </Grid2>
+            ))}{' '}
+          : {<NoResult text={'Oops! No accommodation was found :('} />}
         </React.Fragment>
       ))}
       {isFetchingNextPage ? <SkeletonList limit={limit} /> : null}
