@@ -13,7 +13,7 @@ export interface CreateAccommodationResponse {
   squareMeters: number;
   numberOfRooms: number;
   allowedNumberOfPeople: number;
-  images?: { url: string }[];
+  images?: { url: string; id: string }[];
   amenity?: CreateAccommodationAmenity;
   address?: CreateAccommodationAddress;
 }
@@ -25,4 +25,13 @@ export interface UpdateAccommodationData<T> {
 
 export interface UpdateAddressData {
   address: CreateAccommodationAddress;
+}
+
+export interface UpdateAmenityData {
+  amenity: CreateAccommodationAmenity;
+}
+
+export interface UpdateImageData {
+  images?: { url: string }[];
+  coverImage?: string;
 }

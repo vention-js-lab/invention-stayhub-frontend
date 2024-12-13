@@ -3,7 +3,7 @@ import { type BaseResponse } from '#/shared/types/base-response.type';
 import { useMutation } from '@tanstack/react-query';
 
 interface UploadResponse {
-  obJectUrl: string;
+  objectUrl: string;
 }
 
 export function useUploadImageMutation() {

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone';
-import { useUploadImageMutation } from '../api/upload-image.api';
+import { useUploadImageMutation } from '#/shared/hooks/upload-image.hook';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
@@ -30,7 +30,7 @@ export function ImageUpload({ defaultImage, onImageUpload, disabled }: ImageUplo
 
       mutation.mutate(formData, {
         onSuccess: (data) => {
-          onImageUpload(data.obJectUrl);
+          onImageUpload(data.objectUrl);
         },
         onError: () => {
           alert('Failed to upload image');
