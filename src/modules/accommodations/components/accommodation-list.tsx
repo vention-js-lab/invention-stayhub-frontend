@@ -66,7 +66,7 @@ export function AccommodationList() {
               </Grid2>
             ))
           ) : (
-            <NoResult text={'Oops! No accommodation was found :('} />
+            <NoResult text={'Oops! No accommodation has found :('} />
           )}
         </React.Fragment>
       ))}
