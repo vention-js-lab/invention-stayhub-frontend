@@ -51,7 +51,7 @@ export function AccommodationList() {
     <Grid2 container={true} spacing={3}>
       {data.pages.map((group) => (
         <React.Fragment key={uuidv4()}>
-          {group.result.length > 0 &&
+          {group.result.length > 0 ? (
             group.result.map((accommodation) => (
               <Grid2 key={accommodation.id} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
                 <AccommodationCard
@@ -64,8 +64,10 @@ export function AccommodationList() {
                   rating={4.8}
                 />
               </Grid2>
-            ))}{' '}
-          : {<NoResult text={'Oops! No accommodation was found :('} />}
+            ))
+          ) : (
+            <NoResult text={'Oops! No accommodation was found :('} />
+          )}
         </React.Fragment>
       ))}
       {isFetchingNextPage ? <SkeletonList limit={limit} /> : null}
