@@ -15,13 +15,13 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import { amenitiesMap } from '#/modules/accommodations/constants/amenities-map.constant';
+import { amenitiesMap } from '#/shared/constants/amenities-map.constant';
 
 import { type AccommodationFilterParams } from '#/modules/accommodations/types/accommodation-filter-params.type';
 import { accommdationSortByMap, AccommodationListSortBy } from '#/modules/accommodations/constants/sort-by.constant';
 import { SortOrder, sortOrderMap } from '#/shared/constants/sort-order.constant';
 import { useListAccommodationQueryParams } from '#/modules/accommodations/hooks/list-accommodations-query-params.hook';
-import { type AmenityKey } from '#/modules/accommodations/types/accommodation-amenity.type';
+import { type AmenityKey } from '#/shared/constants/accommodation-amenity.type';
 
 interface FilterModalProps {
   open: boolean;

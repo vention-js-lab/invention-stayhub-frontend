@@ -1,8 +1,8 @@
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { type AmenityKey } from '../types/accommodation-amenity.type';
-import { amenitiesMap } from '../constants/amenities-map.constant';
+import { type AmenityKey } from '#/shared/constants/accommodation-amenity.type';
+import { amenitiesMap } from '#/shared/constants/amenities-map.constant';
 import { type AccommodationFilterParams } from '../types/accommodation-filter-params.type';
 
 const styles = {

@@ -1,4 +1,4 @@
-import { type AmenityKey } from '#/modules/accommodations/types/accommodation-amenity.type';
+import { type AmenityKey } from '#/shared/constants/accommodation-amenity.type';
 import { Icons } from '#/modules/accommodations/constants/icons.constant';
 
 export const amenitiesMap: Record<AmenityKey, { icon: React.ElementType; label: string }> = {

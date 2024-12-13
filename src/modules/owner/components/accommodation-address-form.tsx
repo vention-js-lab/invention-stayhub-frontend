@@ -64,7 +64,6 @@ export function AddressForm() {
         {
           onSuccess: () => {
             navigate('/accommodations/create/image-amenities');
-            localStorage.removeItem('createdAccommodationId');
           },
           onError: (error) => {
             showSnackbar({
