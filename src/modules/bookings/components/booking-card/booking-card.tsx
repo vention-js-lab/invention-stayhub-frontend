@@ -169,14 +169,14 @@ export function BookingCard({
                 <Typography sx={{ color: '#E91E63', fontSize: '16px', fontWeight: '500', px: '8px' }}>${totalPrice}</Typography>
               </Typography>
               <CardActionArea sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                {bookingStatus !== BookingStatus.Canceled && (
+                {[BookingStatus.Pending, BookingStatus.Active].includes(bookingStatus) && (
                   <Link href={`/bookings/${id}/checkout`} sx={{ width: '100%', padding: '0' }}>
                     <Button variant="contained" color="secondary" sx={{ ...styles.actionButtons, marginBottom: '5px' }}>
                       Pay
                     </Button>
                   </Link>
                 )}
-                {bookingStatus !== BookingStatus.Canceled && (
+                {[BookingStatus.Pending, BookingStatus.Active, BookingStatus.Inactive].includes(bookingStatus) && (
                   <Button
                     variant="contained"
                     sx={styles.actionButtons}
@@ -199,6 +199,13 @@ export function BookingCard({
                   >
                     Recover
                   </Button>
+                )}
+                {bookingStatus === BookingStatus.Completed && (
+                  <Link href={`/bookings/${id}/review`} sx={{ width: '100%', padding: '0' }}>
+                    <Button variant="contained" color="secondary" sx={{ ...styles.actionButtons, marginBottom: '5px' }}>
+                      Add review
+                    </Button>
+                  </Link>
                 )}
               </CardActionArea>
             </Box>
