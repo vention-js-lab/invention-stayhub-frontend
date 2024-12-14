@@ -1,4 +1,4 @@
-import { type AmenityKey, type AccommodationAmenity } from '../types/accommodation-amenity.type';
+import { type AmenityKey, type AccommodationAmenity } from '../../../shared/constants/accommodation-amenity.type';
 
 export function getAmenities(
   amenities: AccommodationAmenity,
