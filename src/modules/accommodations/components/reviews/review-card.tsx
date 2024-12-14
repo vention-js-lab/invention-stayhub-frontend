@@ -25,7 +25,6 @@ const styles = {
     overflowY: 'auto',
   },
   cardStyle: {
-    width: 600,
     height: 270,
     margin: 'auto',
     boxShadow: 2,
@@ -39,7 +38,7 @@ const styles = {
     WebkitBoxOrient: 'vertical',
     WebkitLineClamp: 4,
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    textOverflow: 'hidden',
   },
 };
 
@@ -66,7 +65,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
 
   const avatarContent = review.user.photo || review.user.firstName?.[0] || '';
   const userName = `${review.user.firstName} ${review.user.lastName}`.trim();
-  const userCountry = review.user.country;
+  const userCountry = review.user.country || '';
   const joinDate = formatDate(review.user.createdAt);
   const userInfo = joinDate ? `${userCountry} • since ${joinDate}` : `${userCountry}`;
   const commentedDate = formatDate(review.createdAt);
