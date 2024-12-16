@@ -8,7 +8,11 @@ import { registerFormDataSchema, type RegisterFormData } from '../schemas/regist
 import { useRegisterMutation } from '../api/register.api';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { parseAuthError } from '../utils/auth-error-parser.util';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleAuthLogin } from './google-login';
+import { validatedEnv } from '#/configs/env.config';
 
+const googleClientId = validatedEnv.VITE_GOOGLE_CLIENT_ID;
 export function RegisterForm() {
   const mutation = useRegisterMutation();
   const {
@@ -96,6 +100,11 @@ export function RegisterForm() {
       <Button type="submit" variant="contained" sx={style.button} fullWidth={true}>
         Sign Up
       </Button>
+      <div style={{ marginTop: 20 }}>
+        <GoogleOAuthProvider clientId={googleClientId}>
+          <GoogleAuthLogin />
+        </GoogleOAuthProvider>
+      </div>
     </form>
   );
 }
