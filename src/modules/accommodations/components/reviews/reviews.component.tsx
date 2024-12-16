@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Grid2 from '@mui/material/Grid2';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -9,7 +10,6 @@ import { NoDataAvailable } from '#/shared/components/no-data-response';
 import { ReviewAllCard } from './review-all-card.component';
 
 const styles = {
-  allReviews: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 2 },
   modalBox: {
     position: 'absolute',
     top: '50%',
@@ -41,11 +41,13 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
 
   return (
     <div>
-      <Box sx={styles.allReviews}>
+      <Grid2 container={true} spacing={3} sx={{ mb: '15px' }}>
         {visibleReviews.map((review) => (
-          <ReviewCard key={review.id} review={review} />
+          <Grid2 key={review.id} size={{ xs: 12, sm: 12, md: 6, lg: 4, xl: 4 }}>
+            <ReviewCard review={review} />
+          </Grid2>
         ))}
-      </Box>
+      </Grid2>
 
       {reviews.length > visibleReviews.length && (
         <Button variant="contained" onClick={handleOpen} sx={{ marginTop: 2 }}>

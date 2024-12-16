@@ -38,6 +38,7 @@ export const listAccommodationQueryParamsSchema = z.object({
   isCloseToCenter: toOptionalBoolean(),
   isChildFriendly: toOptionalBoolean(),
   isQuietArea: toOptionalBoolean(),
+  category: z.string().optional(),
 });
 
 export type ListAccommodationQueryParams = z.infer<typeof listAccommodationQueryParamsSchema>;
