@@ -4,6 +4,18 @@ FROM node:22 AS build
 # Set the working directory
 WORKDIR /app
 
+# Pass environment variables as build arguments
+ARG VITE_APP_PORT
+ARG VITE_API_BASE_URL
+ARG VITE_GOOGLE_MAP_APIKEY
+ARG VITE_STRIPE_PUBLISHABLE_KEY
+
+# Persist build arguments as environment variables
+ENV VITE_APP_PORT=$VITE_APP_PORT
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV VITE_GOOGLE_MAP_APIKEY=$VITE_GOOGLE_MAP_APIKEY
+ENV VITE_STRIPE_PUBLISHABLE_KEY=$VITE_STRIPE_PUBLISHABLE_KEY
+
 # Copy package.json and package-lock.json to install dependencies
 COPY package.json package-lock.json ./
 
