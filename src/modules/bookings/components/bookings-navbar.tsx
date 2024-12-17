@@ -1,4 +1,3 @@
-import { capitalizer } from '#/shared/utils/capitalizer.util';
 import { BookingStatus } from '../constants/booking-status.constant';
 import Typography from '@mui/material/Typography';
 
@@ -9,6 +8,7 @@ interface BookingsNavbarProps {
 
 const styles = {
   navItem: (isSelected: boolean) => ({
+    textTransform: 'capitalize',
     width: '100%',
     textAlign: 'center',
     borderBottom: isSelected ? '3px solid #E91E63' : '1px solid #e9e9e9',
@@ -27,7 +27,7 @@ export function BookingsNavbar({ selectedCategory, onCategoryChange }: BookingsN
     <nav style={{ display: 'flex', marginBottom: '18px' }}>
       {Object.values(BookingStatus).map((status) => (
         <Typography key={status} sx={styles.navItem(selectedCategory === status)} onClick={() => onCategoryChange(status)}>
-          {capitalizer(status)}
+          {status}
         </Typography>
       ))}
     </nav>

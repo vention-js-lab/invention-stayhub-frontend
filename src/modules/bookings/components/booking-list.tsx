@@ -3,6 +3,7 @@ import { useBookingsQuery } from '../api/bookings.api';
 import { type BookingStatus } from '../constants/booking-status.constant';
 import { type Booking } from '../types/booking.type';
 import { BookingCard } from './booking-card/booking-card';
+import { NoResult } from '#/shared/components/no-result';
 
 interface BookingsProps {
   selectedCategory: BookingStatus;
@@ -39,7 +40,7 @@ export function Bookings({ selectedCategory }: BookingsProps) {
           </Grid2>
         ))
       ) : (
-        <p>No bookings available for this category.</p>
+        <NoResult text={'Oops! This category is empty :('} />
       )}
     </Grid2>
   );
