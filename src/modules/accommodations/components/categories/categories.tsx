@@ -12,7 +12,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderBottom: isSelected ? '2px solid #E91E63' : 'transparent',
+    borderBottom: isSelected ? '2px solid #E91E63' : '2px solid transparent',
     '&:hover': { borderBottom: isSelected ? '' : '2px solid #e9e9e9', cursor: 'pointer' },
     textAlign: 'center',
     fontSize: '10px',
