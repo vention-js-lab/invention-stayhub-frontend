@@ -22,6 +22,7 @@ export interface Accommodation {
   address: AccommodationAddress | null;
   amenity: AccommodationAmenity | null;
   images: AccommodationImage[] | null;
+  isSavedToWishlist: boolean;
   bookings: Booking[] | null;
   deletedAt: string | null;
   reviews: Review[] | null;

@@ -16,7 +16,7 @@ import { type AccommodationAddress } from '#/modules/accommodations/types/accomm
 interface AccommodationCardProps {
   status: 'pending' | 'error' | 'success';
   id?: string;
-  image?: string;
+  image?: string | undefined;
   name?: string;
   address?: AccommodationAddress | null;
   pricePerNight?: number;
