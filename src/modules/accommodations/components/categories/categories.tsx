@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Slider from 'react-slick';
-import { useCategoriesQuery } from '#/modules/accommodations/api/categories.api';
+import { useCategoriesQuery } from '#/shared/apis/get-categories.api';
 import Typography from '@mui/material/Typography';
 import { CustomPrevArrow, CustomNextArrow } from './slider-buttons';
 import { useState } from 'react';

@@ -23,6 +23,7 @@ export const createAccommodationSchema = z.object({
   images: z.array(z.object({ url: z.string().url('Image must have a valid URL') })).optional(),
   amenity: amenitySchema.optional(),
   address: addressSchema.optional(),
+  categories: z.array(z.string().min(1, 'Category name cannot be empty')),
 });
 
 export type CreateAccommodation = z.infer<typeof createAccommodationSchema>;
