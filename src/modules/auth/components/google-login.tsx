@@ -59,13 +59,13 @@ export function GoogleAuthLogin() {
         },
       });
     } catch {
-      showSnackbar({ message: 'Error during Google login-catch', variant: 'error' });
+      showSnackbar({ message: 'Error during Google login', variant: 'error' });
     }
   };
 
   const handleError = () => {
-    showSnackbar({ message: 'Error logging in with Google oxiri', variant: 'error' });
+    showSnackbar({ message: 'Error logging in with Google', variant: 'error' });
   };
 
-  return <GoogleLogin onSuccess={handleSuccess} onError={handleError} />;
+  return <GoogleLogin onSuccess={handleSuccess} onError={handleError} locale="en" />;
 }
