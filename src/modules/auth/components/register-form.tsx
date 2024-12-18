@@ -1,3 +1,4 @@
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
@@ -11,9 +12,14 @@ import { parseAuthError } from '../utils/auth-error-parser.util';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleAuthLogin } from './google-login';
 import { validatedEnv } from '#/configs/env.config';
+import { useAuth } from '#/shared/hooks/auth.hook';
+import { setAuthStatus, setCurrentUser } from '#/redux/slices/auth-slice';
 
 const googleClientId = validatedEnv.VITE_GOOGLE_CLIENT_ID;
 export function RegisterForm() {
+  const dispatch = useDispatch();
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const mutation = useRegisterMutation();
   const {
     register,
@@ -23,11 +29,18 @@ export function RegisterForm() {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerFormDataSchema),
   });
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
     mutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (response) => {
+        const user = {
+          accessToken: response.data.accessToken,
+          refreshToken: response.data.refreshToken,
+        };
+
+        login(user);
+        dispatch(setCurrentUser(user));
+        dispatch(setAuthStatus('authenticated'));
         navigate('/');
       },
       onError: (error) => {

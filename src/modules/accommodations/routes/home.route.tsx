@@ -4,6 +4,7 @@ import { AccommodationList } from '../components/accommodation-list';
 import { Search } from '../components/search';
 import { AccommodationFilterModal } from '../components/filter/filter-modal';
 import { FilterButton } from '../components/filter/filter-button';
+import { CategoriesCarousel } from '../components/categories/categories';
 
 const styles = {
   filterArea: (showShadow: boolean) => ({
@@ -46,6 +47,7 @@ export function HomeRoute() {
         <FilterButton onClick={() => setIsFilterModalOpen(true)} />
         <AccommodationFilterModal open={isFilterModalOpen} setOpen={setIsFilterModalOpen} />
       </Box>
+      <CategoriesCarousel />
       <AccommodationList />
     </Box>
   );
