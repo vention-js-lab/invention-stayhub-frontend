@@ -16,6 +16,8 @@ import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { time } from '#/shared/libs/time.lib';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { SelectCategory } from './select-category';
+import { useEffect, useState } from 'react';
 
 const styles = {
   heading: {
@@ -36,12 +38,15 @@ const styles = {
 
 export function CreateAccommodationForm() {
   const { t } = useTranslation();
+  const [categoryIds, setCategoryIds] = useState<string[]>([]);
   const createAccommodationMutation = useCreateAccommodationMutation();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors },
   } = useForm<CreateAccommodation>({
@@ -58,25 +63,33 @@ export function CreateAccommodationForm() {
       images: [],
       amenity: undefined,
       address: undefined,
+      categories: [],
     },
   });
 
+  useEffect(() => {
+    setValue('categories', categoryIds);
+  }, [categoryIds, setValue]);
+
   const onSubmit: SubmitHandler<CreateAccommodation> = (data) => {
-    createAccommodationMutation.mutate(data, {
-      onSuccess: (response) => {
-        if (response.data.id) {
-          dispatch(addCreatedAccommodation(response.data.id));
-          if (response.data.id) localStorage.setItem('createdAccommodationId', response.data.id);
-        }
-        navigate('/accommodations/create/address');
-      },
-      onError: () => {
-        showSnackbar({
-          message: t('snackbars.errorSomething'),
-          variant: 'error',
-        });
-      },
-    });
+    createAccommodationMutation.mutate(
+      { ...data, categories: categoryIds },
+      {
+        onSuccess: (response) => {
+          if (response.data.id) {
+            dispatch(addCreatedAccommodation(response.data.id));
+            if (response.data.id) localStorage.setItem('createdAccommodationId', response.data.id);
+          }
+          navigate('/accommodations/create/address');
+        },
+        onError: () => {
+          showSnackbar({
+            message: t('snackbars.errorSomething'),
+            variant: 'error',
+          });
+        },
+      }
+    );
   };
 
   const watchAvailableFrom = watch('availableFrom');
@@ -208,6 +221,9 @@ export function CreateAccommodationForm() {
               },
             }}
           />
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6 }}>
+          <SelectCategory categoryIds={categoryIds} setCategoryIds={setCategoryIds} />
         </Grid2>
       </Grid2>
 

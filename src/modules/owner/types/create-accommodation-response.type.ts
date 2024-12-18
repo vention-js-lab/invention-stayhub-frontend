@@ -1,3 +1,4 @@
+import { type Category } from '#/shared/types/category.type';
 import { type CreateAccommodationAmenity } from '../schemas/accommodation-amenity.schema';
 import { type CreateAccommodationAddress } from './../schemas/accommodation-address.schema';
 
@@ -13,6 +14,7 @@ export interface CreateAccommodationResponse {
   squareMeters: number;
   numberOfRooms: number;
   allowedNumberOfPeople: number;
+  categories: Category[];
   images?: { url: string; id: string }[];
   amenity?: CreateAccommodationAmenity;
   address?: CreateAccommodationAddress;
