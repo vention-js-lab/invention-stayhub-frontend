@@ -11,8 +11,10 @@ import { usePaginationLimit } from '#/modules/accommodations/hooks/pagination-li
 import { CardSkeleton } from './accommodation-card/card-skeleton';
 import { AccommodationCard } from './accommodation-card/accommodation-card';
 import { NoResult } from '#/shared/components/no-result';
+import { useTranslation } from 'react-i18next';
 
 export function AccommodationList() {
+  const { t } = useTranslation();
   const { ref: bottomOfPageRef, inView: isBottomOfPageInView } = useInView();
   const { validatedQueryParams } = useListAccommodationQueryParams();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -66,7 +68,7 @@ export function AccommodationList() {
               </Grid2>
             ))
           ) : (
-            <NoResult text={'Oops! No accommodation has found :('} />
+            <NoResult text={t('empties.emptySearch')} />
           )}
         </React.Fragment>
       ))}

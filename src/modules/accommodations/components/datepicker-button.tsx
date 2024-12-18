@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { type Dayjs } from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   dateButton: {
@@ -30,6 +31,7 @@ interface DatePickerButtonProps {
 }
 
 export function DatePickerButton({ label, date, onDateChange }: DatePickerButtonProps) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -38,7 +40,7 @@ export function DatePickerButton({ label, date, onDateChange }: DatePickerButton
       <Button ref={buttonRef} onClick={() => setIsOpen(true)} sx={styles.dateButton}>
         <Typography fontSize="medium">{label}</Typography>
         <Typography fontSize="small" color="silver">
-          {date ? date.format('YYYY-MM-DD') : 'When?'}
+          {date ? date.format('YYYY-MM-DD') : t('filterArea.when')}
         </Typography>
       </Button>
       <DatePicker
