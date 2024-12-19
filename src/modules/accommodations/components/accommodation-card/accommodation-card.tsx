@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 interface AccommodationCardProps {
   status: 'pending' | 'error' | 'success';
   id?: string;
-  image?: string;
+  image?: string | undefined;
   name?: string;
   address?: AccommodationAddress | null;
   pricePerNight?: number;
