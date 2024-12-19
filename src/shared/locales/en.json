@@ -165,6 +165,10 @@
     },
     "amenitiesTitle": "Select Accommodation Amenities"
   },
+  "map": {
+    "showMap": "Show Map",
+    "explore": "Explore Accommodations"
+  },
   "snackbars": {
     "errorMapMark": "Error getting current location. Please check your settings",
     "errorSomething": "Something went wrong. Please try again later",
