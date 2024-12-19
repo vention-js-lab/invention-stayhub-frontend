@@ -1,17 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import { ErrorLayout } from './error-layout';
+import { useTranslation } from 'react-i18next';
 
 interface UnexpectedErrorProps {
   errorMessage?: string;
 }
 
 export function ApplicationError({ errorMessage }: UnexpectedErrorProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
     <ErrorLayout
       title="Application Error"
-      message={errorMessage || 'Something went wrong. Please try again later.'}
+      message={errorMessage || t('snackbars.errorSomething')}
       reloadButton={true}
       actionLabel="Go Home"
       onAction={() => navigate('/')}

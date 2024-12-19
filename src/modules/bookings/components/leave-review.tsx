@@ -9,8 +9,10 @@ import { type ReviewFormData, reviewFormDataSchema } from '../schemas/review-for
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export function LeaveReview() {
+  const { t } = useTranslation();
   const mutation = useReviewMutation();
 
   const { handleSubmit, register, setValue, control } = useForm<ReviewFormData>({
@@ -26,13 +28,16 @@ export function LeaveReview() {
       { bookingId, review: data },
       {
         onSuccess: () => {
-          showSnackbar({ message: 'Review added successfully', variant: 'success' });
+          showSnackbar({ message: t('snackbars.successAddReview'), variant: 'success' });
           setValue('content', '');
           setValue('rating', 0);
           navigate(`/bookings`);
         },
-        onError: (error) => {
-          showSnackbar({ message: error.message, variant: 'error' });
+        onError: () => {
+          showSnackbar({
+            message: t('snackbars.errorSomething'),
+            variant: 'error',
+          });
         },
       }
     );

@@ -22,6 +22,7 @@ import { accommdationSortByMap, AccommodationListSortBy } from '#/modules/accomm
 import { SortOrder, sortOrderMap } from '#/shared/constants/sort-order.constant';
 import { useListAccommodationQueryParams } from '#/modules/accommodations/hooks/list-accommodations-query-params.hook';
 import { type AmenityKey } from '#/shared/constants/accommodation-amenity.type';
+import { useTranslation } from 'react-i18next';
 
 interface FilterModalProps {
   open: boolean;
@@ -59,7 +60,7 @@ const styles = {
     fontSize: '16px',
     borderRadius: '20px',
     backgroundColor: isSelected ? '#E91E63' : '#fff',
-    margin: '0 2px 2px 0',
+    margin: '0 5px 5px 0',
     color: isSelected ? '#fff' : '#C7C7C7',
     '&:hover': {
       borderColor: '#E91E63',
@@ -84,6 +85,7 @@ const styles = {
 };
 
 export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
+  const { t } = useTranslation();
   const [priceRange, setPriceRange] = useState([initialFilterParams.minPrice || 0, initialFilterParams.maxPrice || 10000]);
   const { setQueryParams, validatedQueryParams } = useListAccommodationQueryParams();
   const [_searchParams, setSearchParams] = useSearchParams();
@@ -143,7 +145,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
           <DialogTitle>
             <CloseIcon sx={styles.closeIcon} onClick={() => setOpen(false)} />
             <Typography textAlign="center" fontWeight="600" fontSize="18px">
-              Filter Options
+              {t('filterModal.title')}
             </Typography>
           </DialogTitle>
 
@@ -151,10 +153,10 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
 
           <Box sx={{ paddingX: '10px' }}>
             <Typography fontWeight="500" fontSize="16px" sx={{}}>
-              Price Range
+              {t('filterModal.priceRange')}
             </Typography>
             <Typography mb="6px" sx={{ color: '#333' }}>
-              Nightly prices before fees and taxes
+              {t('filterModal.info')}
             </Typography>
             <Slider
               value={priceRange}
@@ -173,7 +175,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
               render={({ field }) => (
                 <TextField
                   sx={{ width: '200px' }}
-                  label="Min Price"
+                  label={t('filterModal.minPrice')}
                   value={field.value}
                   onChange={(e) => handlePriceChange(Number(e.target.value), 'min')}
                   slotProps={{
@@ -190,7 +192,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
               render={({ field }) => (
                 <TextField
                   sx={{ width: '200px' }}
-                  label="Max Price"
+                  label={t('filterModal.maxPrice')}
                   value={field.value}
                   onChange={(e) => handlePriceChange(Number(e.target.value), 'max')}
                   slotProps={{
@@ -207,7 +209,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
 
           <Box>
             <Typography fontWeight="500" mb="8px" fontSize="16px">
-              Rooms
+              {t('filterModal.rooms')}
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '2px', justifyContent: 'space-between' }}>
               {[1, 2, 3, 4, 5].map((room) => (
@@ -241,9 +243,9 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
                     value={field.value}
                     onChange={(e) => setValue('sortBy', e.target.value as AccommodationListSortBy)}
                   >
-                    {accommdationSortByMap.map(({ key, name }) => (
+                    {accommdationSortByMap.map(({ key }) => (
                       <MenuItem key={key} value={key}>
-                        {name}
+                        {t(`filterModal.sortByOptions.${key}`)}
                       </MenuItem>
                     ))}
                   </Select>
@@ -252,16 +254,16 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '50%' }}>
               <Typography fontWeight="500" fontSize="16px" noWrap={true}>
-                Order by:
+                {t('filterModal.orderBy')}:
               </Typography>
               <Controller
                 name="sortOrder"
                 control={control}
                 render={({ field }) => (
                   <Select size="medium" value={field.value} onChange={(e) => setValue('sortOrder', e.target.value as SortOrder)}>
-                    {sortOrderMap.map(({ key, name }) => (
+                    {sortOrderMap.map(({ key }) => (
                       <MenuItem key={key} value={key}>
-                        {name}
+                        {t(`filterModal.orderByOptions.${key.toLowerCase()}`)}
                       </MenuItem>
                     ))}
                   </Select>
@@ -274,10 +276,10 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
 
           <Box>
             <Typography fontWeight="500" mb="8px" fontSize="16px">
-              Amenities
+              {t('amenities.name')}
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-              {Object.entries(amenitiesMap).map(([key, { icon: Icon, label }]) => (
+              {Object.entries(amenitiesMap).map(([key, { icon: Icon }]) => (
                 <Controller
                   key={key}
                   name={key as AmenityKey}
@@ -288,7 +290,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
                       onClick={() => handleAmenitySelection(key as AmenityKey)}
                     >
                       <Icon />
-                      <Typography>{label}</Typography>
+                      <Typography>{t(`amenities.${key}`)}</Typography>
                     </IconButton>
                   )}
                 />
@@ -296,12 +298,12 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
             </Box>
           </Box>
 
-          <DialogActions sx={{ display: 'flex', justifyContent: 'space-between', padding: '0', marginTop: '25px' }}>
+          <DialogActions sx={{ display: 'flex', justifyContent: 'space-between', padding: '0', marginTop: '15px' }}>
             <Button size="large" onClick={handleClearAll} sx={{ paddingX: '0', color: '#000' }}>
-              Clear All
+              {t('filterModal.buttons.clear')}
             </Button>
             <Button variant="contained" size="large" type="submit" sx={styles.applyButton}>
-              Apply Filters
+              {t('filterModal.buttons.apply')}
             </Button>
           </DialogActions>
         </DialogContent>

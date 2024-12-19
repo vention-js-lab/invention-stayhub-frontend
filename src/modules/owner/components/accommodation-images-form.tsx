@@ -18,6 +18,7 @@ import { type UpdateImageData } from '../types/create-accommodation-response.typ
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { useUploadImageMutation } from '#/shared/hooks/upload-image.hook';
 import { useAccommodationDetailsQuery } from '../api/get-accommodation-details.api';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   heading: {
@@ -100,6 +101,7 @@ const styles = {
 };
 
 export function AccommodationImagesForm() {
+  const { t } = useTranslation();
   const accommodationId = localStorage.getItem('createdAccommodationId');
   const updateAccommodationMutation = useUpdateAccommodationMutation<UpdateImageData>();
   const uploadImageMutation = useUploadImageMutation();
@@ -132,13 +134,13 @@ export function AccommodationImagesForm() {
         {
           onSuccess: () => {
             showSnackbar({
-              message: 'Cover Image successfully added',
+              message: t('snackbars.successUploadCoverImg'),
               variant: 'success',
             });
           },
-          onError: (error) => {
+          onError: () => {
             showSnackbar({
-              message: error.message,
+              message: t('snackbars.errorSomething'),
               variant: 'error',
             });
           },
@@ -162,14 +164,14 @@ export function AccommodationImagesForm() {
           const { objectUrl } = await uploadImageMutation.mutateAsync(formData, {
             onSuccess: () => {
               showSnackbar({
-                message: 'Images uploaded successfully',
+                message: t('snackbars.successUploadImg'),
                 variant: 'success',
               });
               setSelectedFiles([]);
             },
             onError: () => {
               showSnackbar({
-                message: 'Something went wrong during the upload. Please, try again',
+                message: t('snackbars.errorUploadImg'),
                 variant: 'error',
               });
             },
@@ -188,14 +190,14 @@ export function AccommodationImagesForm() {
         {
           onSuccess: () => {
             showSnackbar({
-              message: 'Accommodation data saved successfully',
+              message: t('snackbars.successSaved'),
               variant: 'success',
             });
             refetch();
           },
-          onError: (error) => {
+          onError: () => {
             showSnackbar({
-              message: error.message,
+              message: t('snackbars.errorSomething'),
               variant: 'error',
             });
           },
@@ -206,15 +208,15 @@ export function AccommodationImagesForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography sx={styles.heading}>Upload Accommodation Images</Typography>
+      <Typography sx={styles.heading}>{t('accommodation.images.title')}</Typography>
       <Box {...getRootProps()} sx={styles.dragAndDropArea}>
         <input {...getInputProps()} />
         <AddPhotoAlternateOutlinedIcon />
-        <Typography>Drag and drop files here, or click to select</Typography>
+        <Typography>{t('accommodation.images.uploadField')}</Typography>
       </Box>
       {selectedFiles.length > 0 && (
         <Box>
-          <Typography>Selected Files:</Typography>
+          <Typography>{t('accommodation.images.selected')}:</Typography>
           <Grid2 container={true} spacing={2} columns={5}>
             {selectedFiles.map((file) => (
               <Grid2 key={uuidv4()} size={{ xs: 1 }}>
@@ -232,7 +234,7 @@ export function AccommodationImagesForm() {
       )}
       {data?.images && data.images.length > 0 ? (
         <Box>
-          <Typography sx={styles.uploadedImgHeading}>Select Cover Image:</Typography>
+          <Typography sx={styles.uploadedImgHeading}>{t('accommodation.images.selected')}:</Typography>
           <Grid2 columns={5} container={true} spacing={2}>
             {data.images.map((image) => (
               <Grid2 size={{ xs: 1 }} key={image.id}>
@@ -249,7 +251,7 @@ export function AccommodationImagesForm() {
       ) : null}
       <Box mt={3} mb={2} display="flex" justifyContent="flex-end">
         <Button variant="contained" sx={styles.button} type="submit">
-          Upload Images
+          {t('accommodation.images.uploadButton')}
         </Button>
       </Box>
     </form>

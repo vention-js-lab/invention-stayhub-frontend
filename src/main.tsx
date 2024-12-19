@@ -14,6 +14,8 @@ import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 
+import '#/configs/i18n.config';
+
 import '@fontsource/roboto/100.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';

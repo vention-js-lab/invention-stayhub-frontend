@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   footer: {
@@ -24,12 +25,14 @@ const styles = {
 };
 
 export function Footer() {
+  const { t } = useTranslation();
+
   return (
     <Box sx={styles.footer}>
       <Box sx={styles.footerContent}>
         <Typography variant="body2">StayHub © 2024</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant="body2">Follow us on social media!</Typography>
+          <Typography variant="body2">{t('footer')}</Typography>
           <Link href="https://www.facebook.com/airbnb">
             <FacebookIcon />
           </Link>

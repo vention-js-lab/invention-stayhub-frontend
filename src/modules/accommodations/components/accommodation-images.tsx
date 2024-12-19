@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { NoDataAvailable } from '#/shared/components/no-data-response';
 import CloseIcon from '@mui/icons-material/Close';
 import { type Theme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   homeImages: {
@@ -26,6 +27,7 @@ const styles = {
 };
 
 export function AccommodationImages({ images }: { images: AccommodationImage[] | null }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -51,7 +53,7 @@ export function AccommodationImages({ images }: { images: AccommodationImage[] |
       </Grid>
       <Box textAlign="center" mt={2} sx={styles.viewMoreBox}>
         <Button variant="contained" onClick={handleOpen} sx={styles.viewMoreButton}>
-          View More
+          {t('singleAccommodation.buttons.view')}
         </Button>
       </Box>
 

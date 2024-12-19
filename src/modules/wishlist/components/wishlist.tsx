@@ -5,8 +5,10 @@ import { SkeletonList } from '#/modules/accommodations/components/skeleton-list'
 import { CardSkeleton } from '#/modules/accommodations/components/accommodation-card/card-skeleton';
 import { AccommodationCard } from '#/modules/accommodations/components/accommodation-card/accommodation-card';
 import { NoResult } from '#/shared/components/no-result';
+import { useTranslation } from 'react-i18next';
 
 export function Wishlist() {
+  const { t } = useTranslation();
   const { data, status } = useWishlistQuery();
 
   if (status === 'error') {
@@ -43,7 +45,7 @@ export function Wishlist() {
           </Grid2>
         ))
       ) : (
-        <NoResult text={'Oops! Your wishlist is empty :('} />
+        <NoResult text={t('empties.emptyWishlist')} />
       )}
     </Grid2>
   );

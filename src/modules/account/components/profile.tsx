@@ -18,6 +18,7 @@ import DefaultImage from '#/assets/images/avatar-placeholder.png';
 import { ImageUpload } from './image-upload';
 import { type Country } from '../types/country.type';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
+import { useTranslation } from 'react-i18next';
 
 interface UserInfoProps {
   image?: string;
@@ -53,6 +54,7 @@ const styles = {
 };
 
 export function ProfileInfo({ firstName, lastName, image, country, description, gender, phoneNumber }: UserInfoProps) {
+  const { t } = useTranslation();
   const [disabled, setDisabled] = useState(true);
   const [imageUrl, setImageUrl] = useState(image || DefaultImage);
   const mutation = useUserUpdateMutation();
@@ -76,7 +78,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
         onSuccess: () => setDisabled(true),
         onError: () => {
           showSnackbar({
-            message: 'Phone number is invalid',
+            message: t('snackbars.errorPhoneNumber'),
             variant: 'error',
           });
         },
@@ -113,14 +115,14 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
           </Typography>
         </Box>
         <Button sx={styles.editButton} disabled={!disabled} variant="contained" onClick={() => setDisabled(false)}>
-          Edit
+          {t('profile.buttons.edit')}
         </Button>
       </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack direction="column" sx={styles.inputsContainer}>
           <Stack spacing={4}>
             <FormControl sx={styles.formControl} variant="outlined">
-              <Typography>First name</Typography>
+              <Typography>{t('profile.name')}</Typography>
               <TextField
                 disabled={disabled}
                 {...register('firstName')}
@@ -129,7 +131,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
               />
             </FormControl>
             <FormControl sx={styles.formControl} variant="outlined">
-              <Typography>Last name</Typography>
+              <Typography>{t('profile.surname')}</Typography>
               <TextField
                 disabled={disabled}
                 {...register('lastName')}
@@ -140,7 +142,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
           </Stack>
           <Stack spacing={4}>
             <FormControl sx={styles.formControl} variant="outlined">
-              <Typography>Country</Typography>
+              <Typography>{t('profile.country')}</Typography>
               <CountrySelect
                 disabled={disabled}
                 selectedCountry={Countries.find((c) => c.label === watch('country')) || null}
@@ -148,20 +150,20 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
               />
             </FormControl>
             <FormControl sx={styles.formControl} variant="outlined">
-              <Typography>Phone number</Typography>
+              <Typography>{t('profile.phone')}</Typography>
               <TextField disabled={disabled} {...register('phoneNumber')} />
             </FormControl>
           </Stack>
           <Stack spacing={4}>
             <FormControl sx={styles.formControlGender}>
-              <Typography>Gender</Typography>
+              <Typography>{t('profile.gender')}</Typography>
               <Select value={watch('gender')} onChange={(e) => setValue('gender', e.target.value)} disabled={disabled}>
-                <MenuItem value="male">Male</MenuItem>
-                <MenuItem value="female">Female</MenuItem>
+                <MenuItem value="male">{t('profile.genders.male')}</MenuItem>
+                <MenuItem value="female">{t('profile.genders.female')}</MenuItem>
               </Select>
             </FormControl>
             <FormControl sx={styles.formControl}>
-              <Typography>Description</Typography>
+              <Typography>{t('profile.description')}</Typography>
               <TextField multiline={true} disabled={disabled} {...register('description')} />
             </FormControl>
           </Stack>
@@ -169,10 +171,10 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
         {!disabled && (
           <Stack direction="row" justifyContent="flex-start">
             <Button type="submit" sx={styles.saveButton} variant="contained">
-              Save
+              {t('profile.buttons.save')}
             </Button>
             <Button sx={styles.cancelButton} variant="contained" onClick={handleCancel}>
-              Cancel
+              {t('profile.buttons.cancel')}
             </Button>
           </Stack>
         )}
