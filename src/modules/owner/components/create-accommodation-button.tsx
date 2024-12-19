@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { type Theme } from '@mui/material';
 import Button from '@mui/material/Button';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   button: {
@@ -17,10 +18,12 @@ const styles = {
 };
 
 export function CreateAccommodationButton() {
+  const { t } = useTranslation();
+
   return (
     <Button type="button" sx={styles.button}>
       <Link style={styles.link} to="/accommodations/create">
-        Create Accommodation
+        {t('myAccommodations.create')}
       </Link>
     </Button>
   );

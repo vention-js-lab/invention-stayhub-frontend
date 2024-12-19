@@ -1,5 +1,4 @@
 import Grid2 from '@mui/material/Grid2';
-import CardImage from '#/assets/images/card-temp-image.jpg';
 import React, { useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useListAccommodationsQuery } from '../api/list-accommodations.api';
@@ -16,8 +15,12 @@ import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { AccommodationMap } from './accommodation-map';
+import { calculateOverallRating } from './reviews/rating.component';
+import DefaultImage from '#/assets/images/default-home-image.png';
+import { useTranslation } from 'react-i18next';
 
 export function AccommodationList() {
+  const { t } = useTranslation();
   const { ref: bottomOfPageRef, inView: isBottomOfPageInView } = useInView();
   const { validatedQueryParams } = useListAccommodationQueryParams();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -98,7 +101,6 @@ export function AccommodationList() {
 
         <AccommodationMap accommodations={accommodationsWithCoords} />
       </Dialog>
-
       <Grid2 container={true} spacing={3}>
         {data.pages.map((group) => (
           <React.Fragment key={uuidv4()}>
@@ -108,16 +110,17 @@ export function AccommodationList() {
                   <AccommodationCard
                     status={status}
                     id={accommodation.id}
-                    image={CardImage}
+                    image={accommodation.coverImage ? accommodation.coverImage : DefaultImage}
                     name={accommodation.name}
                     address={accommodation.address}
                     pricePerNight={accommodation.price}
-                    rating={4.8}
+                    rating={calculateOverallRating(accommodation.reviews)}
+                    isSavedToWishlist={accommodation.isSavedToWishlist}
                   />
                 </Grid2>
               ))
             ) : (
-              <NoResult text={'Oops! No accommodation has found :('} />
+              <NoResult text={t('empties.emptySearch')} />
             )}
           </React.Fragment>
         ))}
