@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { validatedEnv } from '#/configs/env.config';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   container: {
@@ -14,7 +15,7 @@ const styles = {
 const libraries: LoadScriptProps['libraries'] = ['places'];
 
 interface Accommodation {
-  id: number;
+  id: string;
   title: string;
   latitude: number;
   longitude: number;
@@ -25,6 +26,7 @@ interface AccommodationMapProps {
 }
 
 export function AccommodationMap({ accommodations }: AccommodationMapProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const defaultCenter = accommodations.length
     ? { lat: accommodations[0].latitude, lng: accommodations[0].longitude }
@@ -40,7 +42,7 @@ export function AccommodationMap({ accommodations }: AccommodationMapProps) {
   return (
     <Box>
       <Typography m={3} fontSize={22} fontWeight={500} color="#333">
-        {'Explore Accommodations'}
+        {t('map.explore')}
       </Typography>
       <GoogleMap mapContainerStyle={styles.container} center={defaultCenter} zoom={12}>
         {accommodations.map((acc) => (
@@ -48,7 +50,7 @@ export function AccommodationMap({ accommodations }: AccommodationMapProps) {
             key={acc.id}
             position={{ lat: acc.latitude, lng: acc.longitude }}
             title={acc.title}
-            onClick={() => navigate(`/accommodation/${acc.id}`)}
+            onClick={() => navigate(`/accommodations/${acc.id}`)}
           />
         ))}
       </GoogleMap>

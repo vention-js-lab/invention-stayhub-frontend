@@ -165,6 +165,10 @@
     },
     "amenitiesTitle": "Turar joy qulayliklarini tanlang"
   },
+  "map": {
+    "showMap": "Xarita",
+    "explore": "Turar joylarni o'rganish"
+  },
   "snackbars": {
     "errorMapMark": "Manzilni aniqlashda xatolik yuz berdi. Iltimos, sozlamalarni tekshiring",
     "errorSomething": "Kutilmagan xatolik. Iltimos, keyinroq qayta urinib ko'ring",

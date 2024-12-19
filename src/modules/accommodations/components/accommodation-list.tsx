@@ -18,6 +18,20 @@ import { AccommodationMap } from './accommodation-map';
 import { calculateOverallRating } from './reviews/rating.component';
 import DefaultImage from '#/assets/images/default-home-image.png';
 import { useTranslation } from 'react-i18next';
+import MapIcon from '@mui/icons-material/Map';
+
+const styles = {
+  showMapButton: {
+    position: 'fixed',
+    bottom: '80px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: 1000,
+    borderRadius: '20px',
+    padding: '10px 20px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
+  },
+};
 
 export function AccommodationList() {
   const { t } = useTranslation();
@@ -59,7 +73,7 @@ export function AccommodationList() {
 
   const accommodationsWithCoords = data.pages.flatMap((group) =>
     group.result.map((acc) => ({
-      id: Number(acc.id),
+      id: acc.id,
       title: acc.name,
       latitude: acc.address?.latitude ? Number(acc.address.latitude) : 41.3111,
       longitude: acc.address?.longitude ? Number(acc.address.longitude) : 69.2797,
@@ -68,22 +82,9 @@ export function AccommodationList() {
 
   return (
     <div>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => setShowMap(true)}
-        sx={{
-          position: 'fixed',
-          bottom: '80px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 1000,
-          borderRadius: '20px',
-          padding: '10px 20px',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
-        }}
-      >
-        Show Map
+      <Button variant="contained" color="secondary" onClick={() => setShowMap(true)} sx={styles.showMapButton}>
+        <MapIcon sx={{ m: '-2px 4px 0 0', fontSize: '20px' }} />
+        {t('map.showMap')}
       </Button>
 
       <Dialog open={showMap} onClose={() => setShowMap(false)} fullWidth={true} maxWidth="lg">
