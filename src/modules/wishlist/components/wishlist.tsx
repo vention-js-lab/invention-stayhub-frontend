@@ -1,12 +1,15 @@
 import Grid2 from '@mui/material/Grid2';
-import CardImage from '#/assets/images/card-temp-image.jpg';
 import { useWishlistQuery } from '../api/wishlist.api';
 import { SkeletonList } from '#/modules/accommodations/components/skeleton-list';
 import { CardSkeleton } from '#/modules/accommodations/components/accommodation-card/card-skeleton';
 import { AccommodationCard } from '#/modules/accommodations/components/accommodation-card/accommodation-card';
 import { NoResult } from '#/shared/components/no-result';
+import { calculateOverallRating } from '#/modules/accommodations/components/reviews/rating.component';
+import DefaultImage from '#/assets/images/default-home-image.png';
+import { useTranslation } from 'react-i18next';
 
 export function Wishlist() {
+  const { t } = useTranslation();
   const { data, status } = useWishlistQuery();
 
   if (status === 'error') {
@@ -34,16 +37,17 @@ export function Wishlist() {
             <AccommodationCard
               status={status}
               id={item.accommodation.id}
-              image={CardImage}
+              image={item.accommodation.coverImage ? item.accommodation.coverImage : DefaultImage}
               name={item.accommodation.name}
               address={item.accommodation.address}
               pricePerNight={item.accommodation.price}
-              rating={4.8}
+              isSavedToWishlist={true}
+              rating={calculateOverallRating(item.accommodation.reviews)}
             />
           </Grid2>
         ))
       ) : (
-        <NoResult text={'Oops! Your wishlist is empty :('} />
+        <NoResult text={t('empties.emptyWishlist')} />
       )}
     </Grid2>
   );

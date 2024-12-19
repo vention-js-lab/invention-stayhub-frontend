@@ -1,0 +1,188 @@
+{
+  "chooseLanguage": "Выберите язык",
+  "profile": {
+    "name": "Имя",
+    "surname": "Фамилия",
+    "country": "Страна",
+    "phone": "Номер телефона",
+    "gender": "Пол",
+    "genders": {
+      "male": "Мужчина",
+      "female": "Женщина"
+    },
+    "description": "Описание",
+    "buttons": {
+      "add": "Загрузить",
+      "edit": "Редактировать",
+      "save": "Сохранить",
+      "cancel": "Отмена"
+    }
+  },
+  "account": {
+    "login": "Войти",
+    "logout": "Выйти",
+    "signup": "Регистрация",
+    "account": "Мой профиль",
+    "wishlist": "Мои избранные",
+    "accommodations": "Мои размещения",
+    "bookings": "Мои бронирования"
+  },
+  "wishlist": "Избранные",
+  "myAccommodations": {
+    "title": "Мои размещения",
+    "create": "Создать размещение"
+  },
+  "bookings": {
+    "name": "Бронирования",
+    "categories": {
+      "pending": "В ожидании",
+      "active": "Активные",
+      "inactive": "Неактивные",
+      "completed": "Завершенные",
+      "upcoming": "Предстоящие",
+      "canceled": "Отмененные"
+    },
+    "address": "Адрес",
+    "rating": "Рейтинг",
+    "checkin": "Въезд",
+    "checkout": "Выезд",
+    "nights": "Ночи",
+    "priceForNights": "Цена за ночь",
+    "fee": "Комиссия Stayhub",
+    "total": "Итого",
+    "buttons": {
+      "pay": "Бронировать",
+      "cancel": "Отмена",
+      "recover": "Восстановить",
+      "addReview": "Оставить отзыв"
+    }
+  },
+  "filterArea": {
+    "search": "Поиск...",
+    "checkin": "Въезд",
+    "checkout": "Выезд",
+    "when": "Когда?",
+    "filterButton": "Фильтры"
+  },
+  "footer": "Подписывайтесь на наши социальные сети!",
+  "empties": {
+    "emptyCategory": "Ой! Эта категория пуста :(",
+    "emptyWishlist": "Ой! Ваш список избранных пуст :(",
+    "emptySearch": "Ой! Ничего не найдено :("
+  },
+  "amenities": {
+    "name": "Удобства",
+    "hasWifi": "WiFi",
+    "hasParking": "Парковка",
+    "hasSwimmingPool": "Бассейн",
+    "hasPetAllowance": "Животные",
+    "hasBackyard": "Задний двор",
+    "hasSmokingAllowance": "Разрешено курение",
+    "hasHospitalNearby": "Близко к больнице",
+    "hasLaundryService": "Прачечная",
+    "hasKitchen": "Кухня",
+    "hasAirConditioning": "Кондиционер",
+    "hasTv": "Телевизор",
+    "hasAirportTransfer": "Трансфер до аэропорта",
+    "isCloseToCenter": "Близко с центру",
+    "isChildFriendly": "Дружелюбно для детей",
+    "isQuietArea": "Тихий район"
+  },
+  "filterModal": {
+    "title": "Параметры фильтрации",
+    "priceRange": "Ценовой диапазон",
+    "info": "Цена за ночь до сборов и налогов",
+    "minPrice": "Мин. Цена",
+    "maxPrice": "Макс. Цена",
+    "rooms": "Комнаты",
+    "sortBy": "Сортировать по",
+    "sortByOptions": {
+      "price": "Цене",
+      "numberOfRooms": "Количестве комнат",
+      "allowedNumberOfPeople": "Количестве людей",
+      "createdAt": "Дате создания"
+    },
+    "orderBy": "Порядок сортировки",
+    "orderByOptions": {
+      "asc": "По возрастанию",
+      "desc": "По убыванию"
+    },
+    "buttons": {
+      "clear": "Очистить",
+      "apply": "Применить фильтры"
+    }
+  },
+  "singleAccommodation": {
+    "guests": "гостей",
+    "rooms": "комнат",
+    "squareMeters": "кв. метр",
+    "offers": "Что предлагает это место",
+    "location": "Где вы будете?",
+    "reviews": "комментарии",
+    "allReviews": "Все комментарии",
+    "commentedIn": "Комментировано в",
+    "since": "регистрирован в",
+    "buttons": {
+      "show": "Посмотреть",
+      "view": "Посмотреть",
+      "showAmenities": "Посмотреть все удобства",
+      "showReviews": "Показать все комментарии",
+      "close": "Закрыть"
+    }
+  },
+  "reservation": {
+    "total": "Ценадо сборов и налогов",
+    "reserve": "Резервировать",
+    "info": "С вас пока не будет взиматься плата"
+  },
+  "accommodation": {
+    "new": "Новое размещение",
+    "name": "Название жилья",
+    "rooms": "Количество комнат",
+    "squareMeters": "Квадратные метры",
+    "price": "Цена",
+    "people": "Разрешённое количество людей",
+    "availableFrom": "Доступно с",
+    "availableTo": "Доступно до",
+    "description": "Описание",
+    "available": "Доступно",
+    "saving": "Сохранение...",
+    "next": "Далее",
+    "submit": "Разместить объявление",
+    "enterAccommodationAddress": "Введите адрес жилья",
+    "street": "Улица",
+    "city": "Город",
+    "country": "Выберите страну",
+    "zipCode": "Почтовый индекс",
+    "mapMark": "Отметьте местоположение жилья на карте",
+    "enterAddress": "Введите адрес",
+    "images": {
+      "title": "Загрузить изображения жилья",
+      "uploadField": "Перетащите файлы сюда или нажмите, чтобы выбрать",
+      "selected": "Выбранные файлы",
+      "selectedCover": "Выберите обложку",
+      "uploadButton": "Загрузить изображения"
+    },
+    "amenitiesTitle": "Выберите удобства жилья"
+  },
+  "snackbars": {
+    "errorMapMark": "Ошибка при получении текущего местоположения. Пожалуйста, проверьте настройки",
+    "errorSomething": "Что-то пошло не так. Пожалуйста, попробуйте позже",
+    "errorUploadImg": "Произошла ошибка во время загрузки. Пожалуйста, попробуйте снова",
+    "errorUpdatingStatus": "Ошибка при обновлении статуса бронирования",
+    "errorTransaction": "Транзакция не удалась",
+    "errorPhoneNumber": "Неверный номер телефона",
+    "errorCreateBooking": "Не удалось создать бронирование",
+    "warningValidDates": "Пожалуйста, выберите корректные даты",
+    "warningUnavailableDates": "Выбранные даты недоступны. Пожалуйста, выберите другие даты",
+    "successReservation": "Бронирование подтверждено!",
+    "successAddReview": "Отзыв успешно добавлен",
+    "successTransaction": "Оплата прошла успешно",
+    "successUpdatingStatus": "Статус бронирования успешно обновлён",
+    "successSaved": "Данные о жилье успешно сохранены",
+    "successUploadImg": "Изображения успешно загружены",
+    "successUploadCoverImg": "Обложка успешно добавлена",
+    "successAddToWishlist": "Жильё добавлено в избранное",
+    "infoRemoveFromWishlist": "Жильё удалено из избранного"
+  }
+}

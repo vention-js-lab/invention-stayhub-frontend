@@ -1,5 +1,4 @@
 import Grid2 from '@mui/material/Grid2';
-import CardImage from '#/assets/images/card-temp-image.jpg';
 import React, { useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useListAccommodationsQuery } from '../api/list-accommodations.api';
@@ -11,8 +10,13 @@ import { usePaginationLimit } from '#/modules/accommodations/hooks/pagination-li
 import { CardSkeleton } from './accommodation-card/card-skeleton';
 import { AccommodationCard } from './accommodation-card/accommodation-card';
 import { NoResult } from '#/shared/components/no-result';
+import { calculateOverallRating } from './reviews/rating.component';
+import DefaultImage from '#/assets/images/default-home-image.png';
+import { useTranslation } from 'react-i18next';
+
 
 export function AccommodationList() {
+  const { t } = useTranslation();
   const { ref: bottomOfPageRef, inView: isBottomOfPageInView } = useInView();
   const { validatedQueryParams } = useListAccommodationQueryParams();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -57,16 +61,17 @@ export function AccommodationList() {
                 <AccommodationCard
                   status={status}
                   id={accommodation.id}
-                  image={CardImage}
+                  image={accommodation.coverImage ? accommodation.coverImage : DefaultImage}
                   name={accommodation.name}
                   address={accommodation.address}
                   pricePerNight={accommodation.price}
-                  rating={4.8}
+                  rating={calculateOverallRating(accommodation.reviews)}
+                  isSavedToWishlist={accommodation.isSavedToWishlist}
                 />
               </Grid2>
             ))
           ) : (
-            <NoResult text={'Oops! No accommodation has found :('} />
+            <NoResult text={t('empties.emptySearch')} />
           )}
         </React.Fragment>
       ))}

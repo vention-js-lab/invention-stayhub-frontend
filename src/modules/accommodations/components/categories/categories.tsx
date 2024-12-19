@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Slider from 'react-slick';
-import { useCategoriesQuery } from '#/modules/accommodations/api/categories.api';
+import { useCategoriesQuery } from '#/shared/apis/get-categories.api';
 import Typography from '@mui/material/Typography';
 import { CustomPrevArrow, CustomNextArrow } from './slider-buttons';
 import { useState } from 'react';
@@ -12,7 +12,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderBottom: isSelected ? '2px solid #E91E63' : 'transparent',
+    borderBottom: isSelected ? '2px solid #E91E63' : '2px solid transparent',
     '&:hover': { borderBottom: isSelected ? '' : '2px solid #e9e9e9', cursor: 'pointer' },
     textAlign: 'center',
     fontSize: '10px',
