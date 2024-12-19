@@ -6,8 +6,10 @@ import { AccommodationCard } from '#/modules/accommodations/components/accommoda
 import { NoResult } from '#/shared/components/no-result';
 import { calculateOverallRating } from '#/modules/accommodations/components/reviews/rating.component';
 import DefaultImage from '#/assets/images/default-home-image.png';
+import { useTranslation } from 'react-i18next';
 
 export function Wishlist() {
+  const { t } = useTranslation();
   const { data, status } = useWishlistQuery();
 
   if (status === 'error') {
@@ -45,7 +47,7 @@ export function Wishlist() {
           </Grid2>
         ))
       ) : (
-        <NoResult text={'Oops! Your wishlist is empty :('} />
+        <NoResult text={t('empties.emptyWishlist')} />
       )}
     </Grid2>
   );

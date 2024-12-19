@@ -15,6 +15,7 @@ import { addCreatedAccommodation } from '#/redux/slices/accommodation-slice';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { time } from '#/shared/libs/time.lib';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { SelectCategory } from './select-category';
 import { useEffect, useState } from 'react';
 
@@ -36,6 +37,7 @@ const styles = {
 };
 
 export function CreateAccommodationForm() {
+  const { t } = useTranslation();
   const [categoryIds, setCategoryIds] = useState<string[]>([]);
   const createAccommodationMutation = useCreateAccommodationMutation();
 
@@ -82,7 +84,7 @@ export function CreateAccommodationForm() {
         },
         onError: () => {
           showSnackbar({
-            message: 'Something went wrong. Please try again later',
+            message: t('snackbars.errorSomething'),
             variant: 'error',
           });
         },
@@ -96,12 +98,12 @@ export function CreateAccommodationForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid2 container={true} spacing={2}>
         <Grid2 size={{ xs: 12, sm: 10 }}>
-          <Typography sx={styles.heading}>New Accommodation</Typography>
+          <Typography sx={styles.heading}>{t('accommodation.new')}</Typography>
         </Grid2>
 
         <Grid2 size={{ xs: 12, sm: 2 }} mt={3} display="flex" justifyContent="flex-end" alignItems="center">
           <FormControlLabel
-            label="Available"
+            label={t('accommodation.available')}
             control={<Switch {...register('available')} defaultChecked={true} color="success" defaultValue="true" />}
           />
         </Grid2>
@@ -110,7 +112,7 @@ export function CreateAccommodationForm() {
           <TextField
             type="text"
             fullWidth={true}
-            label="Accommodation Name"
+            label={t('accommodation.name')}
             {...register('name')}
             error={Boolean(errors.name)}
             helperText={errors.name?.message}
@@ -121,7 +123,7 @@ export function CreateAccommodationForm() {
           <TextField
             type="number"
             fullWidth={true}
-            label="Number of Rooms"
+            label={t('accommodation.rooms')}
             {...register('numberOfRooms', { valueAsNumber: true })}
             error={Boolean(errors.numberOfRooms)}
             helperText={errors.numberOfRooms?.message}
@@ -132,7 +134,7 @@ export function CreateAccommodationForm() {
           <TextField
             type="number"
             fullWidth={true}
-            label="Square Meters"
+            label={t('accommodation.squareMeters')}
             {...register('squareMeters', { valueAsNumber: true })}
             error={Boolean(errors.squareMeters)}
             helperText={errors.squareMeters?.message}
@@ -143,7 +145,7 @@ export function CreateAccommodationForm() {
           <TextField
             type="number"
             fullWidth={true}
-            label="Price"
+            label={t('accommodation.price')}
             {...register('price', { valueAsNumber: true })}
             error={Boolean(errors.price)}
             helperText={errors.price?.message}
@@ -154,7 +156,7 @@ export function CreateAccommodationForm() {
           <TextField
             type="number"
             fullWidth={true}
-            label="Allowed Number of People"
+            label={t('accommodation.people')}
             {...register('allowedNumberOfPeople', { valueAsNumber: true })}
             error={Boolean(errors.allowedNumberOfPeople)}
             helperText={errors.allowedNumberOfPeople?.message}
@@ -165,7 +167,7 @@ export function CreateAccommodationForm() {
           <TextField
             type="date"
             fullWidth={true}
-            label="Available From"
+            label={t('accommodation.availableFrom')}
             defaultValue={time().format('YYYY-MM-DD')}
             {...register('availableFrom')}
             error={Boolean(errors.availableFrom)}
@@ -187,7 +189,7 @@ export function CreateAccommodationForm() {
         <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
             fullWidth={true}
-            label="Description"
+            label={t('accommodation.description')}
             multiline={true}
             {...register('description', { required: 'First name is required' })}
             error={Boolean(errors.description)}
@@ -199,7 +201,7 @@ export function CreateAccommodationForm() {
           <TextField
             type="date"
             fullWidth={true}
-            label="Available To"
+            label={t('accommodation.availableTo')}
             defaultValue={time().add(1, 'day').format('YYYY-MM-DD')}
             {...register('availableTo')}
             error={Boolean(errors.availableTo)}
@@ -227,7 +229,7 @@ export function CreateAccommodationForm() {
 
       <Box mt={3} display="flex" justifyContent="flex-end">
         <Button type="submit" variant="contained" sx={styles.button} disabled={createAccommodationMutation.isPending}>
-          {createAccommodationMutation.isPending ? 'Saving...' : 'Next'}
+          {createAccommodationMutation.isPending ? t('accommodation.saving') : t('accommodation.next')}
         </Button>
       </Box>
     </form>

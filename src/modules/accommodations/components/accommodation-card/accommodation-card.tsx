@@ -12,6 +12,7 @@ import { useWishlistMutation } from '#/modules/accommodations/api/toggle-wishlis
 import { useAuthGuardAction } from '#/shared/hooks/auth-guard-action.hook';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { type AccommodationAddress } from '#/modules/accommodations/types/accommodation-address.type';
+import { useTranslation } from 'react-i18next';
 
 interface AccommodationCardProps {
   status: 'pending' | 'error' | 'success';
@@ -55,6 +56,7 @@ export function AccommodationCard({
   image,
   isSavedToWishlist,
 }: AccommodationCardProps) {
+  const { t } = useTranslation();
   const [isWishlisted, setIsWishlisted] = useState(isSavedToWishlist);
   const { wishlistMutation } = useWishlistMutation();
   const authGuardAction = useAuthGuardAction();
@@ -76,14 +78,14 @@ export function AccommodationCard({
       {
         onSuccess: (response) => {
           showSnackbar({
-            message: response.status === 201 ? 'Accommodation was added to wishlist' : 'Accommodation was removed from wishlist',
+            message: response.status === 201 ? t('snackbars.successAddToWishlist') : t('snackbars.infoRemoveFromWishlist'),
             variant: response.status === 201 ? 'success' : 'info',
           });
         },
         onError: () => {
           setIsWishlisted((prev) => !prev);
           showSnackbar({
-            message: 'Something went wrong. Please try again later',
+            message: t('snackbars.errorSomething'),
             variant: 'error',
           });
         },

@@ -9,6 +9,7 @@ import Rating from '@mui/material/Rating';
 import Modal from '@mui/material/Modal';
 import { type Review } from '#/modules/accommodations/types/review.type';
 import { formatDate } from '#/modules/accommodations/utils/get-formatted-date.util';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   modalBox: {
@@ -47,6 +48,7 @@ interface ReviewCardProps {
 }
 
 export function ReviewCard({ review }: ReviewCardProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [shouldShowMoreButton, setShouldShowMoreButton] = useState(false);
@@ -67,7 +69,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
   const userName = `${review.user.firstName} ${review.user.lastName}`.trim();
   const userCountry = review.user.country || '';
   const joinDate = formatDate(review.user.createdAt);
-  const userInfo = joinDate ? `${userCountry} • since ${joinDate}` : `${userCountry}`;
+  const userInfo = joinDate ? `${userCountry} • ${t('singleAccommodation.since')} ${joinDate}` : `${userCountry}`;
   const commentedDate = formatDate(review.createdAt);
 
   useEffect(() => {
@@ -93,7 +95,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
             </Box>
           </Box>
           <Typography variant="body2" color="textSecondary">
-            Commented in {commentedDate}
+            {t('singleAccommodation.commentedIn')} {commentedDate}
           </Typography>
           <Rating value={review.rating} readOnly={true} sx={{ marginY: 1 }} />
           <Typography ref={contentRef} variant="body2" color="textPrimary" paragraph={true} sx={styles.truncatedContent}>
@@ -102,7 +104,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
 
           {shouldShowMoreButton ? (
             <Button variant="text" color="primary" onClick={() => handleOpen(review)}>
-              Show more
+              {t('singleAccommodation.show')}
             </Button>
           ) : null}
         </CardContent>
@@ -123,7 +125,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
                 {selectedReview.content}
               </Typography>
               <Button variant="contained" color="primary" onClick={handleClose} sx={{ mt: 2 }}>
-                Close
+                {t('singleAccommodation.buttons.close')}
               </Button>
             </>
           ) : null}

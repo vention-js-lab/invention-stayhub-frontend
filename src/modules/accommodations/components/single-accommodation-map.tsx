@@ -2,6 +2,7 @@ import { GoogleMap, MarkerF, useLoadScript, type LoadScriptProps } from '@react-
 import { validatedEnv } from '#/configs/env.config';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   container: {
@@ -20,6 +21,7 @@ interface SingleAccommodationMapProps {
 export function SingleAccommodationMap({ latitude, longitude }: SingleAccommodationMapProps) {
   const mapCenter = { lat: Number(latitude), lng: Number(longitude) };
   const markerPosition = { lat: Number(latitude), lng: Number(longitude) };
+  const { t } = useTranslation();
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: validatedEnv.VITE_GOOGLE_MAP_APIKEY,
@@ -31,7 +33,7 @@ export function SingleAccommodationMap({ latitude, longitude }: SingleAccommodat
   return (
     <Box>
       <Typography m={3} fontSize={22} fontWeight={500} color="#333">
-        {"Where you'll be"}
+        {t('singleAccommodation.location')}
       </Typography>
       <GoogleMap mapContainerStyle={styles.container} center={mapCenter} zoom={14}>
         <MarkerF position={markerPosition} />

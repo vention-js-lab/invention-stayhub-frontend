@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
 import { type Review } from '#/modules/accommodations/types/review.type';
+import { useTranslation } from 'react-i18next';
 
 type ReviewsListProps = {
   reviews: Review[] | null;
@@ -19,6 +20,13 @@ export const calculateOverallRating = (reviewsList: Review[] | null) => {
 };
 
 export function AccommodationRating({ reviews }: ReviewsListProps) {
+  const { t } = useTranslation();
+  const calculateOverallRating = (reviewsList: Review[] | null) => {
+    if (!reviewsList || reviewsList.length === 0) return 0;
+    const totalRating = reviewsList.reduce((acc, review) => acc + review.rating, 0);
+    return parseFloat((totalRating / reviewsList.length).toFixed(2));
+  };
+
   const overallRating = useMemo(() => calculateOverallRating(reviews), [reviews]);
 
   const reviewCount = reviews ? reviews.length : 0;
@@ -33,7 +41,7 @@ export function AccommodationRating({ reviews }: ReviewsListProps) {
     <Box sx={styles.box}>
       <StarIcon sx={{ color: getStarColor(overallRating), marginRight: 1 }} />
       <Typography variant="h6" sx={styles.rating}>
-        {overallRating} · {reviewCount} reviews
+        {overallRating} · {reviewCount} {t('singleAccommodation.reviews')}
       </Typography>
     </Box>
   );

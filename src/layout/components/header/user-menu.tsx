@@ -10,8 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '#/shared/hooks/auth.hook';
 import { style } from '#/layout/styles/style';
 import Box from '@mui/material/Box';
+import { useTranslation } from 'react-i18next';
 
 export function UserMenu() {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -51,13 +53,13 @@ export function UserMenu() {
       >
         {authStatus === 'authenticated' ? (
           <Box>
-            <MenuItem onClick={() => navigate('/account/profile')}>My Account</MenuItem>
-            <MenuItem onClick={() => navigate('/wishlist')}>My Wishlist</MenuItem>
-            <MenuItem onClick={() => navigate('/accommodations')}>My Accommodations</MenuItem>
-            <MenuItem onClick={() => navigate('/bookings')}>My Bookings</MenuItem>
+            <MenuItem onClick={() => navigate('/account/profile')}>{t('account.account')}</MenuItem>
+            <MenuItem onClick={() => navigate('/wishlist')}>{t('account.wishlist')}</MenuItem>
+            <MenuItem onClick={() => navigate('/accommodations')}>{t('account.accommodations')}</MenuItem>
+            <MenuItem onClick={() => navigate('/bookings')}>{t('account.bookings')}</MenuItem>
             <MenuItem onClick={handleLogout}>
               <Button fullWidth={true} color="error">
-                Log out
+                {t('account.logout')}
               </Button>
             </MenuItem>
           </Box>
@@ -65,12 +67,12 @@ export function UserMenu() {
           <Box>
             <MenuItem>
               <Link href="/auth/login" sx={{ width: 150, textDecoration: 'none' }}>
-                Log in
+                {t('account.login')}
               </Link>
             </MenuItem>
             <MenuItem>
               <Link href="/auth/register" sx={{ width: 150, textDecoration: 'none' }}>
-                Sign up
+                {t('account.signup')}
               </Link>
             </MenuItem>
           </Box>
