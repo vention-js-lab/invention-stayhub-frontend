@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 const styles = {
   container: { padding: '0 0 30px 16px' },
-  title: { fontSize: '25px', marginBottom: '15px' },
+  title: { fontSize: '25px', marginBottom: '15px', fontWeight: '500' },
   homeInfo: { display: 'flex', marginBottom: '10px' },
   homeProperties: { padding: '0 8px 0 0' },
 };
@@ -31,6 +31,13 @@ export function AccommodationDetails({ data }: { data: Accommodation }) {
         <Typography>
           {data.squareMeters} {t('singleAccommodation.squareMeters')}
         </Typography>
+        {data.categories.length > 0 &&
+          data.categories.map((category) => (
+            <>
+              <Divider orientation="vertical" flexItem={true} />
+              <Typography component="span">{t(`categories.${category.name.toLowerCase().replace(/\s+/g, '')}`)}</Typography>
+            </>
+          ))}
       </Box>
       <Typography sx={styles.homeProperties}>{data.description}</Typography>
     </Box>

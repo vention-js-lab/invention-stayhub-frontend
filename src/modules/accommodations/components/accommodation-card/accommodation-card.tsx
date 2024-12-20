@@ -43,7 +43,11 @@ const styles = {
   cardAddress: { padding: '0', color: 'gray', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
   cardActions: { display: 'flex', padding: 0, alignItems: 'center' },
   ratingNumber: { padding: '0', m: '0' },
-  ratingStar: { fontSize: '17px' },
+  ratingStar: (rating: number) => ({
+    color: rating >= 4 ? 'orange' : 'black',
+    fontSize: '17px',
+    marginTop: '-4px',
+  }),
 };
 
 export function AccommodationCard({
@@ -114,12 +118,14 @@ export function AccommodationCard({
               {parseAddress(address)}
             </Typography>
             <Typography sx={styles.cardContentText} fontSize="medium">
-              ${pricePerNight} per night
+              ${pricePerNight} {t('singleAccommodation.perNight')}
             </Typography>
           </CardContent>
           <CardActions sx={styles.cardActions}>
-            <StarRate fontSize="small" sx={styles.ratingStar} />
-            <Typography sx={styles.ratingNumber}>{rating}</Typography>
+            <StarRate fontSize="small" sx={styles.ratingStar(rating || 3.5)} />
+            <Typography sx={styles.ratingNumber}>
+              {rating} {t('singleAccommodation.stars')}
+            </Typography>
           </CardActions>
         </a>
       )}

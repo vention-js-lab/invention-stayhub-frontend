@@ -68,7 +68,7 @@ export function GoogleMapComponent({ onLocationChange }: GoogleMapComponentProps
     }
   };
 
-  if (!isLoaded) return <div>Loading...</div>;
+  if (!isLoaded) return <div>{t('UI.loading')}</div>;
 
   return (
     <Box>

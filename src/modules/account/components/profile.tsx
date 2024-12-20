@@ -110,7 +110,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
           <Box sx={{ position: 'relative' }}>
             <ImageUpload defaultImage={imageUrl} onImageUpload={handleImageUpload} disabled={disabled} />
           </Box>
-          <Typography>
+          <Typography sx={{ px: '8px', fontWeight: 500, fontSize: '20px' }}>
             {watch('firstName')} {watch('lastName')}
           </Typography>
         </Box>

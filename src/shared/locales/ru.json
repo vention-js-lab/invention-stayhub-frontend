@@ -42,8 +42,11 @@
       "upcoming": "Предстоящие",
       "canceled": "Отмененные"
     },
+    "payTitle": "Давайте оформим вашу поездку официально",
+    "priceDetails": "Детали цены",
     "address": "Адрес",
     "rating": "Рейтинг",
+    "createdDate": "Создан в",
     "checkin": "Въезд",
     "checkout": "Выезд",
     "nights": "Ночи",
@@ -113,6 +116,8 @@
     }
   },
   "singleAccommodation": {
+    "stars": "звёзд",
+    "perNight": "за ночь",
     "guests": "гостей",
     "rooms": "комнат",
     "squareMeters": "кв. метр",
@@ -122,6 +127,7 @@
     "allReviews": "Все комментарии",
     "commentedIn": "Комментировано в",
     "since": "регистрирован в",
+    "withUs": "с нами с",
     "buttons": {
       "show": "Посмотреть",
       "view": "Посмотреть",
@@ -130,8 +136,23 @@
       "close": "Закрыть"
     }
   },
+  "categories": {
+    "name": "Категории",
+    "boats": "Лодки",
+    "beach": "Пляж",
+    "camping": "Кемпинг",
+    "arctic": "Арктика",
+    "mansions": "Особняки",
+    "desert": "Пустыня",
+    "castles": "Замки",
+    "amazingview": "Замечательный вид",
+    "mountains": "Горы",
+    "luxury": "Роскошь",
+    "forest": "Лес",
+    "surfing": "Сёрфинг"
+  },
   "reservation": {
-    "total": "Ценадо сборов и налогов",
+    "total": "Цена до сборов и налогов",
     "reserve": "Резервировать",
     "info": "С вас пока не будет взиматься плата"
   },
@@ -188,5 +209,9 @@
     "successUploadCoverImg": "Обложка успешно добавлена",
     "successAddToWishlist": "Жильё добавлено в избранное",
     "infoRemoveFromWishlist": "Жильё удалено из избранного"
+  },
+  "UI": {
+    "loadData": "Не удалось загрузить данные",
+    "loading": "Загрузка..."
   }
 }

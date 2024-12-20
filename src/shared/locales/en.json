@@ -42,8 +42,11 @@
       "upcoming": "Upcoming",
       "canceled": "Canceled"
     },
+    "payTitle": "Let's Make Your Trip Official",
+    "priceDetails": "Price details",
     "address": "Address",
     "rating": "Rating",
+    "createdDate": "Created at",
     "checkin": "Check-in",
     "checkout": "Checkout",
     "nights": "Nights",
@@ -113,6 +116,8 @@
     }
   },
   "singleAccommodation": {
+    "stars": "stars",
+    "perNight": "per night",
     "guests": "guests",
     "rooms": "rooms",
     "squareMeters": "square meters",
@@ -122,6 +127,7 @@
     "allReviews": "All reviews",
     "commentedIn": "Commented in",
     "since": "since",
+    "withUs": "with us since",
     "buttons": {
       "show": "Show more",
       "view": "View More",
@@ -129,6 +135,21 @@
       "showReviews": "Show All Reviews",
       "close": "Close"
     }
+  },
+  "categories": {
+    "name": "Categories",
+    "boats": "Boats",
+    "beach": "Beach",
+    "camping": "Camping",
+    "arctic": "Arctic",
+    "mansions": "Mansions",
+    "desert": "Desert",
+    "castles": "Castles",
+    "amazingview": "Amazing view",
+    "mountains": "Mountains",
+    "luxury": "Luxury",
+    "forest": "Forest",
+    "surfing": "Surfing"
   },
   "reservation": {
     "total": "Total before taxes",
@@ -188,5 +209,9 @@
     "successUploadCoverImg": "Cover Image successfully added",
     "successAddToWishlist": "Accommodation was added to wishlist",
     "infoRemoveFromWishlist": "Accommodation was removed from wishlist"
+  },
+  "UI": {
+    "loadData": "Couldn't load data",
+    "loading": "Loading..."
   }
 }

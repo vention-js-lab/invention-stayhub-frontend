@@ -42,8 +42,11 @@
       "upcoming": "Bajarilayotgan",
       "canceled": "Bekor qilingan"
     },
+    "payTitle": "Keling, sayohatingizni rasmiylashtiramiz",
+    "priceDetails": "Narx tafsilotlari",
     "address": "Manzil",
     "rating": "Reyting",
+    "createdDate": "Buyurtma vaqti",
     "checkin": "Kirish",
     "checkout": "Chiqish",
     "nights": "Tunlar",
@@ -113,6 +116,8 @@
     }
   },
   "singleAccommodation": {
+    "stars": "yulduz",
+    "perNight": "kuniga",
     "guests": "mehmonlar",
     "rooms": "xonalar",
     "squareMeters": "kv. metr",
@@ -122,6 +127,7 @@
     "allReviews": "Barcha izohlar",
     "commentedIn": "Izohlangan sana",
     "since": "ro'yxatdan o'tilgan sana",
+    "withUs": "bizga qo'shilgan sana",
     "buttons": {
       "show": "Batafsil",
       "view": "Batafsil",
@@ -129,6 +135,21 @@
       "showReviews": "Barcha izohlarni ko'rish",
       "close": "Yopish"
     }
+  },
+  "categories": {
+    "name": "Kategoriyalar",
+    "boats": "Qayiqlar",
+    "beach": "Plyaj",
+    "camping": "Kamping",
+    "arctic": "Arktika",
+    "mansions": "Yirik uylar",
+    "desert": "Cho'l",
+    "castles": "Qasrlar",
+    "amazingview": "Go'zal ko'rinish",
+    "mountains": "Tog'lar",
+    "luxury": "Qimmatbaho",
+    "forest": "O'rmon",
+    "surfing": "Serfing"
   },
   "reservation": {
     "total": "Soliqlar va yig'imlardan oldin",
@@ -188,5 +209,9 @@
     "successUploadCoverImg": "Muqova muvaffaqiyatli yuklandi",
     "successAddToWishlist": "Turar joy sevimlilar ro'yxatiga qo'shildi",
     "infoRemoveFromWishlist": "Turar joy sevimlilar ro'yxatidan olib tashlandi"
+  },
+  "UI": {
+    "loadData": "Ma'lumotlarni yuklab bo'lmadi",
+    "loading": "Yuklanmoqda..."
   }
 }

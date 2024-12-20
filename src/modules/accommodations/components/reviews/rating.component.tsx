@@ -15,14 +15,15 @@ const styles = {
 };
 export const calculateOverallRating = (reviewsList: Review[] | null) => {
   if (!reviewsList || reviewsList.length === 0) return 0;
-  const totalRating = reviewsList.reduce((acc, review) => acc + review.rating, 0);
+  const totalRating = reviewsList.reduce((acc, review) => {
+    return acc + review.rating;
+  }, 0);
   return parseFloat((totalRating / reviewsList.length).toFixed(2));
 };
 
 export function AccommodationRating({ reviews }: ReviewsListProps) {
   const { t } = useTranslation();
   const overallRating = useMemo(() => calculateOverallRating(reviews), [reviews]);
-
   const reviewCount = reviews ? reviews.length : 0;
 
   const getStarColor = (rating: number) => {

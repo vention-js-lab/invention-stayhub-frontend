@@ -55,7 +55,7 @@ export function AccommodationList() {
   });
 
   if (status === 'error') {
-    return <p>{"Couldn't load data"}</p>;
+    return <p>{t('UI.loadData')}</p>;
   }
 
   if (status === 'pending') {

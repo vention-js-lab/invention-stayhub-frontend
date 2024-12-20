@@ -3,6 +3,7 @@ import { type AccommodationAmenity } from '../../../shared/constants/accommodati
 import { type AccommodationImage } from './accommodation-image.type';
 import { type Booking } from './booking.type';
 import { type Review } from './review.type';
+import { type Category } from '#/shared/types/category.type';
 
 export interface Accommodation {
   id: string;
@@ -26,4 +27,12 @@ export interface Accommodation {
   bookings: Booking[] | null;
   deletedAt: string | null;
   reviews: Review[] | null;
+  categories: Category[];
+  owner: {
+    firstName: string | null;
+    lastName: string | null;
+    avatar: string | null;
+    description: string | null;
+    createdAt: string;
+  };
 }
