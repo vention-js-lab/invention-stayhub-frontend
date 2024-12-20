@@ -13,6 +13,7 @@ import { type Theme } from '@mui/material';
 import { amenitiesMap } from '#/shared/constants/amenities-map.constant';
 import { type AmenityKey } from '#/shared/constants/accommodation-amenity.type';
 import { type UpdateAmenityData } from '../types/create-accommodation-response.type';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   heading: {
@@ -49,6 +50,7 @@ const styles = {
 };
 
 export function AccommodationAmenitiesForm() {
+  const { t } = useTranslation();
   const updateAccommodationMutation = useUpdateAccommodationMutation<UpdateAmenityData>();
   const navigate = useNavigate();
   const { handleSubmit, setValue, getValues, control } = useForm<CreateAccommodationAmenity>({
@@ -68,9 +70,9 @@ export function AccommodationAmenitiesForm() {
             navigate(`/accommodations/${accommodationId}`);
             localStorage.removeItem('createdAccommodationId');
           },
-          onError: (error) => {
+          onError: () => {
             showSnackbar({
-              message: error.message,
+              message: t('snackbars.errorSomething'),
               variant: 'error',
             });
           },
@@ -85,9 +87,9 @@ export function AccommodationAmenitiesForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography sx={styles.heading}>Select Accommodation Amenities</Typography>
+      <Typography sx={styles.heading}>{t('accommodation.amenitiesTitle')}</Typography>
       <Grid2 container={true} spacing={2} columns={3}>
-        {Object.entries(amenitiesMap).map(([key, { icon: Icon, label }]) => (
+        {Object.entries(amenitiesMap).map(([key, { icon: Icon }]) => (
           <Grid2 key={key} size={{ xs: 1 }}>
             <Controller
               key={key}
@@ -99,7 +101,7 @@ export function AccommodationAmenitiesForm() {
                   onClick={() => handleAmenitySelection(key as AmenityKey)}
                 >
                   <Icon />
-                  <Typography>{label}</Typography>
+                  <Typography>{t(`amenities.${key}`)}</Typography>
                 </IconButton>
               )}
             />
@@ -108,7 +110,7 @@ export function AccommodationAmenitiesForm() {
       </Grid2>
       <Box mt={2} mb={5} display="flex" justifyContent="flex-end">
         <Button variant="contained" sx={styles.button} type="submit">
-          Submit
+          {t('accommodation.submit')}
         </Button>
       </Box>
     </form>

@@ -7,8 +7,8 @@ export const style = {
     alignItems: 'center',
   },
   languages: {
-    color: (theme: Theme) => theme.palette.text.primary,
-    fontWeight: 'bold',
+    '&:hover': { backgroundColor: '#fff' },
+    color: '#E91E63',
   },
   logo: {
     display: 'flex',

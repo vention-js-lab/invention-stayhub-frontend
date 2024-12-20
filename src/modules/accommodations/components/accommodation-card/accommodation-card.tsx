@@ -12,11 +12,12 @@ import { useWishlistMutation } from '#/modules/accommodations/api/toggle-wishlis
 import { useAuthGuardAction } from '#/shared/hooks/auth-guard-action.hook';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { type AccommodationAddress } from '#/modules/accommodations/types/accommodation-address.type';
+import { useTranslation } from 'react-i18next';
 
 interface AccommodationCardProps {
   status: 'pending' | 'error' | 'success';
   id?: string;
-  image?: string;
+  image?: string | undefined;
   name?: string;
   address?: AccommodationAddress | null;
   pricePerNight?: number;
@@ -42,7 +43,11 @@ const styles = {
   cardAddress: { padding: '0', color: 'gray', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
   cardActions: { display: 'flex', padding: 0, alignItems: 'center' },
   ratingNumber: { padding: '0', m: '0' },
-  ratingStar: { fontSize: '17px' },
+  ratingStar: (rating: number) => ({
+    color: rating >= 4 ? 'orange' : 'black',
+    fontSize: '17px',
+    marginTop: '-4px',
+  }),
 };
 
 export function AccommodationCard({
@@ -55,6 +60,7 @@ export function AccommodationCard({
   image,
   isSavedToWishlist,
 }: AccommodationCardProps) {
+  const { t } = useTranslation();
   const [isWishlisted, setIsWishlisted] = useState(isSavedToWishlist);
   const { wishlistMutation } = useWishlistMutation();
   const authGuardAction = useAuthGuardAction();
@@ -76,14 +82,14 @@ export function AccommodationCard({
       {
         onSuccess: (response) => {
           showSnackbar({
-            message: response.status === 201 ? 'Accommodation was added to wishlist' : 'Accommodation was removed from wishlist',
+            message: response.status === 201 ? t('snackbars.successAddToWishlist') : t('snackbars.infoRemoveFromWishlist'),
             variant: response.status === 201 ? 'success' : 'info',
           });
         },
         onError: () => {
           setIsWishlisted((prev) => !prev);
           showSnackbar({
-            message: 'Something went wrong. Please try again later',
+            message: t('snackbars.errorSomething'),
             variant: 'error',
           });
         },
@@ -112,12 +118,14 @@ export function AccommodationCard({
               {parseAddress(address)}
             </Typography>
             <Typography sx={styles.cardContentText} fontSize="medium">
-              ${pricePerNight} per night
+              ${pricePerNight} {t('singleAccommodation.perNight')}
             </Typography>
           </CardContent>
           <CardActions sx={styles.cardActions}>
-            <StarRate fontSize="small" sx={styles.ratingStar} />
-            <Typography sx={styles.ratingNumber}>{rating}</Typography>
+            <StarRate fontSize="small" sx={styles.ratingStar(rating || 3.5)} />
+            <Typography sx={styles.ratingNumber}>
+              {rating} {t('singleAccommodation.stars')}
+            </Typography>
           </CardActions>
         </a>
       )}

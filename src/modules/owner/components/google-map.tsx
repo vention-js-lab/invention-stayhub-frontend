@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { validatedEnv } from '#/configs/env.config';
+import { useTranslation } from 'react-i18next';
 
 const containerStyle = {
   width: '100%',
@@ -18,6 +19,7 @@ interface GoogleMapComponentProps {
 }
 
 export function GoogleMapComponent({ onLocationChange }: GoogleMapComponentProps) {
+  const { t } = useTranslation();
   const [mapCenter, setMapCenter] = useState({ lat: 41.299496, lng: 69.240074 });
   const [markerPosition, setMarkerPosition] = useState({ lat: 41.299496, lng: 69.240074 });
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
@@ -37,7 +39,7 @@ export function GoogleMapComponent({ onLocationChange }: GoogleMapComponentProps
       },
       () => {
         showSnackbar({
-          message: 'Error getting current location. Please check your settings.',
+          message: t('snackbars.errorMapMark'),
           variant: 'error',
         });
       },
@@ -66,16 +68,16 @@ export function GoogleMapComponent({ onLocationChange }: GoogleMapComponentProps
     }
   };
 
-  if (!isLoaded) return <div>Loading...</div>;
+  if (!isLoaded) return <div>{t('UI.loading')}</div>;
 
   return (
     <Box>
       <Typography mt={5} mb={2} fontSize={18} fontWeight={500} color="#333">
-        Mark Acommodation Address on the Map
+        {t('accommodation.mapMark')}
       </Typography>
       <Box mb={2}>
         <Autocomplete onLoad={(auto) => setAutocomplete(auto)} onPlaceChanged={handlePlaceChanged}>
-          <TextField type="text" fullWidth={true} label="Enter an address" />
+          <TextField type="text" fullWidth={true} label={t('accommodation.enterAddress')} />
         </Autocomplete>
       </Box>
       <GoogleMap

@@ -4,6 +4,9 @@ import { type BookingStatus } from '../constants/booking-status.constant';
 import { type Booking } from '../types/booking.type';
 import { BookingCard } from './booking-card/booking-card';
 import { NoResult } from '#/shared/components/no-result';
+import { calculateOverallRating } from '#/modules/accommodations/components/reviews/rating.component';
+import { useTranslation } from 'react-i18next';
+import DefaultImage from '#/assets/images/default-home-image.png';
 
 interface BookingsProps {
   selectedCategory: BookingStatus;
@@ -11,9 +14,10 @@ interface BookingsProps {
 
 export function Bookings({ selectedCategory }: BookingsProps) {
   const { data, status, refetch } = useBookingsQuery();
+  const { t } = useTranslation();
 
   if (status === 'error') {
-    return <p>{"Couldn't load data"}</p>;
+    return <p>{t('UI.loadData')}</p>;
   }
 
   const filteredBookings = data?.[selectedCategory] || [];
@@ -30,17 +34,18 @@ export function Bookings({ selectedCategory }: BookingsProps) {
               accommodationId={booking.accommodationId}
               pricePerNight={booking.accommodation.price}
               address={booking.accommodation.address}
-              image={booking.accommodation.coverImage}
+              image={booking.accommodation.coverImage ? booking.accommodation.coverImage : DefaultImage}
               name={booking.accommodation.name}
               startDate={booking.startDate}
               endDate={booking.endDate}
               onCancel={refetch}
-              rating={4.8}
+              createdAt={booking.createdAt}
+              rating={calculateOverallRating(booking.accommodation.reviews)}
             />
           </Grid2>
         ))
       ) : (
-        <NoResult text={'Oops! This category is empty :('} />
+        <NoResult text={t('empties.emptyCategory')} />
       )}
     </Grid2>
   );

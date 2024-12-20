@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useTranslation } from 'react-i18next';
 
 const stripePromise = loadStripe(validatedEnv.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -35,6 +36,7 @@ const styles = {
 };
 
 export function Checkout() {
+  const { t } = useTranslation();
   const { bookingId } = useValidatedUrlParams<CheckoutUrlParams>(checkoutUrlParamsSchema);
   const { booking, priceDetails, paymentToken: clientSecret } = useCheckoutDetails(bookingId);
   const navigate = useNavigate();
@@ -51,7 +53,7 @@ export function Checkout() {
             <ArrowBackIcon fontSize="small" />
           </IconButton>
           <Typography fontSize={26} fontWeight="bold">
-            {"Let's Make Your Trip Official"}
+            {t('bookings.payTitle')}
           </Typography>
         </Box>
         {clientSecret ? (

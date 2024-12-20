@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import AvatarImage from '#/assets/images/card-temp-image.jpg';
 import { AccommodationDetails } from '../components/accommodation-details';
 import { AccommodationImages } from '../components/accommodation-images';
 import { AccommodationDetailsSkeleton } from '../components/skeleton-details';
@@ -54,7 +53,13 @@ export function SingleAccommodationRoute() {
         <Box sx={styles.details}>
           <AccommodationDetails data={data} />
           <Divider variant="middle" />
-          <OwnerDetails image={AvatarImage} firstname="John" lastname="Doe" description="Something about the user" />
+          <OwnerDetails
+            since={data.owner.createdAt}
+            image={data.owner.avatar}
+            firstname={data.owner.firstName}
+            lastname={data.owner.lastName}
+            description={data.owner.description}
+          />
           <Divider variant="middle" />
           <AccommodationAmenities amenities={data.amenity} />
         </Box>

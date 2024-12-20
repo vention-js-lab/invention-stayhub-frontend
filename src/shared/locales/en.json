@@ -1,0 +1,217 @@
+{
+  "chooseLanguage": "Choose Language",
+  "profile": {
+    "name": "First name",
+    "surname": "Last name",
+    "country": "Country",
+    "phone": "Phone number",
+    "gender": "Gender",
+    "genders": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "description": "Description",
+    "buttons": {
+      "add": "Add",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  },
+  "account": {
+    "login": "Login",
+    "logout": "Log out",
+    "signup": "Sign up",
+    "account": "My Profile",
+    "wishlist": "My Wishlist",
+    "accommodations": "My Accommodations",
+    "bookings": "My Bookings"
+  },
+  "wishlist": "Wishlist",
+  "myAccommodations": {
+    "title": "My Accommodations",
+    "create": "Create accommodation"
+  },
+  "bookings": {
+    "name": "Bookings",
+    "categories": {
+      "pending": "Pending",
+      "active": "Active",
+      "inactive": "Inactive",
+      "completed": "Completed",
+      "upcoming": "Upcoming",
+      "canceled": "Canceled"
+    },
+    "payTitle": "Let's Make Your Trip Official",
+    "priceDetails": "Price details",
+    "address": "Address",
+    "rating": "Rating",
+    "createdDate": "Created at",
+    "checkin": "Check-in",
+    "checkout": "Checkout",
+    "nights": "Nights",
+    "priceForNights": "Price for nights",
+    "fee": "Stayhub fee",
+    "total": "Total price",
+    "buttons": {
+      "pay": "Pay",
+      "cancel": "Cancel",
+      "recover": "Recover",
+      "addReview": "Add review"
+    }
+  },
+  "filterArea": {
+    "search": "Search...",
+    "checkin": "Check-in",
+    "checkout": "Checkout",
+    "when": "When?",
+    "filterButton": "Filter"
+  },
+  "footer": "Follow us on social media!",
+  "empties": {
+    "emptyCategory": "Oops! This category is empty :(",
+    "emptyWishlist": "Oops! Your wishlist is empty :(",
+    "emptySearch": "Oops! No accommodation has found :("
+  },
+  "amenities": {
+    "name": "Amenities",
+    "hasWifi": "WiFi",
+    "hasParking": "Parking",
+    "hasSwimmingPool": "Swimming Pool",
+    "hasPetAllowance": "Pet Friendly",
+    "hasBackyard": "Backyard",
+    "hasSmokingAllowance": "Smoking Allowed",
+    "hasHospitalNearby": "Hospital Nearby",
+    "hasLaundryService": "Laundry Service",
+    "hasKitchen": "Kitchen",
+    "hasAirConditioning": "Air Conditioning",
+    "hasTv": "TV",
+    "hasAirportTransfer": "Airport Transfer",
+    "isCloseToCenter": "Close to Center",
+    "isChildFriendly": "Child Friendly",
+    "isQuietArea": "Quiet Area"
+  },
+  "filterModal": {
+    "title": "Filter Options",
+    "priceRange": "Price Range",
+    "info": "Nightly prices before fees and taxes",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "rooms": "Rooms",
+    "sortBy": "Sort By",
+    "sortByOptions": {
+      "price": "Price",
+      "numberOfRooms": "Count of rooms",
+      "allowedNumberOfPeople": "Allowed number of people",
+      "createdAt": "Creation date"
+    },
+    "orderBy": "Order By",
+    "orderByOptions": {
+      "asc": "Ascending",
+      "desc": "Descending"
+    },
+    "buttons": {
+      "clear": "Clear All",
+      "apply": "Apply Filters"
+    }
+  },
+  "singleAccommodation": {
+    "stars": "stars",
+    "perNight": "per night",
+    "guests": "guests",
+    "rooms": "rooms",
+    "squareMeters": "square meters",
+    "offers": "What this place offers",
+    "location": "Where you'll be?",
+    "reviews": "reviews",
+    "allReviews": "All reviews",
+    "commentedIn": "Commented in",
+    "since": "since",
+    "withUs": "with us since",
+    "buttons": {
+      "show": "Show more",
+      "view": "View More",
+      "showAmenities": "Show All Amenities",
+      "showReviews": "Show All Reviews",
+      "close": "Close"
+    }
+  },
+  "categories": {
+    "name": "Categories",
+    "boats": "Boats",
+    "beach": "Beach",
+    "camping": "Camping",
+    "arctic": "Arctic",
+    "mansions": "Mansions",
+    "desert": "Desert",
+    "castles": "Castles",
+    "amazingview": "Amazing view",
+    "mountains": "Mountains",
+    "luxury": "Luxury",
+    "forest": "Forest",
+    "surfing": "Surfing"
+  },
+  "reservation": {
+    "total": "Total before taxes",
+    "reserve": "Reserve",
+    "info": "You won't be charged yet"
+  },
+  "accommodation": {
+    "new": "New Accommodation",
+    "name": "Accommodation Name",
+    "rooms": "Number of Rooms",
+    "squareMeters": "Square Meters",
+    "price": "Price",
+    "people": "Allowed Number of People",
+    "availableFrom": "Available From",
+    "availableTo": "Available To",
+    "description": "Description",
+    "available": "Available",
+    "saving": "Saving...",
+    "next": "Next",
+    "submit": "Submit",
+    "enterAccommodationAddress": "Enter Accommodation Address",
+    "street": "Street",
+    "city": "City",
+    "country": "Choose country",
+    "zipCode": "Zip Code",
+    "mapMark": "Mark Acommodation Address on the Map",
+    "enterAddress": "Enter an address",
+    "images": {
+      "title": "Upload Accommodation Images",
+      "uploadField": "Drag and drop files here, or click to select",
+      "selected": "Selected Files",
+      "selectedCover": "Select Cover Image",
+      "uploadButton": "Upload Images"
+    },
+    "amenitiesTitle": "Select Accommodation Amenities"
+  },
+  "map": {
+    "showMap": "Show Map",
+    "explore": "Explore Accommodations"
+  },
+  "snackbars": {
+    "errorMapMark": "Error getting current location. Please check your settings",
+    "errorSomething": "Something went wrong. Please try again later",
+    "errorUploadImg": "Something went wrong during the upload. Please, try again",
+    "errorUpdatingStatus": "Error during updating booking status process",
+    "errorTransaction": "Transaction failed",
+    "errorPhoneNumber": "Phone number is invalid",
+    "errorCreateBooking": "Failed to create booking",
+    "warningValidDates": "Please select valid dates",
+    "warningUnavailableDates": "The selected dates are unavailable. Please choose different dates",
+    "successReservation": "Reservation confirmed!",
+    "successAddReview": "Review added successfully",
+    "successTransaction": "Payment successful",
+    "successUpdatingStatus": "Successfully updated booking status",
+    "successSaved": "Accommodation data saved successfully",
+    "successUploadImg": "Images uploaded successfully",
+    "successUploadCoverImg": "Cover Image successfully added",
+    "successAddToWishlist": "Accommodation was added to wishlist",
+    "infoRemoveFromWishlist": "Accommodation was removed from wishlist"
+  },
+  "UI": {
+    "loadData": "Couldn't load data",
+    "loading": "Loading..."
+  }
+}
