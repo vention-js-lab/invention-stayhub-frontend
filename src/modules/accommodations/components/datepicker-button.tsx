@@ -46,6 +46,7 @@ export function DatePickerButton({ label, date, onDateChange }: DatePickerButton
       <DatePicker
         open={isOpen}
         value={date}
+        disablePast={true}
         onClose={() => setIsOpen(false)}
         onChange={(newDate) => {
           onDateChange(newDate);

@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { CustomPrevArrow, CustomNextArrow } from './slider-buttons';
 import { useState } from 'react';
 import { useListAccommodationQueryParams } from '#/modules/accommodations/hooks/list-accommodations-query-params.hook';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   categoryBox: (isSelected: boolean) => ({
@@ -22,6 +23,7 @@ const styles = {
 
 export function CategoriesCarousel() {
   const { data: categoriesData } = useCategoriesQuery();
+  const { t } = useTranslation();
   const categories = categoriesData?.result;
 
   const { validatedQueryParams, setQueryParams } = useListAccommodationQueryParams();
@@ -54,7 +56,9 @@ export function CategoriesCarousel() {
             onClick={() => handleCategorySelect(category.name)}
           >
             <img src={category.icon} alt="" style={{ width: '26px', height: '24px', margin: 'auto' }} />
-            <Typography sx={{ fontSize: '14px', marginTop: '5px' }}>{category.name}</Typography>
+            <Typography sx={{ fontSize: '14px', marginTop: '5px' }}>
+              {t(`categories.${category.name.toLowerCase().replace(/\s+/g, '')}`)}
+            </Typography>
           </Box>
         ))}
       </Slider>
