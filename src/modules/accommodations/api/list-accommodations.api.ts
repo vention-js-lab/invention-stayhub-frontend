@@ -6,10 +6,10 @@ import { type ListAccommodationQueryParams } from '../schemas/list-accommodation
 import { type AccommodationListResponseDataMetadata } from '../types/accommodation-list-metadata.type';
 import { type BaseResponse } from '#/shared/types/base-response.type';
 
-export function useListAccommodationsQuery(limit: number, params: ListAccommodationQueryParams) {
+export function useListAccommodationsQuery(limit: number, params: ListAccommodationQueryParams, showOwnOnly: boolean = false) {
   const listAccommodationsQuery = useInfiniteQuery({
-    queryKey: ['accommodations', params, limit],
-    queryFn: ({ pageParam }) => getAccommodations(pageParam, limit, params),
+    queryKey: ['accommodations', params, limit, showOwnOnly],
+    queryFn: ({ pageParam }) => getAccommodations(pageParam, limit, params, showOwnOnly),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => getNextPageNumber(lastPage.metadata),
   });
@@ -22,9 +22,13 @@ interface AccommodationList {
   metadata: AccommodationListResponseDataMetadata;
 }
 
-async function getAccommodations(pageParam: number, limit: number, params: ListAccommodationQueryParams) {
+// eslint-disable-next-line max-params-no-constructor/max-params-no-constructor
+async function getAccommodations(pageParam: number, limit: number, params: ListAccommodationQueryParams, showOwnOnly: boolean) {
   const stringifiedParams = Object.fromEntries(Object.entries(params).map(([key, value]) => [key, String(value)]));
-  const searchParams = new URLSearchParams(stringifiedParams).toString();
+  const searchParams = new URLSearchParams({
+    ...stringifiedParams,
+    showOwnAccommodationsOnly: String(showOwnOnly),
+  }).toString();
 
   const response = await apiClient.get<BaseResponse<AccommodationList>>(
     `/accommodations?page=${pageParam}&limit=${limit}&${searchParams}`

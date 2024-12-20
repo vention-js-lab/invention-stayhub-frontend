@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { CreateAccommodationButton } from '../components/create-accommodation-button';
+import { OwnerAccommodations } from '../components/owner-accommodations';
 
 const styles = {
   heading: {
@@ -13,14 +14,18 @@ const styles = {
   header: {
     display: 'flex',
     justifyContent: 'space-between',
+    marginBottom: '30px',
   },
 };
 
 export function OwnerRoute() {
   return (
-    <Box sx={styles.header}>
-      <Typography sx={styles.heading}>My Accommodations</Typography>
-      <CreateAccommodationButton />
+    <Box>
+      <Box sx={styles.header}>
+        <Typography sx={styles.heading}>My Accommodations</Typography>
+        <CreateAccommodationButton />
+      </Box>
+      <OwnerAccommodations />
     </Box>
   );
 }
