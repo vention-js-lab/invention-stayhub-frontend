@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { CreateAccommodationButton } from '../components/create-accommodation-button';
 import { OwnerAccommodations } from '../components/owner-accommodations';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   heading: {
@@ -19,10 +20,12 @@ const styles = {
 };
 
 export function OwnerRoute() {
+  const { t } = useTranslation();
+
   return (
     <Box>
       <Box sx={styles.header}>
-        <Typography sx={styles.heading}>My Accommodations</Typography>
+        <Typography sx={styles.heading}>{t('myAccommodations.title')}</Typography>
         <CreateAccommodationButton />
       </Box>
       <OwnerAccommodations />

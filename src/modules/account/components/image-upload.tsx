@@ -4,6 +4,7 @@ import { useUploadImageMutation } from '#/shared/hooks/upload-image.hook';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 
 interface ImageUploadProps {
   defaultImage: string;
@@ -42,6 +43,7 @@ export function ImageUpload({ defaultImage, onImageUpload, disabled }: ImageUplo
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
+  const { t } = useTranslation();
 
   return (
     <Box sx={{ textAlign: 'center', position: 'relative' }}>
@@ -73,7 +75,7 @@ export function ImageUpload({ defaultImage, onImageUpload, disabled }: ImageUplo
         }}
       >
         <CloudUploadTwoToneIcon />
-        Add
+        {t('profile.buttons.add')}
       </Button>
     </Box>
   );

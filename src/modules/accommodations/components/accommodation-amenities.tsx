@@ -11,6 +11,7 @@ import { type AccommodationAmenity } from '#/shared/constants/accommodation-amen
 import { type Theme } from '@mui/material/styles';
 import { AmenitiesModal } from '#/modules/accommodations/components/amenities-modal';
 import { getAmenities } from '../utils/get-amenities.util';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   container: { paddingTop: '30px' },
@@ -36,6 +37,8 @@ const styles = {
 
 export function AccommodationAmenities({ amenities }: { amenities: AccommodationAmenity | null }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { t } = useTranslation();
+
   if (!amenities) {
     return null;
   }
@@ -44,7 +47,7 @@ export function AccommodationAmenities({ amenities }: { amenities: Accommodation
   const limitedAmenities = amenityList.slice(0, 6);
   return (
     <Box sx={styles.container}>
-      <Typography sx={styles.offers}>What this place offers</Typography>
+      <Typography sx={styles.offers}>{t('singleAccommodation.offers')}</Typography>
       <List sx={styles.list}>
         {limitedAmenities.map((offer) => {
           const Icon = offer.icon;
@@ -60,7 +63,7 @@ export function AccommodationAmenities({ amenities }: { amenities: Accommodation
       </List>
       {amenityList.length > 8 && (
         <Button variant="contained" color="primary" onClick={() => setIsModalOpen(true)} sx={styles.amenitiesButton}>
-          Show All Amenities
+          {t('singleAccommodation.buttons.showAmenities')}
         </Button>
       )}
       <AmenitiesModal amenity={amenityList} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />

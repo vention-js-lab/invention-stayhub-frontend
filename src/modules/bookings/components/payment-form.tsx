@@ -5,6 +5,7 @@ import { PayButton } from './pay-button';
 import { PaymentProcessingButton } from './payment-processing-button';
 import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   container: {
@@ -13,6 +14,7 @@ const styles = {
 };
 
 export function PaymentForm() {
+  const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -32,14 +34,14 @@ export function PaymentForm() {
 
     if (error && error.type === 'card_error') {
       showSnackbar({
-        message: `Transaction failed: ${error.message}`,
+        message: `${t('snackbars.errorTransaction')}: ${error.message}`,
         variant: 'error',
       });
     }
 
     if (paymentIntent && paymentIntent.status === 'succeeded') {
       showSnackbar({
-        message: 'Payment successful',
+        message: t('snackbars.successTransaction'),
         variant: 'success',
       });
 

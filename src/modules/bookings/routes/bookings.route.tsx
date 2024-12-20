@@ -4,6 +4,7 @@ import { Bookings } from '../components/booking-list';
 import { BookingsNavbar } from '../components/bookings-navbar';
 import { useState } from 'react';
 import { BookingStatus } from '../constants/booking-status.constant';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   header: {
@@ -16,11 +17,12 @@ const styles = {
 };
 
 export function BookingsRoute() {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<BookingStatus>(BookingStatus.Pending);
 
   return (
     <Box>
-      <Typography sx={styles.header}>Bookings</Typography>
+      <Typography sx={styles.header}>{t('bookings.name')}</Typography>
       <BookingsNavbar selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
       <Bookings selectedCategory={selectedCategory} />
     </Box>

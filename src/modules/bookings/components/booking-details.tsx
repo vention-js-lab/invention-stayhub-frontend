@@ -6,6 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import { readableDate } from '#/shared/utils/readable-date.util';
 import { type Booking } from '../types/booking.type';
 import { type PriceDetails } from '../types/price-details.type';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   container: {
@@ -42,6 +43,8 @@ interface BookingDetailsProps {
 }
 
 export function BookingDetails({ booking, priceDetails }: BookingDetailsProps) {
+  const { t } = useTranslation();
+
   return (
     <Stack direction="column" sx={styles.container}>
       <Box sx={styles.card}>
@@ -53,30 +56,30 @@ export function BookingDetails({ booking, priceDetails }: BookingDetailsProps) {
       </Box>
       <Divider />
       <Box sx={styles.row}>
-        <Typography>Check-in</Typography>
+        <Typography>{t('bookings.checkin')}</Typography>
         <Typography>{readableDate(booking.startDate)}</Typography>
       </Box>
       <Box sx={styles.row}>
-        <Typography>Checkout</Typography>
+        <Typography>{t('bookings.checkout')}</Typography>
         <Typography>{readableDate(booking.endDate)}</Typography>
       </Box>
       <Divider />
       <Typography fontSize={20} fontWeight="bold">
-        Price details
+        {t('bookings.priceDetails')}
       </Typography>
       <Box sx={styles.row}>
         <Typography>
-          ${booking.accommodation.price} x {priceDetails.numberOfNights} nights
+          ${booking.accommodation.price} x {priceDetails.numberOfNights} {t('bookings.nights').toLowerCase()}
         </Typography>
         <Typography>${priceDetails.totalPriceOfNights.toFixed(2)}</Typography>
       </Box>
       <Box sx={styles.row}>
-        <Typography>StayHub service fee</Typography>
+        <Typography>{t('bookings.fee')}</Typography>
         <Typography>${priceDetails.serviceFee.toFixed(2)}</Typography>
       </Box>
       <Divider />
       <Box sx={styles.row}>
-        <Typography fontWeight="bold">Total</Typography>
+        <Typography fontWeight="bold">{t('bookings.total')}</Typography>
         <Typography fontWeight="bold">${priceDetails.totalPrice.toFixed(2)}</Typography>
       </Box>
     </Stack>

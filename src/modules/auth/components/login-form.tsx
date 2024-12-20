@@ -15,6 +15,9 @@ import { useNavigate } from 'react-router-dom';
 import { parseAuthError } from '../utils/auth-error-parser.util';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { RegisterLink } from './register-link';
+import { GoogleAuthLogin } from './google-login';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { validatedEnv } from '#/configs/env.config';
 
 const styles = {
   passwordContainer: {
@@ -23,6 +26,8 @@ const styles = {
     justifyContent: 'right',
   },
 };
+
+const googleClientId = validatedEnv.VITE_GOOGLE_CLIENT_ID;
 
 export function LoginForm() {
   const loginMutation = useLoginMutation();
@@ -97,6 +102,9 @@ export function LoginForm() {
         {loginMutation.isPending ? <LoadingButton /> : <LoginButton />}
       </form>
       <RegisterLink />
+      <GoogleOAuthProvider clientId={googleClientId}>
+        <GoogleAuthLogin />
+      </GoogleOAuthProvider>
     </Stack>
   );
 }

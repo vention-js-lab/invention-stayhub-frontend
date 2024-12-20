@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   searchContainer: {
@@ -47,6 +48,7 @@ const styles = {
 };
 
 export function Search() {
+  const { t } = useTranslation();
   const { setQueryParams } = useListAccommodationQueryParams();
   const { handleSubmit, control, setValue, getValues } = useForm<AccommodationFilterParams>();
 
@@ -73,7 +75,7 @@ export function Search() {
           name="search"
           control={control}
           defaultValue=""
-          render={({ field }) => <InputBase placeholder="Search..." {...field} sx={styles.inputBase} />}
+          render={({ field }) => <InputBase placeholder={t('filterArea.search')} {...field} sx={styles.inputBase} />}
         />
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -82,7 +84,7 @@ export function Search() {
             control={control}
             render={({ field }) => (
               <DatePickerButton
-                label="Check in"
+                label={t('filterArea.checkin')}
                 date={field.value ? dayjs(field.value) : null}
                 onDateChange={handleDateChange('availableFrom')}
               />
@@ -94,7 +96,7 @@ export function Search() {
             control={control}
             render={({ field }) => (
               <DatePickerButton
-                label="Check out"
+                label={t('filterArea.checkout')}
                 date={field.value ? dayjs(field.value) : null}
                 onDateChange={handleDateChange('availableTo')}
               />

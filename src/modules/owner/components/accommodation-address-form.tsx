@@ -14,6 +14,7 @@ import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { GoogleMapComponent } from './google-map';
 import { useNavigate } from 'react-router-dom';
 import { type UpdateAddressData } from '../types/create-accommodation-response.type';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   heading: {
@@ -33,6 +34,7 @@ const styles = {
 };
 
 export function AddressForm() {
+  const { t } = useTranslation();
   const updateAccommodationMutation = useUpdateAccommodationMutation<UpdateAddressData>();
   const navigate = useNavigate();
   const {
@@ -65,9 +67,9 @@ export function AddressForm() {
           onSuccess: () => {
             navigate('/accommodations/create/image-amenities');
           },
-          onError: (error) => {
+          onError: () => {
             showSnackbar({
-              message: error.message,
+              message: t('snackbars.errorSomething'),
               variant: 'error',
             });
           },
@@ -83,13 +85,13 @@ export function AddressForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography sx={styles.heading}>Enter Acommodation Address</Typography>
+      <Typography sx={styles.heading}>{t('accommodation.enterAccommodationAddress')}</Typography>
       <Grid2 container={true} spacing={2}>
         <Grid2 size={{ xs: 12, sm: 6 }}>
           <TextField
             type="text"
             fullWidth={true}
-            label="Street"
+            label={t('accommodation.street')}
             {...register('street')}
             error={Boolean(errors.street)}
             helperText={errors.street?.message}
@@ -99,7 +101,7 @@ export function AddressForm() {
           <TextField
             type="text"
             fullWidth={true}
-            label="City"
+            label={t('accommodation.city')}
             {...register('city')}
             error={Boolean(errors.city)}
             helperText={errors.city?.message}
@@ -131,7 +133,7 @@ export function AddressForm() {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Choose a country"
+                label={t('accommodation.country')}
                 error={Boolean(errors.country)}
                 helperText={errors.country?.message}
                 slotProps={{
@@ -148,7 +150,7 @@ export function AddressForm() {
           <TextField
             type="text"
             fullWidth={true}
-            label="Zip Code"
+            label={t('accommodation.zipCode')}
             {...register('zipCode')}
             error={Boolean(errors.zipCode)}
             helperText={errors.zipCode?.message}
@@ -160,7 +162,7 @@ export function AddressForm() {
       </Box>
       <Box mt={3} mb={5} display="flex" justifyContent="flex-end">
         <Button type="submit" variant="contained" sx={styles.button} disabled={updateAccommodationMutation.isPending}>
-          {updateAccommodationMutation.isPending ? 'Saving...' : 'Next'}
+          {updateAccommodationMutation.isPending ? t('accommodation.saving') : t('accommodation.next')}
         </Button>
       </Box>
     </form>

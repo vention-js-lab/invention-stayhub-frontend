@@ -3,8 +3,10 @@ import { useCheckoutMutation } from '../api/checkout.api';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { type Booking } from '../types/booking.type';
 import { type PriceDetails } from '../types/price-details.type';
+import { useTranslation } from 'react-i18next';
 
 export function useCheckoutDetails(bookingId: string) {
+  const { t } = useTranslation();
   const [booking, setBooking] = useState<Booking>();
   const [priceDetails, setPriceDetails] = useState<PriceDetails>();
   const [paymentToken, setPaymentToken] = useState('');
@@ -21,8 +23,11 @@ export function useCheckoutDetails(bookingId: string) {
           setPriceDetails(data.priceDetails);
           setPaymentToken(data.paymentToken);
         },
-        onError: (error) => {
-          showSnackbar({ message: error.message, variant: 'error' });
+        onError: () => {
+          showSnackbar({
+            message: t('snackbars.errorSomething'),
+            variant: 'error',
+          });
         },
       }
     );

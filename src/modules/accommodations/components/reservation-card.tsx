@@ -13,6 +13,7 @@ import { time } from '../utils/time';
 import { isDateUnavailable } from '../utils/reservation-dates.util';
 import { useCreateBookingMutation } from '../api/create-booking.api';
 import { useAuthGuardAction } from '#/shared/hooks/auth-guard-action.hook';
+import { useTranslation } from 'react-i18next';
 
 interface ReservationCardProps {
   pricePerNight: number;
@@ -36,6 +37,7 @@ export function ReservationCard({
   bookings = [],
 }: ReservationCardProps) {
   const theme = useTheme();
+  const { t } = useTranslation();
   const [checkIn, setCheckIn] = useState<ReturnType<typeof time> | null>(null);
   const [checkOut, setCheckOut] = useState<ReturnType<typeof time> | null>(null);
   const [guests, setGuests] = useState<number>(1);
@@ -61,12 +63,12 @@ export function ReservationCard({
 
   const handleReserve = () => {
     if (!checkIn || !checkOut) {
-      showSnackbar({ message: 'Please select valid dates.', variant: 'warning' });
+      showSnackbar({ message: t('snackbars.warningValidDates'), variant: 'warning' });
       return;
     }
 
     if (isDateUnavailable({ date: checkIn, bookings }) || isDateUnavailable({ date: checkOut, bookings })) {
-      showSnackbar({ message: 'The selected dates are unavailable. Please choose different dates.', variant: 'warning' });
+      showSnackbar({ message: t('snackbars.warningUnavailableDates'), variant: 'warning' });
       return;
     }
 
@@ -79,10 +81,10 @@ export function ReservationCard({
 
     createBookingMutation.mutate(bookingPayload, {
       onSuccess: () => {
-        showSnackbar({ message: 'Reservation confirmed!', variant: 'success' });
+        showSnackbar({ message: t('snackbars.successReservation'), variant: 'success' });
       },
       onError: () => {
-        showSnackbar({ message: 'Failed to create booking', variant: 'error' });
+        showSnackbar({ message: t('snackbars.errorCreateBooking'), variant: 'error' });
       },
     });
   };
@@ -94,7 +96,7 @@ export function ReservationCard({
   const generateGuestOptions = (maxGuestsCount: number | null): JSX.Element[] => {
     return Array.from({ length: maxGuestsCount || 1 }, (_, i) => i + 1).map((num) => (
       <MenuItem key={num} value={num}>
-        {num} {num === 1 ? 'guest' : 'guests'}
+        {num} {t('singleAccommodation.guests')}
       </MenuItem>
     ));
   };
@@ -150,13 +152,13 @@ export function ReservationCard({
           ${total || pricePerNight}
         </Typography>
         <Typography variant="body2" sx={styles.priceText}>
-          Total before taxes
+          {t('reservation.total')}
         </Typography>
 
         <Box sx={styles.section}>
           <Box sx={styles.dateBox}>
             <DatePicker
-              label="Check-In"
+              label={t('filterArea.checkin')}
               value={checkIn}
               onChange={(newValue) => setCheckIn(newValue)}
               disablePast={true}
@@ -174,7 +176,7 @@ export function ReservationCard({
           </Box>
           <Box sx={styles.dateBox}>
             <DatePicker
-              label="Check-Out"
+              label={t('filterArea.checkout')}
               value={checkOut}
               onChange={(newValue) => setCheckOut(newValue)}
               disablePast={true}
@@ -204,11 +206,11 @@ export function ReservationCard({
         </TextField>
 
         <Button variant="contained" fullWidth={true} sx={styles.reserveButton} disabled={!isButtonEnabled} onClick={handleClick}>
-          Reserve
+          {t('reservation.reserve')}
         </Button>
 
         <Typography variant="body2" sx={styles.bottomText}>
-          You won&apos;t be charged yet
+          {t('reservation.info')}
         </Typography>
       </Box>
     </LocalizationProvider>

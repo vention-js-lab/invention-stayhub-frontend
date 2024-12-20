@@ -2,9 +2,7 @@ import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
-import Link from '@mui/material/Link';
 import HomeIcon from '@mui/icons-material/Home';
 import RoomIcon from '@mui/icons-material/Room';
 import GradeIcon from '@mui/icons-material/Grade';
@@ -13,6 +11,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SellIcon from '@mui/icons-material/Sell';
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import { type AccommodationAddress } from '#/modules/accommodations/types/accommodation-address.type';
 import { CardSkeleton } from '#/modules/accommodations/components/accommodation-card/card-skeleton';
 import { readableDate } from '#/shared/utils/readable-date.util';
@@ -20,6 +19,9 @@ import { getPriceDetails } from '#/shared/utils/price-calculator';
 import { BookingStatus } from '#/modules/bookings/constants/booking-status.constant';
 import { useBookingMutation } from '#/modules/bookings/api/cancel-booking.api';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { time } from '#/shared/libs/time.lib';
 
 interface BookingCardProps {
   id: string;
@@ -30,6 +32,7 @@ interface BookingCardProps {
   image: string | null;
   name: string;
   pricePerNight: number;
+  createdAt: Date | string;
   startDate: Date | string;
   endDate: Date | string;
   rating: number;
@@ -38,29 +41,44 @@ interface BookingCardProps {
 
 const styles = {
   bookingCard: { borderRadius: '15px', boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.4)', height: '100%' },
-  cardPhoto: { width: '100%', maxHeight: '400px', backgroundColor: '#bdbdbd', objectFit: 'cover' },
   actionButtons: { width: '100%', padding: '8px 10px', fontSize: '14px' },
   mainText: { fontSize: '20px', fontWeight: '500', color: '#000', display: 'flex', alignItems: 'center' },
-  textStyle: { fontSize: '16px', pX: '0', display: 'flex', alignItems: 'center' },
   iconStyle: { marginRight: '2px', fontSize: '20px' },
+  textStyle: {
+    fontSize: '16px',
+    pX: '0',
+    display: 'flex',
+    alignItems: 'center',
+    '@media (max-width: 1235px)': {
+      fontSize: '14px',
+    },
+    '@media (max-width: 1199px)': {
+      fontSize: '16px',
+    },
+  },
+  cardPhoto: {
+    width: '50%',
+    backgroundColor: '#bdbdbd',
+    objectFit: 'cover',
+    '@media (max-width: 1535px)': {
+      width: '100%',
+    },
+  },
   cardTextArea: {
-    width: '100%',
+    width: '50%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     padding: '20px 23px 30px 23px',
+    '@media (max-width: 1535px)': {
+      width: '100%',
+    },
   },
   cardContent: {
     height: '100%',
     display: 'flex',
     padding: '0',
     '@media (max-width: 1535px)': {
-      flexDirection: 'column',
-    },
-    '@media (max-width: 899px)': {
-      flexDirection: 'row',
-    },
-    '@media (max-width: 870px)': {
       flexDirection: 'column',
     },
   },
@@ -87,11 +105,14 @@ export function BookingCard({
   pricePerNight,
   startDate,
   endDate,
+  createdAt,
   rating,
   onCancel,
 }: BookingCardProps) {
   const { numberOfNights, totalPriceOfNights, serviceFee, totalPrice } = getPriceDetails(pricePerNight, startDate, endDate);
+  const navigate = useNavigate();
   const mutation = useBookingMutation();
+  const { t } = useTranslation();
 
   const handleUpdateStatus = (newStatus: BookingStatus) => {
     mutation.mutate(
@@ -99,14 +120,14 @@ export function BookingCard({
       {
         onSuccess: () => {
           showSnackbar({
-            message: `Booking successfully moved to ${newStatus} category`,
+            message: t('snackbars.successUpdatingStatus'),
             variant: 'success',
           });
           onCancel();
         },
         onError: () => {
           showSnackbar({
-            message: 'Error during updating booking status process',
+            message: t('snackbars.errorUpdatingStatus'),
             variant: 'error',
           });
         },
@@ -119,62 +140,81 @@ export function BookingCard({
       {status === 'pending' ? (
         <CardSkeleton />
       ) : (
-        <Link href={`/accommodations/${accommodationId}`} sx={styles.cardContent}>
+        <Box sx={styles.cardContent}>
           {image !== null ? (
-            <Box component="img" src={image} sx={styles.cardPhoto} />
+            <Box
+              component="img"
+              src={image}
+              sx={styles.cardPhoto}
+              onClick={() => navigate(`/accommodations/${accommodationId}`)}
+              style={{ cursor: 'pointer' }}
+            />
           ) : (
-            <Box sx={styles.notFoundImg}>Image not found</Box>
+            <Box onClick={() => navigate(`/accommodations/${accommodationId}`)} sx={styles.notFoundImg}>
+              Image not found
+            </Box>
           )}
           <Box sx={styles.cardTextArea}>
-            <CardContent sx={{ padding: '0' }}>
-              <Typography sx={{ ...styles.mainText }}>
+            <CardContent onClick={() => navigate(`/accommodations/${accommodationId}`)} sx={{ p: '0', cursor: 'pointer' }}>
+              <Typography sx={styles.mainText}>
                 <HomeIcon sx={{ marginRight: '2px', color: '#E91E63' }} />
                 {name}
               </Typography>
               {address !== null && (
                 <Typography sx={styles.textStyle}>
                   <RoomIcon sx={styles.iconStyle} />
-                  Address: {address.city}, {address.street}
+                  {t('bookings.address')}: {address.city}, {address.street}
                 </Typography>
               )}
               <Typography sx={styles.textStyle}>
                 <GradeIcon sx={styles.iconStyle} />
-                Rating: {rating}
+                {t('bookings.rating')}: {rating}
               </Typography>
               <Typography sx={styles.textStyle}>
                 <LoginIcon sx={styles.iconStyle} />
-                Check-in: {readableDate(startDate)}
+                {t('bookings.checkin')}: {readableDate(startDate)}
               </Typography>
               <Typography sx={styles.textStyle}>
                 <LogoutIcon sx={styles.iconStyle} />
-                Checkout: {readableDate(endDate)}
+                {t('bookings.checkout')}: {readableDate(endDate)}
+              </Typography>
+              <Typography sx={styles.textStyle}>
+                <EditCalendarIcon sx={styles.iconStyle} />
+                {t('bookings.createdDate')}: {time(createdAt).format('YYYY-MM-DD hh:mm:ss')}
               </Typography>
               <Typography sx={styles.textStyle}>
                 <NightsStayIcon sx={styles.iconStyle} />
-                Nights: {numberOfNights}
+                {t('bookings.nights')}: {numberOfNights}
               </Typography>
               <Typography sx={styles.textStyle}>
                 <AttachMoneyIcon sx={styles.iconStyle} />
-                Price for nights: ${totalPriceOfNights}
+                {t('bookings.priceForNights')}: ${totalPriceOfNights}
               </Typography>
               <Typography sx={styles.textStyle}>
                 <SellIcon sx={styles.iconStyle} />
-                Stayhub fee: ${serviceFee}
+                {t('bookings.fee')}: ${serviceFee}
               </Typography>
             </CardContent>
 
             <Box>
               <Typography sx={{ ...styles.mainText, display: 'flex', mb: '4px', fontSize: '16px' }}>
-                Total Price:
-                <Typography sx={{ color: '#E91E63', fontSize: '16px', fontWeight: '500', px: '8px' }}>${totalPrice}</Typography>
+                {t('bookings.total')}:
+                <Typography component="span" sx={{ color: '#E91E63', fontSize: '16px', fontWeight: '500', px: '8px' }}>
+                  ${totalPrice}
+                </Typography>
               </Typography>
-              <CardActionArea sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
                 {[BookingStatus.Pending, BookingStatus.Active].includes(bookingStatus) && (
-                  <Link href={`/bookings/${id}/checkout`} sx={{ width: '100%', padding: '0' }}>
-                    <Button variant="contained" color="secondary" sx={{ ...styles.actionButtons, marginBottom: '5px' }}>
-                      Pay
+                  <Box sx={{ width: '100%', padding: '0' }}>
+                    <Button
+                      href={`/bookings/${id}/checkout`}
+                      variant="contained"
+                      color="secondary"
+                      sx={{ ...styles.actionButtons, marginBottom: '5px' }}
+                    >
+                      {t('bookings.buttons.pay')}
                     </Button>
-                  </Link>
+                  </Box>
                 )}
                 {[BookingStatus.Pending, BookingStatus.Active, BookingStatus.Inactive].includes(bookingStatus) && (
                   <Button
@@ -185,7 +225,7 @@ export function BookingCard({
                       handleUpdateStatus(BookingStatus.Canceled);
                     }}
                   >
-                    Cancel
+                    {t('bookings.buttons.cancel')}
                   </Button>
                 )}
                 {bookingStatus === BookingStatus.Canceled && (
@@ -197,20 +237,25 @@ export function BookingCard({
                       handleUpdateStatus(BookingStatus.Pending);
                     }}
                   >
-                    Recover
+                    {t('bookings.buttons.recover')}
                   </Button>
                 )}
                 {bookingStatus === BookingStatus.Completed && (
-                  <Link href={`/bookings/${id}/review`} sx={{ width: '100%', padding: '0' }}>
-                    <Button variant="contained" color="secondary" sx={{ ...styles.actionButtons, marginBottom: '5px' }}>
-                      Add review
+                  <Box sx={{ width: '100%', padding: '0' }}>
+                    <Button
+                      href={`/bookings/${id}/review`}
+                      variant="contained"
+                      color="secondary"
+                      sx={{ ...styles.actionButtons, marginBottom: '5px' }}
+                    >
+                      {t('bookings.buttons.addReview')}
                     </Button>
-                  </Link>
+                  </Box>
                 )}
-              </CardActionArea>
+              </Box>
             </Box>
           </Box>
-        </Link>
+        </Box>
       )}
     </Card>
   );
