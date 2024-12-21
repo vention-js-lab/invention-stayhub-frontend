@@ -16,7 +16,8 @@
       "edit": "Tahrirlash",
       "save": "Saqlash",
       "cancel": "Bekor qilish"
-    }
+    },
+    "ownerAccommodations": "Uy egasi e'lonlari"
   },
   "account": {
     "login": "Kirish",
@@ -191,6 +192,8 @@
     "explore": "Turar joylarni o'rganish"
   },
   "snackbars": {
+    "noData": "Ma'lumot mavjud emas.",
+    "errorLoadingOwnerDetails": "Uy egasining ma'lumotlarini yuklashda xatolik yuz berdi. Iltimos, qayta urinib ko'ring.",
     "errorMapMark": "Manzilni aniqlashda xatolik yuz berdi. Iltimos, sozlamalarni tekshiring",
     "errorSomething": "Kutilmagan xatolik. Iltimos, keyinroq qayta urinib ko'ring",
     "errorUploadImg": "Yuklash jarayonida xatolik yuz berdi. Iltimos, qayta urinib ko'ring",

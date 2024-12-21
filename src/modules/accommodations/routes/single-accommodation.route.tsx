@@ -54,6 +54,7 @@ export function SingleAccommodationRoute() {
           <AccommodationDetails data={data} />
           <Divider variant="middle" />
           <OwnerDetails
+            id={data.ownerId}
             since={data.owner.createdAt}
             image={data.owner.avatar}
             firstname={data.owner.firstName}
