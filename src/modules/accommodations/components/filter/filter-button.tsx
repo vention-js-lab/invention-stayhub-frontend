@@ -16,6 +16,9 @@ const styles = {
     '&:hover': {
       backgroundColor: '#CA1A55',
     },
+    '@media (max-width: 1024px)': {
+      padding: '18px 12px',
+    },
   },
 
   tuneIcon: {

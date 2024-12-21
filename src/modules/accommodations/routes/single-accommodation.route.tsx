@@ -66,8 +66,6 @@ export function SingleAccommodationRoute() {
         </Box>
         <ReservationCard
           pricePerNight={data.price}
-          cleaningFee={35}
-          serviceFee={70}
           maxGuests={data.allowedNumberOfPeople}
           availableFrom={data.availableFrom}
           availableTo={data.availableTo}

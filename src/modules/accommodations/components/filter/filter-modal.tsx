@@ -232,7 +232,7 @@ export function AccommodationFilterModal({ open, setOpen }: FilterModalProps) {
           <Box sx={{ display: 'flex', gap: '10px' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '50%' }}>
               <Typography fontWeight="500" fontSize="16px" noWrap={true}>
-                Sort by:
+                {t('filterModal.sortBy')}:
               </Typography>
               <Controller
                 name="sortBy"

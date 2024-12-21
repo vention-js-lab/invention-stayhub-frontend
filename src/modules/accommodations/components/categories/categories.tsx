@@ -45,6 +45,29 @@ export function CategoriesCarousel() {
     arrows: true,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 500,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
   return (
     <Box sx={{ p: 3, gap: 1, position: 'relative' }}>
@@ -56,7 +79,7 @@ export function CategoriesCarousel() {
             onClick={() => handleCategorySelect(category.name)}
           >
             <img src={category.icon} alt="" style={{ width: '26px', height: '24px', margin: 'auto' }} />
-            <Typography sx={{ fontSize: '14px', marginTop: '5px' }}>
+            <Typography sx={{ fontSize: '14px', marginTop: '5px', whiteSpace: 'nowrap' }}>
               {t(`categories.${category.name.toLowerCase().replace(/\s+/g, '')}`)}
             </Typography>
           </Box>

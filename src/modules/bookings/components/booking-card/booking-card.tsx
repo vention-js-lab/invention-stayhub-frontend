@@ -42,8 +42,17 @@ interface BookingCardProps {
 const styles = {
   bookingCard: { borderRadius: '15px', boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.4)', height: '100%' },
   actionButtons: { width: '100%', padding: '8px 10px', fontSize: '14px' },
-  mainText: { fontSize: '20px', fontWeight: '500', color: '#000', display: 'flex', alignItems: 'center' },
   iconStyle: { marginRight: '2px', fontSize: '20px' },
+  mainTextBox: { display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' },
+  mainText: {
+    fontSize: '20px',
+    display: 'block',
+    maxWidth: '100%',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    fontWeight: '500',
+    color: '#000',
+  },
   textStyle: {
     fontSize: '16px',
     pX: '0',
@@ -57,6 +66,7 @@ const styles = {
     },
   },
   cardPhoto: {
+    height: '100%',
     width: '50%',
     backgroundColor: '#bdbdbd',
     objectFit: 'cover',
@@ -65,6 +75,7 @@ const styles = {
     },
   },
   cardTextArea: {
+    height: '100%',
     width: '50%',
     display: 'flex',
     flexDirection: 'column',
@@ -156,9 +167,11 @@ export function BookingCard({
           )}
           <Box sx={styles.cardTextArea}>
             <CardContent onClick={() => navigate(`/accommodations/${accommodationId}`)} sx={{ p: '0', cursor: 'pointer' }}>
-              <Typography sx={styles.mainText}>
-                <HomeIcon sx={{ marginRight: '2px', color: '#E91E63' }} />
-                {name}
+              <Typography sx={styles.mainTextBox}>
+                <HomeIcon sx={{ marginRight: '2px', color: '#E91E63', verticalAlign: 'middle' }} />
+                <Typography component="span" sx={styles.mainText}>
+                  {name}
+                </Typography>
               </Typography>
               {address !== null && (
                 <Typography sx={styles.textStyle}>
@@ -246,7 +259,7 @@ export function BookingCard({
                       href={`/bookings/${id}/review`}
                       variant="contained"
                       color="secondary"
-                      sx={{ ...styles.actionButtons, marginBottom: '5px' }}
+                      sx={{ ...styles.actionButtons }}
                     >
                       {t('bookings.buttons.addReview')}
                     </Button>
