@@ -16,7 +16,8 @@
       "edit": "Edit",
       "save": "Save",
       "cancel": "Cancel"
-    }
+    },
+    "ownerAccommodations": "Owner accommodations"
   },
   "account": {
     "login": "Login",
@@ -191,6 +192,8 @@
     "explore": "Explore Accommodations"
   },
   "snackbars": {
+    "noData": "No data available.",
+    "errorLoadingOwnerDetails": "Error loading owner details. Please try again",
     "errorMapMark": "Error getting current location. Please check your settings",
     "errorSomething": "Something went wrong. Please try again later",
     "errorUploadImg": "Something went wrong during the upload. Please, try again",

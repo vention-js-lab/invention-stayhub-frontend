@@ -6,6 +6,7 @@ import { readableDate } from '#/shared/utils/readable-date.util';
 import { useTranslation } from 'react-i18next';
 
 interface UserDetailsProps {
+  id: string;
   since: string;
   image: string | null;
   firstname: string | null;
@@ -20,25 +21,25 @@ const styles = {
   since: { pl: '5px', color: '#d1d1d1' },
 };
 
-export function OwnerDetails({ since, image, firstname, lastname, description }: UserDetailsProps) {
+export function OwnerDetails({ id, since, image, firstname, lastname, description }: UserDetailsProps) {
   const { t } = useTranslation();
 
   return (
     <Box sx={styles.container}>
-      <Link href="/users/profile">
+      <Link href={`/users/profile/${id}`}>
         <Avatar src={image || firstname?.[0] || ''} sx={styles.avatar} />
-      </Link>
-      <Box>
-        <Box sx={styles.nameBox}>
-          <Typography sx={{ fontWeight: 600, fontSize: '18px' }}>
-            {!firstname && !lastname ? `NoName` : `${firstname} ${lastname}`}
-          </Typography>
-          <Typography sx={styles.since}>
-            {t('singleAccommodation.withUs')} {readableDate(since)}
-          </Typography>
+        <Box>
+          <Box sx={styles.nameBox}>
+            <Typography sx={{ fontWeight: 600, fontSize: '18px' }}>
+              {!firstname && !lastname ? `NoName` : `${firstname} ${lastname}`}
+            </Typography>
+            <Typography sx={styles.since}>
+              {t('singleAccommodation.withUs')} {readableDate(since)}
+            </Typography>
+          </Box>
+          <Typography sx={{ p: '0' }}>{description}</Typography>
         </Box>
-        <Typography sx={{ p: '0' }}>{description}</Typography>
-      </Box>
+      </Link>
     </Box>
   );
 }

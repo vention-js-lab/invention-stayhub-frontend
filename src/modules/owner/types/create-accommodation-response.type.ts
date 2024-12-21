@@ -1,3 +1,4 @@
+import { type Accommodation } from '#/modules/accommodations/types/accommodation.type';
 import { type Category } from '#/shared/types/category.type';
 import { type CreateAccommodationAmenity } from '../schemas/accommodation-amenity.schema';
 import { type CreateAccommodationAddress } from './../schemas/accommodation-address.schema';
@@ -36,4 +37,18 @@ export interface UpdateAmenityData {
 export interface UpdateImageData {
   images?: { url: string }[];
   coverImage?: string;
+}
+
+export interface OwnerDetails {
+  ownerProfile: {
+    firstName: string | undefined;
+    lastName: string | undefined;
+    gender: 'male' | 'female' | undefined;
+    country: string | undefined;
+    description: string | undefined;
+    phoneNumber: string | undefined;
+    image: string | undefined;
+    createdAt: string | Date;
+  };
+  ownerAccommodations: Accommodation[];
 }
