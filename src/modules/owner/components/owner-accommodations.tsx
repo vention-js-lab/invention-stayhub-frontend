@@ -1,5 +1,5 @@
 import Grid2 from '@mui/material/Grid2';
-import CardImage from '#/assets/images/card-temp-image.jpg';
+import DefaultImage from '#/assets/images/default-home-image.png';
 import React, { useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useInView } from 'react-intersection-observer';
@@ -59,7 +59,7 @@ export function OwnerAccommodations() {
                 <AccommodationCard
                   status={status}
                   id={accommodation.id}
-                  image={CardImage}
+                  image={accommodation.coverImage ? accommodation.coverImage : DefaultImage}
                   name={accommodation.name}
                   address={accommodation.address}
                   pricePerNight={accommodation.price}
