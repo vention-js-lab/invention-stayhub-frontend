@@ -15,6 +15,14 @@ const styles = {
     padding: 3,
     maxWidth: 400,
     minWidth: 300,
+    '@media (max-width: 960px)': {
+      marginBottom: 20,
+      maxWidth: '100%',
+    },
+    '@media (max-width: 600px)': {
+      marginBottom: 10,
+      maxWidth: '100%',
+    },
   },
   row: {
     display: 'flex',
@@ -34,6 +42,18 @@ const styles = {
     maxHeight: 100,
     borderRadius: 4,
     marginRight: 1,
+    '@media (max-width: 960px)': {
+      maxWidth: 200,
+      maxHeight: 200,
+      minWidth: 200,
+      minHeight: 200,
+    },
+    '@media (max-width: 600px)': {
+      maxWidth: 100,
+      maxHeight: 100,
+      minWidth: 100,
+      minHeight: 100,
+    },
   },
 };
 
