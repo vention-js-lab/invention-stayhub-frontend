@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,16 +9,16 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useTheme } from '@mui/material/styles';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
-import { time } from '../utils/time';
-import { isDateUnavailable } from '../utils/reservation-dates.util';
 import { useCreateBookingMutation } from '../api/create-booking.api';
 import { useAuthGuardAction } from '#/shared/hooks/auth-guard-action.hook';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { time } from '../utils/time';
+import { validateDates, isDateUnavailable } from '../utils/reservation-dates.util';
+import { getPriceDetails } from '../../../shared/utils/price-calculator';
 
 interface ReservationCardProps {
   pricePerNight: number;
-  cleaningFee: number;
-  serviceFee: number;
   maxGuests: number | null;
   availableFrom: string | null;
   availableTo: string | null;
@@ -26,10 +26,9 @@ interface ReservationCardProps {
   bookings: { startDate: string; endDate: string }[];
 }
 
+// eslint-disable-next-line complexity
 export function ReservationCard({
   pricePerNight,
-  cleaningFee,
-  serviceFee,
   maxGuests,
   availableFrom,
   availableTo,
@@ -38,28 +37,47 @@ export function ReservationCard({
 }: ReservationCardProps) {
   const theme = useTheme();
   const { t } = useTranslation();
-  const [checkIn, setCheckIn] = useState<ReturnType<typeof time> | null>(null);
-  const [checkOut, setCheckOut] = useState<ReturnType<typeof time> | null>(null);
+  const navigate = useNavigate();
+  const [checkIn, setCheckIn] = useState<string | null>(null);
+  const [checkOut, setCheckOut] = useState<string | null>(null);
   const [guests, setGuests] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
+  const [nights, setNights] = useState<number>(0);
+  const [calculatedServiceFee, setCalculatedServiceFee] = useState<number>(0);
   const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
   const createBookingMutation = useCreateBookingMutation();
-  const todayDate = time();
   const authGuardAction = useAuthGuardAction();
 
-  useEffect(() => {
+  const calculateDetails = useCallback(() => {
     if (checkIn && checkOut) {
-      const nights = checkOut.diff(checkIn, 'day');
-      const totalCost = nights * pricePerNight + cleaningFee + serviceFee;
+      const isValid = validateDates({
+        checkIn,
+        checkOut,
+        availableFrom: availableFrom || '',
+        availableTo: availableTo || '',
+      });
 
-      const hasConflict = isDateUnavailable({ date: checkIn, bookings }) || isDateUnavailable({ date: checkOut, bookings });
+      if (isValid) {
+        const { numberOfNights, serviceFee: calculatedFee, totalPrice } = getPriceDetails(pricePerNight, checkIn, checkOut);
 
-      setTotal(totalCost);
-      setIsButtonEnabled(nights > 0 && !hasConflict);
+        const hasConflict =
+          isDateUnavailable({ date: time(checkIn), bookings }) || isDateUnavailable({ date: time(checkOut), bookings });
+
+        setNights(numberOfNights);
+        setCalculatedServiceFee(calculatedFee);
+        setTotal(totalPrice);
+        setIsButtonEnabled(!hasConflict);
+      } else {
+        setIsButtonEnabled(false);
+      }
     } else {
       setIsButtonEnabled(false);
     }
-  }, [checkIn, checkOut, pricePerNight, cleaningFee, serviceFee, bookings]);
+  }, [checkIn, checkOut, pricePerNight, availableFrom, availableTo, bookings]);
+
+  useEffect(() => {
+    calculateDetails();
+  }, [calculateDetails]);
 
   const handleReserve = () => {
     if (!checkIn || !checkOut) {
@@ -67,21 +85,22 @@ export function ReservationCard({
       return;
     }
 
-    if (isDateUnavailable({ date: checkIn, bookings }) || isDateUnavailable({ date: checkOut, bookings })) {
+    if (isDateUnavailable({ date: time(checkIn), bookings }) || isDateUnavailable({ date: time(checkOut), bookings })) {
       showSnackbar({ message: t('snackbars.warningUnavailableDates'), variant: 'warning' });
       return;
     }
 
     const bookingPayload = {
       accommodationId,
-      startDate: checkIn.format('YYYY-MM-DD'),
-      endDate: checkOut.format('YYYY-MM-DD'),
+      startDate: checkIn,
+      endDate: checkOut,
       guests,
     };
 
     createBookingMutation.mutate(bookingPayload, {
       onSuccess: () => {
         showSnackbar({ message: t('snackbars.successReservation'), variant: 'success' });
+        navigate('/bookings');
       },
       onError: () => {
         showSnackbar({ message: t('snackbars.errorCreateBooking'), variant: 'error' });
@@ -89,9 +108,9 @@ export function ReservationCard({
     });
   };
 
-  function handleClick() {
+  const handleClick = () => {
     authGuardAction(handleReserve);
-  }
+  };
 
   const generateGuestOptions = (maxGuestsCount: number | null): JSX.Element[] => {
     return Array.from({ length: maxGuestsCount || 1 }, (_, i) => i + 1).map((num) => (
@@ -102,30 +121,27 @@ export function ReservationCard({
   };
 
   const styles = {
-    container: {
+    container: (isSummaryVisible: boolean) => ({
       border: `1px solid ${theme.palette.action.disabled}`,
       borderRadius: '8px',
       padding: '16px',
       maxWidth: '400px',
       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-    },
-    priceHeading: {
-      fontWeight: 'bold',
-      marginBottom: '8px',
-    },
-    priceText: {
-      color: theme.palette.action.disabled,
-      marginBottom: '16px',
-    },
-    section: {
+      height: isSummaryVisible ? 'auto' : '230px',
+      maxHeight: '400px',
+      overflow: 'hidden',
+      transition: 'height 0.3s ease, max-height 0.3s ease',
+    }),
+    dateSection: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
       marginBottom: '16px',
+      gap: '8px',
     },
     dateBox: {
       flex: 1,
-      marginRight: '8px',
+      minWidth: '120px',
     },
     guestsField: {
       marginBottom: '16px',
@@ -139,57 +155,36 @@ export function ReservationCard({
       fontSize: '16px',
       marginBottom: '16px',
     },
-    bottomText: {
+    summaryText: {
       textAlign: 'center',
-      color: theme.palette.action.disabled,
+      marginTop: '16px',
     },
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={styles.container}>
-        <Typography variant="h5" sx={styles.priceHeading}>
-          ${total || pricePerNight}
-        </Typography>
-        <Typography variant="body2" sx={styles.priceText}>
-          {t('reservation.total')}
-        </Typography>
-
-        <Box sx={styles.section}>
+      <Box sx={styles.container(Boolean(checkIn) && Boolean(checkOut))}>
+        <Box sx={styles.dateSection}>
           <Box sx={styles.dateBox}>
             <DatePicker
               label={t('filterArea.checkin')}
-              value={checkIn}
-              onChange={(newValue) => setCheckIn(newValue)}
+              value={checkIn ? time(checkIn) : null}
+              onChange={(newValue) => setCheckIn(newValue?.format('YYYY-MM-DD') || null)}
               disablePast={true}
-              minDate={availableFrom ? time(availableFrom) : todayDate}
+              minDate={availableFrom ? time(availableFrom) : time()}
               maxDate={availableTo ? time(availableTo) : undefined}
               shouldDisableDate={(date) => isDateUnavailable({ date, bookings })}
-              slotProps={{
-                day: ({ day }: { day: ReturnType<typeof time> }) => ({
-                  sx: isDateUnavailable({ date: day, bookings })
-                    ? { textDecoration: 'line-through', color: theme.palette.error.main }
-                    : {},
-                }),
-              }}
             />
           </Box>
           <Box sx={styles.dateBox}>
             <DatePicker
               label={t('filterArea.checkout')}
-              value={checkOut}
-              onChange={(newValue) => setCheckOut(newValue)}
+              value={checkOut ? time(checkOut) : null}
+              onChange={(newValue) => setCheckOut(newValue?.format('YYYY-MM-DD') || null)}
               disablePast={true}
-              minDate={checkIn || todayDate}
+              minDate={checkIn ? time(checkIn) : time()}
               maxDate={availableTo ? time(availableTo) : undefined}
               shouldDisableDate={(date) => isDateUnavailable({ date, bookings })}
-              slotProps={{
-                day: ({ day }: { day: ReturnType<typeof time> }) => ({
-                  sx: isDateUnavailable({ date: day, bookings })
-                    ? { textDecoration: 'line-through', color: theme.palette.error.main }
-                    : {},
-                }),
-              }}
             />
           </Box>
         </Box>
@@ -209,9 +204,28 @@ export function ReservationCard({
           {t('reservation.reserve')}
         </Button>
 
-        <Typography variant="body2" sx={styles.bottomText}>
-          {t('reservation.info')}
-        </Typography>
+        {Boolean(checkIn) && Boolean(checkOut) && (
+          <Typography variant="body2" sx={styles.summaryText}>
+            <Box display="flex" justifyContent="space-between" marginBottom="8px">
+              <Typography variant="body1">
+                ${pricePerNight} x {nights} {nights > 1 ? 'nights' : 'night'}
+              </Typography>
+              <Typography variant="body1">${pricePerNight * nights}</Typography>
+            </Box>
+            <Box display="flex" justifyContent="space-between" marginBottom="8px">
+              <Typography variant="body1">{t('Service Fee')}</Typography>
+              <Typography variant="body1">${calculatedServiceFee}</Typography>
+            </Box>
+            <Box marginTop="16px" borderTop="1px solid #ddd" paddingTop="8px" display="flex" justifyContent="space-between">
+              <Typography variant="h6" fontWeight="bold">
+                Total
+              </Typography>
+              <Typography variant="h6" fontWeight="bold">
+                ${total}
+              </Typography>
+            </Box>
+          </Typography>
+        )}
       </Box>
     </LocalizationProvider>
   );
