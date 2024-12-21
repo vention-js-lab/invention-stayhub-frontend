@@ -17,7 +17,7 @@ const styles = {
   container: { display: 'flex', padding: '16px 8px', alignItems: 'center', gap: 2 },
   avatar: { width: 70, height: 70, cursor: 'pointer' },
   nameBox: { display: 'flex', alignItems: 'center' },
-  since: { pl: '5px', fontStyle: 'italic', color: '#d1d1d1' },
+  since: { pl: '5px', color: '#d1d1d1' },
 };
 
 export function OwnerDetails({ since, image, firstname, lastname, description }: UserDetailsProps) {
