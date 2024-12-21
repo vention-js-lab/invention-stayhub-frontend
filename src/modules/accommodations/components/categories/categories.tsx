@@ -79,7 +79,7 @@ export function CategoriesCarousel() {
             onClick={() => handleCategorySelect(category.name)}
           >
             <img src={category.icon} alt="" style={{ width: '26px', height: '24px', margin: 'auto' }} />
-            <Typography sx={{ fontSize: '14px', marginTop: '5px' }}>
+            <Typography sx={{ fontSize: '14px', marginTop: '5px', whiteSpace: 'nowrap' }}>
               {t(`categories.${category.name.toLowerCase().replace(/\s+/g, '')}`)}
             </Typography>
           </Box>

@@ -5,7 +5,7 @@ export function getPriceDetails(pricePerNight: number, startDate: string | Date,
   const numberOfNights = calculateDayDiff(startDate, endDate);
   const totalPriceOfNights = pricePerNight * numberOfNights;
   const serviceFee = Number((totalPriceOfNights * SERVICE_FEE_PERCENTAGE).toFixed(2));
-  const totalPrice = totalPriceOfNights + serviceFee;
+  const totalPrice = (totalPriceOfNights + serviceFee).toFixed(2);
 
   return { numberOfNights, totalPriceOfNights, serviceFee, totalPrice };
 }

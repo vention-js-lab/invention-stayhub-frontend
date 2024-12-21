@@ -4,16 +4,14 @@ interface CalculateTotalParams {
   checkIn: string;
   checkOut: string;
   pricePerNight: number;
-  cleaningFee: number;
-  serviceFee: number;
 }
 
-export const calculateTotal = ({ checkIn, checkOut, pricePerNight, cleaningFee, serviceFee }: CalculateTotalParams): number => {
+export const calculateTotal = ({ checkIn, checkOut, pricePerNight }: CalculateTotalParams): number => {
   if (checkIn && checkOut) {
     const start = time(checkIn);
     const end = time(checkOut);
     const nights = Math.max(0, end.diff(start, 'day'));
-    return nights * pricePerNight + cleaningFee + serviceFee;
+    return nights * pricePerNight;
   }
   return 0;
 };
@@ -32,7 +30,9 @@ export const validateDates = ({ checkIn, checkOut, availableFrom, availableTo }:
     const availableStart = time(availableFrom);
     const availableEnd = time(availableTo);
 
-    return start.isSameOrAfter(availableStart) && end.isSameOrBefore(availableEnd) && start.isBefore(end);
+    return (
+      start.isSameOrAfter(availableStart) && end.isSameOrBefore(availableEnd) && start.isBefore(end) && end.diff(start, 'day') > 0
+    );
   }
   return false;
 };

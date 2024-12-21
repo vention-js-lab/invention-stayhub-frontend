@@ -15,6 +15,8 @@ const styles = {
     fontSize: '16px',
     fontWeight: '500',
     padding: '10px 5px',
+    cursor: 'pointer',
+    whiteSpace: 'nowrap',
     '&:hover': {
       transition: 'border-bottom-color 0.2s linear',
       borderBottom: isSelected ? '' : '3px solid #e9e9e9',

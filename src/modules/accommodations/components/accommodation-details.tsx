@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { type Accommodation } from '#/modules/accommodations/types/accommodation.type';
 import { useTranslation } from 'react-i18next';
+import React from 'react';
 
 const styles = {
   container: { padding: '0 0 30px 16px' },
@@ -33,10 +34,12 @@ export function AccommodationDetails({ data }: { data: Accommodation }) {
         </Typography>
         {data.categories.length > 0 &&
           data.categories.map((category) => (
-            <>
+            <React.Fragment key={category.id}>
               <Divider orientation="vertical" flexItem={true} />
-              <Typography component="span">{t(`categories.${category.name.toLowerCase().replace(/\s+/g, '')}`)}</Typography>
-            </>
+              <Typography sx={{ whiteSpace: 'nowrap' }} component="span">
+                {t(`categories.${category.name.toLowerCase().replace(/\s+/g, '')}`)}
+              </Typography>
+            </React.Fragment>
           ))}
       </Box>
       <Typography sx={styles.homeProperties}>{data.description}</Typography>
