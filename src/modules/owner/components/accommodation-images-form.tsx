@@ -21,27 +21,33 @@ import { useAccommodationDetailsQuery } from '../api/get-accommodation-details.a
 import { useTranslation } from 'react-i18next';
 
 const styles = {
-  heading: {
+  heading: (theme: Theme) => ({
     marginTop: '16px',
     marginBottom: '16px',
     fontWeight: 'bold',
     fontSize: '24px',
     color: '#333',
-  },
-  button: {
-    backgroundColor: (theme: Theme) => theme.palette.secondary.main,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '20px',
+    },
+  }),
+  button: (theme: Theme) => ({
+    backgroundColor: theme.palette.secondary.main,
     height: '42px',
     py: 2,
     px: 4,
     mt: 2,
-  },
-
+    [theme.breakpoints.down('sm')]: {
+      py: 1,
+      px: 2,
+      fontSize: '14px',
+    },
+  }),
   imgIcon: {
     minWidth: 'auto',
     padding: '2px',
     ml: 'auto',
   },
-
   starIcon: {
     minWidth: 'auto',
     padding: '2px',
@@ -51,7 +57,6 @@ const styles = {
     backgroundColor: 'white',
     borderRadius: '50%',
   },
-
   selectedFiles: {
     display: 'flex',
     alignItems: 'center',
@@ -60,42 +65,29 @@ const styles = {
     padding: '0.5rem',
     overflow: 'hidden',
   },
-
-  dragAndDropArea: {
+  dragAndDropArea: (theme: Theme) => ({
     border: '2px dashed #ccc',
     padding: '2rem',
     textAlign: 'center',
     cursor: 'pointer',
     marginBottom: '1rem',
-  },
-
+    [theme.breakpoints.down('sm')]: {
+      padding: '1rem',
+    },
+  }),
   uploadedImgs: {
     position: 'relative',
-    width: '200px',
+    width: '100%',
+    maxWidth: '200px',
     height: 'auto',
   },
-
-  uploadedImgHeading: {
+  uploadedImgHeading: (theme: Theme) => ({
     fontWeight: 'bold',
     fontSize: '18px',
     color: '#696969',
-    mb: 1,
-  },
-
-  amenityButtons: (isSelected: boolean) => ({
-    border: '1px solid #C7C7C7',
-    borderColor: isSelected ? '#E91E63' : '#C7C7C7',
-    fontSize: '16px',
-    borderRadius: '20px',
-    width: '100%',
-    height: '50px',
-    backgroundColor: isSelected ? '#E91E63' : '#fff',
-    margin: '0 2px 2px 0',
-    color: isSelected ? '#fff' : '#C7C7C7',
-    '&:hover': {
-      borderColor: '#E91E63',
-      backgroundColor: '#E91E63',
-      color: '#fff',
+    marginBottom: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '16px',
     },
   }),
 };
@@ -208,8 +200,8 @@ export function AccommodationImagesForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography sx={styles.heading}>{t('accommodation.images.title')}</Typography>
-      <Box {...getRootProps()} sx={styles.dragAndDropArea}>
+      <Typography sx={(theme) => styles.heading(theme)}>{t('accommodation.images.title')}</Typography>
+      <Box {...getRootProps()} sx={(theme) => styles.dragAndDropArea(theme)}>
         <input {...getInputProps()} />
         <AddPhotoAlternateOutlinedIcon />
         <Typography>{t('accommodation.images.uploadField')}</Typography>
@@ -217,9 +209,15 @@ export function AccommodationImagesForm() {
       {selectedFiles.length > 0 && (
         <Box>
           <Typography>{t('accommodation.images.selected')}:</Typography>
-          <Grid2 container={true} spacing={2} columns={5}>
+          <Grid2 container={true} spacing={2}>
             {selectedFiles.map((file) => (
-              <Grid2 key={uuidv4()} size={{ xs: 1 }}>
+              <Grid2
+                key={uuidv4()}
+                container={false}
+                sx={{
+                  gridColumn: { xs: 'span 6', sm: 'span 4', md: 'span 2' },
+                }}
+              >
                 <Box sx={styles.selectedFiles}>
                   <ImageIcon sx={{ marginRight: '0.5rem', color: '#666' }} />
                   <Typography noWrap={true}>{file.name}</Typography>
@@ -232,25 +230,36 @@ export function AccommodationImagesForm() {
           </Grid2>
         </Box>
       )}
-      {data?.images && data.images.length > 0 ? (
+      {/* eslint-disable-next-line react/jsx-no-leaked-render */}
+      {data?.images && data.images.length > 0 && (
         <Box>
-          <Typography sx={styles.uploadedImgHeading}>{t('accommodation.images.selected')}:</Typography>
-          <Grid2 columns={5} container={true} spacing={2}>
-            {data.images.map((image) => (
-              <Grid2 size={{ xs: 1 }} key={image.id}>
-                <Box sx={styles.uploadedImgs}>
-                  <Box component="img" src={image.url} sx={{ width: '200px' }} />
-                  <Button size="small" sx={styles.starIcon} onClick={() => handleCoverImageChange(image.url)}>
-                    {coverImage === image.url ? <StarIcon sx={{ color: pink[500] }} /> : <StarBorderIcon />}
-                  </Button>
-                </Box>
-              </Grid2>
-            ))}
+          <Typography sx={(theme) => styles.uploadedImgHeading(theme)}>{t('accommodation.images.selected')}:</Typography>
+          <Grid2 container={true} spacing={2}>
+            {data.images.map((image) => {
+              const isCoverImage = coverImage === image.url;
+
+              return (
+                <Grid2
+                  key={uuidv4()}
+                  container={false}
+                  sx={{
+                    gridColumn: { xs: 'span 6', sm: 'span 4', md: 'span 2' },
+                  }}
+                >
+                  <Box sx={styles.uploadedImgs}>
+                    <Box component="img" src={image.url} sx={{ width: '100%' }} />
+                    <Button size="small" sx={styles.starIcon} onClick={() => handleCoverImageChange(image.url)}>
+                      {isCoverImage ? <StarIcon sx={{ color: pink[500] }} /> : <StarBorderIcon />}
+                    </Button>
+                  </Box>
+                </Grid2>
+              );
+            })}
           </Grid2>
         </Box>
-      ) : null}
+      )}
       <Box mt={3} mb={2} display="flex" justifyContent="flex-end">
-        <Button variant="contained" sx={styles.button} type="submit">
+        <Button variant="contained" sx={(theme) => styles.button(theme)} type="submit">
           {t('accommodation.images.uploadButton')}
         </Button>
       </Box>

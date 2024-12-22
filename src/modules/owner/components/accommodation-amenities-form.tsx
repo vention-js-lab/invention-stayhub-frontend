@@ -16,22 +16,29 @@ import { type UpdateAmenityData } from '../types/create-accommodation-response.t
 import { useTranslation } from 'react-i18next';
 
 const styles = {
-  heading: {
+  heading: (theme: Theme) => ({
     marginTop: '16px',
     marginBottom: '16px',
     fontWeight: 'bold',
     fontSize: '24px',
     color: '#333',
-  },
-  button: {
-    backgroundColor: (theme: Theme) => theme.palette.secondary.main,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '20px',
+    },
+  }),
+  button: (theme: Theme) => ({
+    backgroundColor: theme.palette.secondary.main,
     height: '42px',
     py: 2,
     px: 4,
     mt: 2,
-  },
-
-  amenityButtons: (isSelected: boolean) => ({
+    [theme.breakpoints.down('sm')]: {
+      py: 1,
+      px: 2,
+      fontSize: '14px',
+    },
+  }),
+  amenityButtons: (isSelected: boolean, theme: Theme) => ({
     border: '1px solid #C7C7C7',
     borderColor: isSelected ? '#E91E63' : '#C7C7C7',
     fontSize: '16px',
@@ -45,6 +52,10 @@ const styles = {
       borderColor: '#E91E63',
       backgroundColor: '#E91E63',
       color: '#fff',
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '14px',
+      height: '40px',
     },
   }),
 };
@@ -87,17 +98,16 @@ export function AccommodationAmenitiesForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography sx={styles.heading}>{t('accommodation.amenitiesTitle')}</Typography>
-      <Grid2 container={true} spacing={2} columns={3}>
+      <Typography sx={(theme) => styles.heading(theme)}>{t('accommodation.amenitiesTitle')}</Typography>
+      <Grid2 container={true} spacing={2}>
         {Object.entries(amenitiesMap).map(([key, { icon: Icon }]) => (
-          <Grid2 key={key} size={{ xs: 1 }}>
+          <Grid2 key={key} container={false}>
             <Controller
-              key={key}
               name={key as AmenityKey}
               control={control}
               render={({ field }) => (
                 <IconButton
-                  sx={styles.amenityButtons(Boolean(field.value))}
+                  sx={(theme) => styles.amenityButtons(Boolean(field.value), theme)}
                   onClick={() => handleAmenitySelection(key as AmenityKey)}
                 >
                   <Icon />
@@ -109,7 +119,7 @@ export function AccommodationAmenitiesForm() {
         ))}
       </Grid2>
       <Box mt={2} mb={5} display="flex" justifyContent="flex-end">
-        <Button variant="contained" sx={styles.button} type="submit">
+        <Button variant="contained" sx={(theme) => styles.button(theme)} type="submit">
           {t('accommodation.submit')}
         </Button>
       </Box>
