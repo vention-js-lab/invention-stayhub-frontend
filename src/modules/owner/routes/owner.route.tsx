@@ -16,6 +16,9 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     marginBottom: '30px',
+    '@media (max-width: 500px)': {
+      flexDirection: 'column',
+    },
   },
 };
 

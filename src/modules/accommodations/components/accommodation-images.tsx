@@ -13,7 +13,13 @@ import { useTranslation } from 'react-i18next';
 const styles = {
   homeImages: {
     width: '100%',
-    height: '100%',
+    height: '400px',
+    objectFit: 'cover',
+    borderRadius: 2,
+  },
+  homeImagesRight: {
+    width: '100%',
+    height: '190px',
     objectFit: 'cover',
     borderRadius: 2,
   },
@@ -46,7 +52,7 @@ export function AccommodationImages({ images }: { images: AccommodationImage[] |
         <Grid size={6} container={true} spacing={2}>
           {images.slice(1, 5).map((image) => (
             <Grid size={6} key={image.id}>
-              <Box component="img" src={image.url} alt={`Right Image ${image.id + 1}`} sx={styles.homeImages} />
+              <Box component="img" src={image.url} alt={`Right Image ${image.id + 1}`} sx={styles.homeImagesRight} />
             </Grid>
           ))}
         </Grid>

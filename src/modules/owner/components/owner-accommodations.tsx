@@ -12,6 +12,7 @@ import { CardSkeleton } from '#/modules/accommodations/components/accommodation-
 import { AccommodationCard } from '#/modules/accommodations/components/accommodation-card/accommodation-card';
 import { SkeletonList } from '#/modules/accommodations/components/skeleton-list';
 import { calculateOverallRating } from '#/modules/accommodations/components/reviews/rating.component';
+import Box from '@mui/material/Box';
 
 export function OwnerAccommodations() {
   const { ref: bottomOfPageRef, inView: isBottomOfPageInView } = useInView();
@@ -50,30 +51,32 @@ export function OwnerAccommodations() {
   }
 
   return (
-    <Grid2 container={true} spacing={3}>
-      {data.pages.map((group) => (
-        <React.Fragment key={uuidv4()}>
-          {group.result.length > 0 ? (
-            group.result.map((accommodation) => (
-              <Grid2 key={accommodation.id} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
-                <AccommodationCard
-                  status={status}
-                  id={accommodation.id}
-                  image={accommodation.coverImage ? accommodation.coverImage : DefaultImage}
-                  name={accommodation.name}
-                  address={accommodation.address}
-                  pricePerNight={accommodation.price}
-                  rating={calculateOverallRating(accommodation.reviews)}
-                />
-              </Grid2>
-            ))
-          ) : (
-            <NoResult text={'Oops! No accommodation has found :('} />
-          )}
-        </React.Fragment>
-      ))}
-      {isFetchingNextPage ? <SkeletonList limit={limit} /> : null}
-      {hasNextPage ? <div ref={bottomOfPageRef} /> : null}
-    </Grid2>
+    <Box sx={{ mb: 15 }}>
+      <Grid2 container={true} spacing={3}>
+        {data.pages.map((group) => (
+          <React.Fragment key={uuidv4()}>
+            {group.result.length > 0 ? (
+              group.result.map((accommodation) => (
+                <Grid2 key={accommodation.id} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
+                  <AccommodationCard
+                    status={status}
+                    id={accommodation.id}
+                    image={accommodation.coverImage ? accommodation.coverImage : DefaultImage}
+                    name={accommodation.name}
+                    address={accommodation.address}
+                    pricePerNight={accommodation.price}
+                    rating={calculateOverallRating(accommodation.reviews)}
+                  />
+                </Grid2>
+              ))
+            ) : (
+              <NoResult text={'Oops! No accommodation has found :('} />
+            )}
+          </React.Fragment>
+        ))}
+        {isFetchingNextPage ? <SkeletonList limit={limit} /> : null}
+        {hasNextPage ? <div ref={bottomOfPageRef} /> : null}
+      </Grid2>
+    </Box>
   );
 }
