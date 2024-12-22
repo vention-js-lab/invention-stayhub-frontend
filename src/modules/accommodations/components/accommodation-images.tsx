@@ -11,19 +11,55 @@ import { type Theme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 
 const styles = {
-  homeImages: {
+  homeImage: (theme: Theme) => ({
     width: '100%',
-    height: '100%',
+    height: '400px',
+    objectFit: 'cover',
+    borderRadius: 2,
+    [theme.breakpoints.down('md')]: {
+      height: '200px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '150px',
+    },
+  }),
+  tabletImage: (theme: Theme) => ({
+    width: '100%',
+    height: '200px',
+    objectFit: 'cover',
+    borderRadius: 2,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  }),
+  laptopImage: {
+    width: '100%',
+    height: '190px',
     objectFit: 'cover',
     borderRadius: 2,
   },
-  viewMoreBox: { position: 'absolute', bottom: '10px', right: '10px' },
-  viewMoreButton: {
+
+  viewMoreBox: (theme: Theme) => ({
+    position: 'absolute',
+    bottom: '10px',
+    right: '10px',
+    [theme.breakpoints.down('sm')]: {
+      position: 'relative',
+      textAlign: 'center',
+      // marginTop: '10px',
+    },
+  }),
+  viewMoreButton: (theme: Theme) => ({
     padding: '6px 26px',
-    backgroundColor: (theme: Theme) => theme.palette.secondary.main,
-    '&:hover': { backgroundColor: (theme: Theme) => theme.palette.primary.main },
+    backgroundColor: theme.palette.secondary.main,
+    '&:hover': { backgroundColor: theme.palette.primary.main },
+  }),
+  closeButton: {
+    color: 'white',
+    position: 'absolute',
+    top: '10%',
+    right: '13%',
   },
-  closeButton: { color: 'white', position: 'absolute', top: '10%', right: '13%' },
 };
 
 export function AccommodationImages({ images }: { images: AccommodationImage[] | null }) {
@@ -39,20 +75,44 @@ export function AccommodationImages({ images }: { images: AccommodationImage[] |
   return (
     <Box sx={{ position: 'relative' }}>
       <Grid container={true} spacing={2} sx={{ marginBottom: '40px' }}>
-        <Grid size={6}>
-          {images[0].url ? <Box component="img" src={images[0].url} alt="Left Image" sx={styles.homeImages} /> : null}
+        <Grid size={{ xs: 12 }} sx={(theme) => ({ [theme.breakpoints.up('sm')]: { display: 'none' } })}>
+          <Box component="img" src={images[0].url} alt="Mobile Image" sx={(theme) => styles.homeImage(theme)} />
         </Grid>
-
-        <Grid size={6} container={true} spacing={2}>
-          {images.slice(1, 5).map((image) => (
-            <Grid size={6} key={image.id}>
-              <Box component="img" src={image.url} alt={`Right Image ${image.id + 1}`} sx={styles.homeImages} />
+        <Grid
+          container={true}
+          spacing={2}
+          sx={(theme) => ({
+            [theme.breakpoints.down('sm')]: { display: 'flex' },
+            [theme.breakpoints.up('md')]: { display: 'none' },
+          })}
+        >
+          {images.slice(0, 4).map((image) => (
+            <Grid size={{ xs: 6 }} key={image.id}>
+              <Box component="img" src={image.url} alt={`Tablet Image ${image.id}`} sx={(theme) => styles.tabletImage(theme)} />
             </Grid>
           ))}
         </Grid>
+        <Grid
+          container={true}
+          spacing={2}
+          sx={(theme) => ({
+            [theme.breakpoints.down('md')]: { display: 'none' },
+          })}
+        >
+          <Grid size={{ xs: 6 }}>
+            <Box component="img" src={images[0].url} alt="Main Image" sx={styles.homeImage} />
+          </Grid>
+          <Grid size={{ xs: 6 }} container={true} spacing={2}>
+            {images.slice(1, 5).map((image) => (
+              <Grid size={{ xs: 6 }} key={image.id}>
+                <Box component="img" src={image.url} alt={`Laptop Image ${image.id}`} sx={styles.laptopImage} />
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
       </Grid>
-      <Box textAlign="center" mt={2} sx={styles.viewMoreBox}>
-        <Button variant="contained" onClick={handleOpen} sx={styles.viewMoreButton}>
+      <Box sx={(theme) => styles.viewMoreBox(theme)}>
+        <Button variant="contained" onClick={handleOpen} sx={(theme) => styles.viewMoreButton(theme)}>
           {t('singleAccommodation.buttons.view')}
         </Button>
       </Box>
