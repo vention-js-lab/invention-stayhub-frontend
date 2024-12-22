@@ -23,15 +23,28 @@ const styles = {
     marginBottom: 8,
     width: '100%',
     maxWidth: 1000,
+    '@media (max-width: 960px)': {
+      flexDirection: 'column',
+    },
   },
   form: {
     flexGrow: 1,
     marginRight: 4,
+    '@media (max-width: 960px)': {
+      marginRight: 0,
+    },
   },
   heading: {
     display: 'flex',
     alignItems: 'center',
     marginBottom: 2,
+  },
+  payTitle: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    '@media (max-width: 600px)': {
+      fontSize: 20,
+    },
   },
 };
 
@@ -52,9 +65,7 @@ export function Checkout() {
           >
             <ArrowBackIcon fontSize="small" />
           </IconButton>
-          <Typography fontSize={26} fontWeight="bold">
-            {t('bookings.payTitle')}
-          </Typography>
+          <Typography sx={styles.payTitle}>{t('bookings.payTitle')}</Typography>
         </Box>
         {clientSecret ? (
           <Elements stripe={stripePromise} options={{ clientSecret }}>
