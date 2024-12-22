@@ -21,6 +21,19 @@ const styles = {
     justifyContent: 'space-between',
     minHeight: 'var(--footer-height)',
     px: 15,
+    '@media (max-width: 960px)': {
+      paddingX: 10,
+    },
+    '@media (max-width: 600px)': {
+      paddingX: 4,
+      justifyContent: 'center',
+      gap: 3,
+    },
+  },
+  footerText: {
+    '@media (max-width: 650px)': {
+      display: 'none',
+    },
   },
 };
 
@@ -32,7 +45,9 @@ export function Footer() {
       <Box sx={styles.footerContent}>
         <Typography variant="body2">StayHub © 2024</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant="body2">{t('footer')}</Typography>
+          <Typography variant="body2" sx={styles.footerText}>
+            {t('footer')}
+          </Typography>
           <Link href="https://www.facebook.com/airbnb">
             <FacebookIcon />
           </Link>
