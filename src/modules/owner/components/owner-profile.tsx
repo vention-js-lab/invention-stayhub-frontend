@@ -13,13 +13,6 @@ import DefaultImage from '#/assets/images/default-home-image.png';
 import { NoResult } from '#/shared/components/no-result';
 import Divider from '@mui/material/Divider';
 
-const style = {
-  container: { padding: 3, maxWidth: 800, margin: '0 auto', borderRadius: 2, boxShadow: 1 },
-  ownerCredentials: { display: 'flex', alignItems: 'center', mb: 2 },
-  ownerImage: { width: '200px', height: '200px', mr: 2 },
-  ownerName: { fontWeight: 600, fontSize: '30px' },
-};
-
 export function OwnerProfile() {
   const { t } = useTranslation();
   const { ownerId } = useParams<{ ownerId: string }>();
@@ -31,31 +24,95 @@ export function OwnerProfile() {
 
   return (
     <Box>
-      <Box sx={style.container}>
-        <Box sx={style.ownerCredentials}>
-          <Avatar src={data.ownerProfile.image || imagePlaceholder} sx={style.ownerImage} />
-          <Box sx={{ ml: 2 }}>
-            <Typography variant="h5" sx={style.ownerName}>
+      <Box
+        sx={(theme) => ({
+          padding: theme.spacing(3),
+          maxWidth: 800,
+          margin: '0 auto',
+          borderRadius: 2,
+          boxShadow: 1,
+          [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(2),
+          },
+        })}
+      >
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: theme.spacing(2),
+            [theme.breakpoints.down('sm')]: {
+              flexDirection: 'column',
+              textAlign: 'center',
+            },
+          })}
+        >
+          <Avatar
+            src={data.ownerProfile.image || imagePlaceholder}
+            sx={(theme) => ({
+              width: '200px',
+              height: '200px',
+              marginRight: theme.spacing(2),
+              [theme.breakpoints.down('sm')]: {
+                width: '150px',
+                height: '150px',
+                marginBottom: theme.spacing(2),
+                marginRight: 0,
+              },
+            })}
+          />
+          <Box sx={{ marginLeft: { xs: 0, sm: 2 }, textAlign: { xs: 'center', sm: 'left' } }}>
+            <Typography
+              variant="h5"
+              sx={(theme) => ({
+                fontWeight: 600,
+                fontSize: '30px',
+                [theme.breakpoints.down('sm')]: {
+                  fontSize: '24px',
+                },
+              })}
+            >
               {data.ownerProfile.firstName} {data.ownerProfile.lastName}
             </Typography>
             <Typography color="text.secondary" sx={{ fontSize: '20px' }}>
               {t('profile.country')}: {data.ownerProfile.country}
             </Typography>
-            <Typography sx={{ p: 0 }} variant="body1" color="text.secondary">
+            <Typography sx={{ padding: 0 }} variant="body1" color="text.secondary">
               {t('singleAccommodation.since')}: {readableDate(data.ownerProfile.createdAt)}
             </Typography>
           </Box>
         </Box>
         <Box sx={{ padding: 2 }}>
-          <Typography variant="body2" sx={{ fontStyle: 'italic', fontSize: '18px' }}>
+          <Typography
+            variant="body2"
+            sx={(theme) => ({
+              fontStyle: 'italic',
+              fontSize: '18px',
+              [theme.breakpoints.down('sm')]: {
+                fontSize: '16px',
+              },
+            })}
+          >
             “ {data.ownerProfile.description || 'No description available.'} ”
           </Typography>
         </Box>
       </Box>
+
       <Box sx={{ mt: 5 }}>
-        <Typography sx={{ fontSize: '24px', mb: 1 }} variant="body1">
+        <Typography
+          sx={(theme) => ({
+            fontSize: '24px',
+            marginBottom: theme.spacing(1),
+            textAlign: 'left',
+            [theme.breakpoints.down('sm')]: {
+              textAlign: 'center',
+            },
+          })}
+          variant="body1"
+        >
           {t('profile.ownerAccommodations')}
         </Typography>
+
         <Divider sx={{ color: '#000', mb: 3, boxShadow: 1 }} />
         <Grid2 container={true} spacing={3}>
           {data.ownerAccommodations.length > 0 ? (
