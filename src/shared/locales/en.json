@@ -72,7 +72,8 @@
   "empties": {
     "emptyCategory": "Oops! This category is empty :(",
     "emptyWishlist": "Oops! Your wishlist is empty :(",
-    "emptySearch": "Oops! No accommodation has found :("
+    "emptySearch": "Oops! No accommodation has found :(",
+    "emptyMyAccommodations": "Oops! You haven't accommodations :("
   },
   "amenities": {
     "name": "Amenities",

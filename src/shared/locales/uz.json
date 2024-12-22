@@ -72,7 +72,8 @@
   "empties": {
     "emptyCategory": "Voy! Ushbu kategoriya bo'sh :(",
     "emptyWishlist": "Voy! Sizning istaklar ro'yxatingiz bo'sh :(",
-    "emptySearch": "Voy! Hech narsa topilmadi :("
+    "emptySearch": "Voy! Hech narsa topilmadi :(",
+    "emptyMyAccommodations": "Voy! Sizda e'lonlar topilmadi :("
   },
   "amenities": {
     "name": "Qulayliklar",

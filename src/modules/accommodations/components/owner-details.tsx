@@ -16,7 +16,7 @@ interface UserDetailsProps {
 
 const styles = {
   container: { display: 'flex', padding: '16px 8px', alignItems: 'center', gap: 2 },
-  avatar: { width: 70, height: 70, cursor: 'pointer' },
+  avatar: { width: 70, height: 70, cursor: 'pointer', mr: '12px' },
   nameBox: { display: 'flex', alignItems: 'center' },
   since: { pl: '5px', color: '#d1d1d1' },
 };
@@ -26,7 +26,7 @@ export function OwnerDetails({ id, since, image, firstname, lastname, descriptio
 
   return (
     <Box sx={styles.container}>
-      <Link href={`/users/profile/${id}`}>
+      <Link href={`/users/profile/${id}`} sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar src={image || firstname?.[0] || ''} sx={styles.avatar} />
         <Box>
           <Box sx={styles.nameBox}>
