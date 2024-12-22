@@ -65,7 +65,7 @@ export function ReservationCard({
 
         setNights(numberOfNights);
         setCalculatedServiceFee(calculatedFee);
-        setTotal(totalPrice);
+        setTotal(Number(totalPrice));
         setIsButtonEnabled(!hasConflict);
       } else {
         setIsButtonEnabled(false);
