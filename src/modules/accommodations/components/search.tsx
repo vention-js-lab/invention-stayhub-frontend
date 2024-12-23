@@ -10,6 +10,7 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const styles = {
   searchContainer: {
@@ -21,6 +22,9 @@ const styles = {
     borderRadius: '35px',
     height: '60px',
     maxWidth: '700px',
+    '@media (max-width: 600px)': {
+      height: '50px',
+    },
   },
 
   searchIcon: {
@@ -33,6 +37,10 @@ const styles = {
     color: '#fff',
     '&:hover': {
       backgroundColor: '#CA1A55',
+    },
+    '@media (max-width: 600px)': {
+      height: '40px',
+      width: '40px',
     },
   },
 
@@ -49,6 +57,7 @@ const styles = {
 
 export function Search() {
   const { t } = useTranslation();
+  const isMobile = useMediaQuery('(max-width: 600px)');
   const { setQueryParams } = useListAccommodationQueryParams();
   const { handleSubmit, control, setValue, getValues } = useForm<AccommodationFilterParams>();
 
@@ -78,31 +87,33 @@ export function Search() {
           render={({ field }) => <InputBase placeholder={t('filterArea.search')} {...field} sx={styles.inputBase} />}
         />
 
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Controller
-            name="availableFrom"
-            control={control}
-            render={({ field }) => (
-              <DatePickerButton
-                label={t('filterArea.checkin')}
-                date={field.value ? dayjs(field.value) : null}
-                onDateChange={handleDateChange('availableFrom')}
-              />
-            )}
-          />
+        {!isMobile && (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Controller
+              name="availableFrom"
+              control={control}
+              render={({ field }) => (
+                <DatePickerButton
+                  label={t('filterArea.checkin')}
+                  date={field.value ? dayjs(field.value) : null}
+                  onDateChange={handleDateChange('availableFrom')}
+                />
+              )}
+            />
 
-          <Controller
-            name="availableTo"
-            control={control}
-            render={({ field }) => (
-              <DatePickerButton
-                label={t('filterArea.checkout')}
-                date={field.value ? dayjs(field.value) : null}
-                onDateChange={handleDateChange('availableTo')}
-              />
-            )}
-          />
-        </LocalizationProvider>
+            <Controller
+              name="availableTo"
+              control={control}
+              render={({ field }) => (
+                <DatePickerButton
+                  label={t('filterArea.checkout')}
+                  date={field.value ? dayjs(field.value) : null}
+                  onDateChange={handleDateChange('availableTo')}
+                />
+              )}
+            />
+          </LocalizationProvider>
+        )}
 
         <IconButton type="submit" sx={styles.searchIcon}>
           <SearchIcon />
