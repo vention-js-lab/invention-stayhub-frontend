@@ -8,11 +8,14 @@ import { useTranslation } from 'react-i18next';
 
 const styles = {
   header: {
-    marginTop: '16px',
-    marginBottom: '16px',
+    marginY: '16px',
     fontWeight: 'bold',
     fontSize: '28px',
     color: '#333',
+    '@media (max-width: 540px)': {
+      marginY: '2px',
+      textAlign: 'center',
+    },
   },
 };
 
