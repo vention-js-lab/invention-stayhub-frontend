@@ -19,6 +19,7 @@ import { ImageUpload } from './image-upload';
 import { type Country } from '../types/country.type';
 import { showSnackbar } from '#/shared/utils/custom-snackbar.util';
 import { useTranslation } from 'react-i18next';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface UserInfoProps {
   image?: string;
@@ -32,11 +33,21 @@ interface UserInfoProps {
 
 const styles = {
   userHeader: { alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', padding: '8px 16px' },
-  imageBox: { display: 'flex', alignItems: 'center', gap: '25px' },
-  image: { width: '150px', height: '150px', borderRadius: '75px', objectFit: 'cover' },
+  imageBox: {
+    display: 'flex',
+    flexDirection: { xs: 'column', sm: 'row' },
+    alignItems: 'center',
+    gap: '15px',
+  },
+  image: {
+    width: { xs: '100px', sm: '150px' },
+    height: { xs: '100px', sm: '150px' },
+    borderRadius: '50%',
+    objectFit: 'cover',
+  },
   inputsContainer: { width: '100%' },
-  formControl: { m: 1, width: '50%', gap: '5px' },
-  formControlGender: { m: 1, width: '50%', gap: '5px' },
+  formControl: { width: { xs: '100%', sm: '48%' }, gap: '5px' },
+  formControlGender: { m: 1, width: { xs: '100%', sm: '48%' }, gap: '5px' },
   editButton: {
     backgroundColor: (theme: Theme) => theme.palette.secondary.main,
     padding: '8px 40px',
@@ -53,11 +64,13 @@ const styles = {
   },
 };
 
+// eslint-disable-next-line complexity
 export function ProfileInfo({ firstName, lastName, image, country, description, gender, phoneNumber }: UserInfoProps) {
   const { t } = useTranslation();
   const [disabled, setDisabled] = useState(true);
   const [imageUrl, setImageUrl] = useState(image || DefaultImage);
   const mutation = useUserUpdateMutation();
+  const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
   const {
     handleSubmit,
@@ -105,7 +118,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
   };
   return (
     <Box sx={{ width: '100%' }}>
-      <Stack sx={styles.userHeader}>
+      <Stack sx={styles.userHeader} direction={isSmallScreen ? 'column' : 'row'}>
         <Box sx={styles.imageBox}>
           <Box sx={{ position: 'relative' }}>
             <ImageUpload defaultImage={imageUrl} onImageUpload={handleImageUpload} disabled={disabled} />
@@ -120,7 +133,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
       </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack direction="column" sx={styles.inputsContainer}>
-          <Stack spacing={4}>
+          <Stack spacing={4} direction={isSmallScreen ? 'column' : 'row'}>
             <FormControl sx={styles.formControl} variant="outlined">
               <Typography>{t('profile.name')}</Typography>
               <TextField
@@ -140,7 +153,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
               />
             </FormControl>
           </Stack>
-          <Stack spacing={4}>
+          <Stack spacing={4} direction={isSmallScreen ? 'column' : 'row'}>
             <FormControl sx={styles.formControl} variant="outlined">
               <Typography>{t('profile.country')}</Typography>
               <CountrySelect
@@ -154,7 +167,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
               <TextField disabled={disabled} {...register('phoneNumber')} />
             </FormControl>
           </Stack>
-          <Stack spacing={4}>
+          <Stack spacing={4} direction={isSmallScreen ? 'column' : 'row'}>
             <FormControl sx={styles.formControlGender}>
               <Typography>{t('profile.gender')}</Typography>
               <Select value={watch('gender')} onChange={(e) => setValue('gender', e.target.value)} disabled={disabled}>
@@ -169,7 +182,7 @@ export function ProfileInfo({ firstName, lastName, image, country, description, 
           </Stack>
         </Stack>
         {!disabled && (
-          <Stack direction="row" justifyContent="flex-start">
+          <Stack direction={isSmallScreen ? 'column' : 'row'} justifyContent="flex-start">
             <Button type="submit" sx={styles.saveButton} variant="contained">
               {t('profile.buttons.save')}
             </Button>

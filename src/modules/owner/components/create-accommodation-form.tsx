@@ -26,6 +26,13 @@ const styles = {
     fontWeight: 'bold',
     fontSize: '28px',
     color: '#333',
+    '@media (max-width: 960px)': {
+      fontSize: '24px',
+    },
+    '@media (max-width: 600px)': {
+      marginBottom: 0,
+      fontSize: '20px',
+    },
   },
   button: {
     backgroundColor: (theme: Theme) => theme.palette.secondary.main,
@@ -33,6 +40,11 @@ const styles = {
     py: 2,
     px: 4,
     mt: 2,
+  },
+  availability: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
 };
 
@@ -101,7 +113,7 @@ export function CreateAccommodationForm() {
           <Typography sx={styles.heading}>{t('accommodation.new')}</Typography>
         </Grid2>
 
-        <Grid2 size={{ xs: 12, sm: 2 }} mt={3} display="flex" justifyContent="flex-end" alignItems="center">
+        <Grid2 size={{ xs: 12, sm: 1 }} style={styles.availability}>
           <FormControlLabel
             label={t('accommodation.available')}
             control={<Switch {...register('available')} defaultChecked={true} color="success" defaultValue="true" />}
@@ -227,7 +239,7 @@ export function CreateAccommodationForm() {
         </Grid2>
       </Grid2>
 
-      <Box mt={3} display="flex" justifyContent="flex-end">
+      <Box mt={3} display="flex" justifyContent="flex-end" mb={6}>
         <Button type="submit" variant="contained" sx={styles.button} disabled={createAccommodationMutation.isPending}>
           {createAccommodationMutation.isPending ? t('accommodation.saving') : t('accommodation.next')}
         </Button>
