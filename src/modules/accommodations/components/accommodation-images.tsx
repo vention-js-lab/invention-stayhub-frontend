@@ -23,6 +23,12 @@ const styles = {
       height: '150px',
     },
   }),
+  imageContainer: (theme: Theme) => ({
+    marginBottom: '40px',
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: '0',
+    },
+  }),
   tabletImage: (theme: Theme) => ({
     width: '100%',
     height: '200px',
@@ -46,7 +52,6 @@ const styles = {
     [theme.breakpoints.down('sm')]: {
       position: 'relative',
       textAlign: 'center',
-      // marginTop: '10px',
     },
   }),
   viewMoreButton: (theme: Theme) => ({
@@ -74,7 +79,7 @@ export function AccommodationImages({ images }: { images: AccommodationImage[] |
 
   return (
     <Box sx={{ position: 'relative' }}>
-      <Grid container={true} spacing={2} sx={{ marginBottom: '40px' }}>
+      <Grid container={true} spacing={2} sx={(theme) => styles.imageContainer(theme)}>
         <Grid size={{ xs: 12 }} sx={(theme) => ({ [theme.breakpoints.up('sm')]: { display: 'none' } })}>
           <Box component="img" src={images[0].url} alt="Mobile Image" sx={(theme) => styles.homeImage(theme)} />
         </Grid>
