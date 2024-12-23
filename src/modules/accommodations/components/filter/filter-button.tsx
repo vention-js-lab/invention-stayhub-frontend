@@ -19,6 +19,10 @@ const styles = {
     '@media (max-width: 1024px)': {
       padding: '18px 12px',
     },
+    '@media (max-width: 600px)': {
+      padding: '13px 0px',
+      margin: '10px 0',
+    },
   },
 
   tuneIcon: {

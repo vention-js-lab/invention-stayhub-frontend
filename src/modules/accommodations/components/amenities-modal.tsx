@@ -8,6 +8,7 @@ import Modal from '@mui/material/Modal';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { type Dispatch, type SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const styles = {
   backgroundPaper: {
@@ -32,11 +33,13 @@ interface AmenitiesProps {
 }
 
 export function AmenitiesModal({ amenity, isModalOpen, setIsModalOpen }: AmenitiesProps) {
+  const { t } = useTranslation();
+
   return (
     <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <Paper sx={styles.backgroundPaper}>
         <Typography variant="h6" gutterBottom={true}>
-          All Amenities
+          {t('singleAccommodation.allAmenities')}
         </Typography>
         <List>
           {amenity.map((value) => {
@@ -53,7 +56,7 @@ export function AmenitiesModal({ amenity, isModalOpen, setIsModalOpen }: Ameniti
         </List>
         <Box textAlign="center" marginTop={2}>
           <Button variant="outlined" onClick={() => setIsModalOpen(false)}>
-            Close
+            {t('singleAccommodation.buttons.close')}
           </Button>
         </Box>
       </Paper>

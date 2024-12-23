@@ -19,6 +19,12 @@ const styles = {
     minHeight: 'var(--header-height)',
     width: '100%',
     px: 15,
+    '@media (max-width: 960px)': {
+      paddingX: 10,
+    },
+    '@media (max-width: 600px)': {
+      paddingX: 4,
+    },
   },
 };
 
@@ -26,7 +32,7 @@ export function Header() {
   return (
     <Box sx={styles.header}>
       <Box sx={styles.headerContent}>
-        <Link href="/">
+        <Link sx={{ '@media (max-width: 600px)': { p: '0' } }} href="/">
           <Logo />
         </Link>
         <ProfileOptions />

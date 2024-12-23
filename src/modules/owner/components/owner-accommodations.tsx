@@ -13,8 +13,10 @@ import { AccommodationCard } from '#/modules/accommodations/components/accommoda
 import { SkeletonList } from '#/modules/accommodations/components/skeleton-list';
 import { calculateOverallRating } from '#/modules/accommodations/components/reviews/rating.component';
 import Box from '@mui/material/Box';
+import { useTranslation } from 'react-i18next';
 
 export function OwnerAccommodations() {
+  const { t } = useTranslation();
   const { ref: bottomOfPageRef, inView: isBottomOfPageInView } = useInView();
   const { validatedQueryParams } = useListAccommodationQueryParams();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -70,7 +72,7 @@ export function OwnerAccommodations() {
                 </Grid2>
               ))
             ) : (
-              <NoResult text={'Oops! No accommodation has found :('} />
+              <NoResult text={t('empties.emptyMyAccommodations')} />
             )}
           </React.Fragment>
         ))}
