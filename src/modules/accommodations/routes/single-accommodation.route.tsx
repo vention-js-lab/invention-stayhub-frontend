@@ -23,8 +23,10 @@ import Typography from '@mui/material/Typography';
 const styles = {
   skeleton: { display: 'flex', justifyContent: 'space-between', mt: 2 },
   container: { padding: '0 16px 50px 0' },
-  mainContent: { display: 'flex', justifyContent: 'space-between' },
-  details: { maxWidth: '60%' },
+  mainContent: { display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between' },
+  details: { maxWidth: { xs: '100%', md: '60%' } },
+  reservationCard: { order: { xs: 2, md: 1 } },
+  reviewsSection: { order: { xs: 1, md: 2 } },
 };
 
 export function SingleAccommodationRoute() {
@@ -64,16 +66,18 @@ export function SingleAccommodationRoute() {
           <Divider variant="middle" />
           <AccommodationAmenities amenities={data.amenity} />
         </Box>
-        <ReservationCard
-          pricePerNight={data.price}
-          maxGuests={data.allowedNumberOfPeople}
-          availableFrom={data.availableFrom}
-          availableTo={data.availableTo}
-          accommodationId={data.id}
-          bookings={data.bookings || []}
-        />
+        <Box sx={styles.reservationCard}>
+          <ReservationCard
+            pricePerNight={data.price}
+            maxGuests={data.allowedNumberOfPeople}
+            availableFrom={data.availableFrom}
+            availableTo={data.availableTo}
+            accommodationId={data.id}
+            bookings={data.bookings || []}
+          />
+        </Box>
       </Box>
-      <Box sx={{ mt: 2 }}>
+      <Box sx={styles.reviewsSection}>
         <AccommodationRating reviews={data.reviews} />
         <ReviewsList reviews={data.reviews} />
       </Box>

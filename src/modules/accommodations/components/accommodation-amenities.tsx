@@ -12,17 +12,32 @@ import { type Theme } from '@mui/material/styles';
 import { AmenitiesModal } from '#/modules/accommodations/components/amenities-modal';
 import { getAmenities } from '../utils/get-amenities.util';
 import { useTranslation } from 'react-i18next';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const styles = {
-  container: { paddingTop: '30px' },
-  offers: { paddingLeft: '16px', fontSize: '20px', fontWeight: 'bold' },
+  container: { paddingTop: { xs: '20px', md: '30px' } },
+  offers: { paddingLeft: '16px', fontSize: { xs: '16px', md: '20px' }, fontWeight: 'bold' },
   list: { display: 'flex', flexWrap: 'wrap' },
-  amenitiesButton: {
+  listItem: (theme: Theme) => ({
+    width: '50%',
+    [theme.breakpoints.down('sm')]: {
+      width: '200px',
+    },
+  }),
+  amenitiesButton: (theme: Theme) => ({
     marginTop: 2,
-    backgroundColor: (theme: Theme) => theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main,
     '&:hover': { backgroundColor: 'GrayText' },
     marginLeft: '16px',
-  },
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 0,
+      marginBottom: 2,
+    },
+    [theme.breakpoints.down('md')]: {
+      marginTop: 0,
+      marginBottom: 2,
+    },
+  }),
   backgroundPaper: {
     position: 'absolute',
     top: '50%',
@@ -37,22 +52,24 @@ const styles = {
 
 export function AccommodationAmenities({ amenities }: { amenities: AccommodationAmenity | null }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const { t } = useTranslation();
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
   if (!amenities) {
     return null;
   }
   const amenityList = getAmenities(amenities, amenitiesMap);
 
-  const limitedAmenities = amenityList.slice(0, 6);
+  const visibleAmenities = showAll ? amenityList : amenityList.slice(0, isMobile ? 3 : 6);
   return (
     <Box sx={styles.container}>
       <Typography sx={styles.offers}>{t('singleAccommodation.offers')}</Typography>
       <List sx={styles.list}>
-        {limitedAmenities.map((offer) => {
+        {visibleAmenities.map((offer) => {
           const Icon = offer.icon;
           return (
-            <ListItem key={offer.label} sx={{ maxWidth: '50%' }}>
+            <ListItem key={offer.label} sx={(theme) => styles.listItem(theme)}>
               <ListItemIcon>
                 <Icon />
               </ListItemIcon>
@@ -61,8 +78,13 @@ export function AccommodationAmenities({ amenities }: { amenities: Accommodation
           );
         })}
       </List>
-      {amenityList.length > 8 && (
-        <Button variant="contained" color="primary" onClick={() => setIsModalOpen(true)} sx={styles.amenitiesButton}>
+      {!showAll && amenityList.length > (isMobile ? 3 : 6) && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setShowAll(true)}
+          sx={(theme) => styles.amenitiesButton(theme)}
+        >
           {t('singleAccommodation.buttons.showAmenities')}
         </Button>
       )}
