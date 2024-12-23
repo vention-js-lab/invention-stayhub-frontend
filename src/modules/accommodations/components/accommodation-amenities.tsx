@@ -52,7 +52,6 @@ const styles = {
 
 export function AccommodationAmenities({ amenities }: { amenities: AccommodationAmenity | null }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showAll, setShowAll] = useState(false);
   const { t } = useTranslation();
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
@@ -61,7 +60,7 @@ export function AccommodationAmenities({ amenities }: { amenities: Accommodation
   }
   const amenityList = getAmenities(amenities, amenitiesMap);
 
-  const visibleAmenities = showAll ? amenityList : amenityList.slice(0, isMobile ? 3 : 6);
+  const visibleAmenities = isModalOpen ? amenityList : amenityList.slice(0, isMobile ? 3 : 6);
   return (
     <Box sx={styles.container}>
       <Typography sx={styles.offers}>{t('singleAccommodation.offers')}</Typography>
@@ -78,11 +77,11 @@ export function AccommodationAmenities({ amenities }: { amenities: Accommodation
           );
         })}
       </List>
-      {!showAll && amenityList.length > (isMobile ? 3 : 6) && (
+      {!isModalOpen && amenityList.length > (isMobile ? 3 : 6) && (
         <Button
           variant="contained"
           color="primary"
-          onClick={() => setShowAll(true)}
+          onClick={() => setIsModalOpen(true)}
           sx={(theme) => styles.amenitiesButton(theme)}
         >
           {t('singleAccommodation.buttons.showAmenities')}

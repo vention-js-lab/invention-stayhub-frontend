@@ -36,7 +36,7 @@ export function AccommodationDetails({ data }: { data: Accommodation }) {
           data.categories.map((category) => (
             <React.Fragment key={category.id}>
               <Divider orientation="vertical" flexItem={true} />
-              <Typography sx={{ whiteSpace: 'nowrap', px: '8px' }} component="span">
+              <Typography sx={{ whiteSpace: 'nowrap', paddingX: '0' }} component="span">
                 {t(`categories.${category.name.toLowerCase().replace(/\s+/g, '')}`)}
               </Typography>
             </React.Fragment>
