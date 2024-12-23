@@ -72,7 +72,8 @@
   "empties": {
     "emptyCategory": "Ой! Эта категория пуста :(",
     "emptyWishlist": "Ой! Ваш список избранных пуст :(",
-    "emptySearch": "Ой! Ничего не найдено :("
+    "emptySearch": "Ой! Ничего не найдено :(",
+    "emptyMyAccommodations": "Ой! У вас нету размещений :("
   },
   "amenities": {
     "name": "Удобства",
@@ -125,6 +126,7 @@
     "offers": "Что предлагает это место",
     "location": "Где вы будете?",
     "reviews": "комментарии",
+    "allAmenities": "Все удобства",
     "allReviews": "Все комментарии",
     "commentedIn": "Комментировано в",
     "since": "регистрирован в",
@@ -146,7 +148,7 @@
     "mansions": "Особняки",
     "desert": "Пустыня",
     "castle": "Замки",
-    "amazingview": "Замечательный вид",
+    "amazingview": "Хороший вид",
     "mountain": "Горы",
     "luxury": "Роскошь",
     "forest": "Лес",

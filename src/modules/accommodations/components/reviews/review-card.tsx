@@ -104,7 +104,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
 
           {shouldShowMoreButton ? (
             <Button variant="text" color="primary" onClick={() => handleOpen(review)}>
-              {t('singleAccommodation.show')}
+              {t('singleAccommodation.buttons.show')}
             </Button>
           ) : null}
         </CardContent>

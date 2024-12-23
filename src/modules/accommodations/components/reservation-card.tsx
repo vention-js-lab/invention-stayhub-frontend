@@ -161,6 +161,9 @@ export function ReservationCard({
     guestsField: {
       marginBottom: { xs: '12px', sm: '16px' },
     },
+    datePickers: {
+      width: '100%',
+    },
     reserveButton: {
       backgroundColor: isButtonEnabled ? theme.palette.secondary.main : theme.palette.action.disabled,
       color: isButtonEnabled ? '#fff' : theme.palette.action.disabled,
@@ -183,6 +186,7 @@ export function ReservationCard({
         <Box sx={styles.dateSection}>
           <Box sx={styles.dateBox}>
             <DatePicker
+              sx={styles.datePickers}
               label={t('filterArea.checkin')}
               value={checkIn ? time(checkIn) : null}
               onChange={(newValue) => setCheckIn(newValue?.format('YYYY-MM-DD') || null)}
@@ -194,6 +198,7 @@ export function ReservationCard({
           </Box>
           <Box sx={styles.dateBox}>
             <DatePicker
+              sx={styles.datePickers}
               label={t('filterArea.checkout')}
               value={checkOut ? time(checkOut) : null}
               onChange={(newValue) => setCheckOut(newValue?.format('YYYY-MM-DD') || null)}
@@ -206,12 +211,17 @@ export function ReservationCard({
         </Box>
 
         <TextField
-          label="Guests"
+          label={t('singleAccommodation.guests')}
           select={true}
           fullWidth={true}
           value={guests}
           onChange={(e) => setGuests(Number(e.target.value))}
-          sx={styles.guestsField}
+          sx={{
+            ...styles.guestsField,
+            '& .MuiInputLabel-root': {
+              textTransform: 'capitalize',
+            },
+          }}
         >
           {generateGuestOptions(maxGuests)}
         </TextField>
@@ -224,17 +234,17 @@ export function ReservationCard({
           <Typography variant="body2" sx={styles.summaryText}>
             <Box display="flex" justifyContent="space-between" marginBottom="8px">
               <Typography variant="body1">
-                ${pricePerNight} x {nights} {nights > 1 ? 'nights' : 'night'}
+                ${pricePerNight} x {nights} {t('bookings.nights').toLowerCase()}
               </Typography>
               <Typography variant="body1">${pricePerNight * nights}</Typography>
             </Box>
             <Box display="flex" justifyContent="space-between" marginBottom="8px">
-              <Typography variant="body1">{t('Service Fee')}</Typography>
+              <Typography variant="body1">{t('bookings.fee')}</Typography>
               <Typography variant="body1">${calculatedServiceFee}</Typography>
             </Box>
             <Box marginTop="16px" borderTop="1px solid #ddd" paddingTop="8px" display="flex" justifyContent="space-between">
               <Typography variant="h6" fontWeight="bold">
-                Total
+                {t('bookings.total')}
               </Typography>
               <Typography variant="h6" fontWeight="bold">
                 ${total}

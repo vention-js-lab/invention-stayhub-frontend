@@ -52,8 +52,8 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
       </Grid2>
 
       {reviews.length > visibleReviews.length && (
-        <Button variant="contained" onClick={handleOpen} sx={{ marginTop: 2 }}>
-          {t('singleAccommodation.showReviews')}
+        <Button variant="contained" onClick={handleOpen} sx={{ marginBottom: 2 }}>
+          {t('singleAccommodation.buttons.showReviews')}
         </Button>
       )}
 
@@ -66,7 +66,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
             <ReviewAllCard key={review.id} review={review} />
           ))}
           <Button variant="outlined" onClick={handleClose} sx={{ marginTop: 2 }}>
-            {t('singleAccommodation.close')}
+            {t('singleAccommodation.buttons.close')}
           </Button>
         </Box>
       </Modal>

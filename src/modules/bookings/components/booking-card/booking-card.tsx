@@ -66,11 +66,11 @@ const styles = {
     },
   },
   cardPhoto: {
-    height: '100%',
     width: '50%',
     backgroundColor: '#bdbdbd',
     objectFit: 'cover',
     '@media (max-width: 1535px)': {
+      height: '300px',
       width: '100%',
     },
   },
@@ -82,14 +82,17 @@ const styles = {
     justifyContent: 'space-between',
     padding: '20px 23px 30px 23px',
     '@media (max-width: 1535px)': {
+      height: '50%',
       width: '100%',
     },
   },
   cardContent: {
+    maxHeight: '400px',
     height: '100%',
     display: 'flex',
     padding: '0',
     '@media (max-width: 1535px)': {
+      maxHeight: 'none',
       flexDirection: 'column',
     },
   },
