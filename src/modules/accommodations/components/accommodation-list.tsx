@@ -30,6 +30,12 @@ const styles = {
     borderRadius: '20px',
     padding: '10px 20px',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
+    '@media (max-width: 800px)': {
+      bottom: '70px',
+    },
+    '@media (max-width: 600px)': {
+      bottom: '60px',
+    },
   },
 };
 
