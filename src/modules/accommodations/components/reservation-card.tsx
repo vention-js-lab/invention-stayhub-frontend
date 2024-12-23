@@ -161,6 +161,9 @@ export function ReservationCard({
     guestsField: {
       marginBottom: { xs: '12px', sm: '16px' },
     },
+    datePickers: {
+      width: '100%',
+    },
     reserveButton: {
       backgroundColor: isButtonEnabled ? theme.palette.secondary.main : theme.palette.action.disabled,
       color: isButtonEnabled ? '#fff' : theme.palette.action.disabled,
@@ -183,6 +186,7 @@ export function ReservationCard({
         <Box sx={styles.dateSection}>
           <Box sx={styles.dateBox}>
             <DatePicker
+              sx={styles.datePickers}
               label={t('filterArea.checkin')}
               value={checkIn ? time(checkIn) : null}
               onChange={(newValue) => setCheckIn(newValue?.format('YYYY-MM-DD') || null)}
@@ -194,6 +198,7 @@ export function ReservationCard({
           </Box>
           <Box sx={styles.dateBox}>
             <DatePicker
+              sx={styles.datePickers}
               label={t('filterArea.checkout')}
               value={checkOut ? time(checkOut) : null}
               onChange={(newValue) => setCheckOut(newValue?.format('YYYY-MM-DD') || null)}
