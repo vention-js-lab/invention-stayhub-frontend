@@ -131,33 +131,52 @@ export function ReservationCard({
       maxHeight: '400px',
       overflow: 'hidden',
       transition: 'height 0.3s ease, max-height 0.3s ease',
+      [theme.breakpoints.down('sm')]: {
+        padding: '12px',
+        maxWidth: '100%',
+        boxShadow: 'none',
+        height: 'auto',
+      },
+      [theme.breakpoints.between('sm', 'md')]: {
+        maxWidth: '100%',
+      },
     }),
     dateSection: {
       display: 'flex',
       justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: { xs: 'flex-start', sm: 'center' },
       marginBottom: '16px',
       gap: '8px',
+      flexDirection: { xs: 'column', sm: 'row' },
     },
     dateBox: {
       flex: 1,
-      minWidth: '120px',
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+        width: '50%',
+      },
+      marginBottom: { xs: '0', md: '5px' },
+      marginTop: { xs: '0', md: '5px' },
     },
     guestsField: {
-      marginBottom: '16px',
+      marginBottom: { xs: '12px', sm: '16px' },
+    },
+    datePickers: {
+      width: '100%',
     },
     reserveButton: {
       backgroundColor: isButtonEnabled ? theme.palette.secondary.main : theme.palette.action.disabled,
       color: isButtonEnabled ? '#fff' : theme.palette.action.disabled,
       fontWeight: 'bold',
-      padding: '12px 0',
+      padding: { xs: '10px 0', sm: '12px 0' },
       textTransform: 'none',
-      fontSize: '16px',
+      fontSize: { xs: '14px', sm: '16px' },
       marginBottom: '16px',
     },
     summaryText: {
       textAlign: 'center',
       marginTop: '16px',
+      fontSize: { xs: '14px', sm: '16px' },
     },
   };
 
@@ -167,6 +186,7 @@ export function ReservationCard({
         <Box sx={styles.dateSection}>
           <Box sx={styles.dateBox}>
             <DatePicker
+              sx={styles.datePickers}
               label={t('filterArea.checkin')}
               value={checkIn ? time(checkIn) : null}
               onChange={(newValue) => setCheckIn(newValue?.format('YYYY-MM-DD') || null)}
@@ -178,6 +198,7 @@ export function ReservationCard({
           </Box>
           <Box sx={styles.dateBox}>
             <DatePicker
+              sx={styles.datePickers}
               label={t('filterArea.checkout')}
               value={checkOut ? time(checkOut) : null}
               onChange={(newValue) => setCheckOut(newValue?.format('YYYY-MM-DD') || null)}

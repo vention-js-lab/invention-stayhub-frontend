@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next';
 import React from 'react';
 
 const styles = {
-  container: { padding: '0 0 30px 16px' },
-  title: { fontSize: '25px', marginBottom: '15px', fontWeight: '500' },
-  homeInfo: { display: 'flex', marginBottom: '10px' },
-  homeProperties: { padding: '0 8px 0 0' },
+  container: { padding: { xs: '0 8px 20px 8px', md: '0 0 30px 16px' } },
+  title: { fontSize: { xs: '18px', md: '25px' }, marginBottom: '15px', fontWeight: '500' },
+  homeInfo: { display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '10px' },
+  homeProperties: { padding: '0' },
 };
 
 export function AccommodationDetails({ data }: { data: Accommodation }) {
@@ -25,11 +25,11 @@ export function AccommodationDetails({ data }: { data: Accommodation }) {
           {data.allowedNumberOfPeople} {t('singleAccommodation.guests')}{' '}
         </Typography>
         <Divider orientation="vertical" flexItem={true} />
-        <Typography>
+        <Typography sx={styles.homeProperties}>
           {data.numberOfRooms} {t('singleAccommodation.rooms')}
         </Typography>
         <Divider orientation="vertical" flexItem={true} />
-        <Typography>
+        <Typography sx={styles.homeProperties}>
           {data.squareMeters} {t('singleAccommodation.squareMeters')}
         </Typography>
         {data.categories.length > 0 &&

@@ -15,10 +15,19 @@ interface UserDetailsProps {
 }
 
 const styles = {
-  container: { display: 'flex', padding: '16px 8px', alignItems: 'center', gap: 2 },
-  avatar: { width: 70, height: 70, cursor: 'pointer', mr: '12px' },
-  nameBox: { display: 'flex', alignItems: 'center' },
-  since: { pl: '5px', color: '#d1d1d1' },
+  container: {
+    display: 'flex',
+    flexDirection: { xs: 'column', md: 'row' },
+    padding: '16px 8px',
+    alignItems: { xs: 'flex-start', md: 'center' },
+    gap: 2,
+  },
+  avatar: { width: { xs: 50, md: 70 }, height: { xs: 50, md: 70 }, cursor: 'pointer', mr: '10px' },
+  nameBox: { display: 'flex', alignItems: 'center', flexWrap: 'wrap' },
+  since: {
+    color: '#d1d1d1',
+    fontSize: { xs: '12px', md: '14px' },
+  },
 };
 
 export function OwnerDetails({ id, since, image, firstname, lastname, description }: UserDetailsProps) {
@@ -30,14 +39,26 @@ export function OwnerDetails({ id, since, image, firstname, lastname, descriptio
         <Avatar src={image || firstname?.[0] || ''} sx={styles.avatar} />
         <Box>
           <Box sx={styles.nameBox}>
-            <Typography sx={{ fontWeight: 600, fontSize: '18px' }}>
+            <Typography sx={{ fontWeight: 600, fontSize: { xs: '16px', md: '18px' }, mr: '10px' }}>
               {!firstname && !lastname ? `NoName` : `${firstname} ${lastname}`}
             </Typography>
             <Typography sx={styles.since}>
               {t('singleAccommodation.withUs')} {readableDate(since)}
             </Typography>
           </Box>
-          <Typography sx={{ p: '0' }}>{description}</Typography>
+          <Typography
+            component="div"
+            sx={{
+              maxWidth: '200px',
+              p: '0',
+              fontSize: { xs: '14px', md: '16px' },
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {description}
+          </Typography>
         </Box>
       </Link>
     </Box>
