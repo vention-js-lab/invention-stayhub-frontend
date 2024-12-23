@@ -190,12 +190,17 @@ export function ReservationCard({
         </Box>
 
         <TextField
-          label="Guests"
+          label={t('singleAccommodation.guests')}
           select={true}
           fullWidth={true}
           value={guests}
           onChange={(e) => setGuests(Number(e.target.value))}
-          sx={styles.guestsField}
+          sx={{
+            ...styles.guestsField,
+            '& .MuiInputLabel-root': {
+              textTransform: 'capitalize',
+            },
+          }}
         >
           {generateGuestOptions(maxGuests)}
         </TextField>
@@ -208,17 +213,17 @@ export function ReservationCard({
           <Typography variant="body2" sx={styles.summaryText}>
             <Box display="flex" justifyContent="space-between" marginBottom="8px">
               <Typography variant="body1">
-                ${pricePerNight} x {nights} {nights > 1 ? 'nights' : 'night'}
+                ${pricePerNight} x {nights} {t('bookings.nights').toLowerCase()}
               </Typography>
               <Typography variant="body1">${pricePerNight * nights}</Typography>
             </Box>
             <Box display="flex" justifyContent="space-between" marginBottom="8px">
-              <Typography variant="body1">{t('Service Fee')}</Typography>
+              <Typography variant="body1">{t('bookings.fee')}</Typography>
               <Typography variant="body1">${calculatedServiceFee}</Typography>
             </Box>
             <Box marginTop="16px" borderTop="1px solid #ddd" paddingTop="8px" display="flex" justifyContent="space-between">
               <Typography variant="h6" fontWeight="bold">
-                Total
+                {t('bookings.total')}
               </Typography>
               <Typography variant="h6" fontWeight="bold">
                 ${total}
